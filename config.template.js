@@ -1,3 +1,3 @@
 window.CHAT_CONFIG = {
-  webhookUrl: "${CHAT_WEBHOOK_URL}"
+  webhookUrl: "${CHAT_WEBHOOK_URL}" 
 };
