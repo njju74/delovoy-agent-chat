@@ -1,1 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <title>Деловой агент — личный ассистент</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #0f1620;
+      --card: #172233;
+      --text: #edf3f9;
+      --muted: #9aabbd;
+      --accent: #61d4b3;
+      --line: #2d4057;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .sub {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1100px;
+      height: calc(100vh - 100px);
+      min-height: 600px;
+      margin: 0 auto;
+      padding: 0 24px 24px;
+    }
+
+    #n8n-chat {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Деловой агент — личный ассистент</h1>
+    <p class="sub">
+      Рабочий чат с памятью проектов, PostgreSQL и pgvector.
+    </p>
+  </header>
+
+  <main>
+    <div id="n8n-chat"></div>
+  </main>
+
+  <script src="/config.js"></script>
+
+  <script type="module">
+    import {
+      createChat
+    } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
+
+    createChat({
+      webhookUrl: window.CHAT_CONFIG.webhookUrl,
+      mode: "fullscreen",
+      target: "#n8n-chat",
+      showWelcomeScreen: true,
+      initialMessages: [
+        "Здравствуйте. Я ваш личный рабочий ассистент Делового агента."
+      ],
+      i18n: {
+        en: {
+          title: "Деловой агент",
+          subtitle: "Личный рабочий ассистент",
+          inputPlaceholder: "Напишите задачу или вопрос...",
+          getStarted: "Начать диалог"
+        }
+      }
+    });
+  </script>
+</body>
+</html>
