@@ -351,35 +351,35 @@
         documentsStatus.textContent =
           `Документов в памяти: ${documents.length}`;
 
-        documents.forEach((document) => {
-          const row = document.createElement("div");
+       documents.forEach((doc) => {
+          const row = window.document.createElement("div");
           row.className = "document-row";
 
-          const info = document.createElement("div");
+          const info = window.document.createElement("div");
 
-          const title = document.createElement("div");
+          const title = window.document.createElement("div");
           title.className = "document-title";
-          title.textContent = document.title || "Без названия";
+          title.textContent = doc.title || "Без названия";
 
-          const meta = document.createElement("div");
+          const meta = window.document.createElement("div");
           meta.className = "document-meta";
 
           meta.textContent =
-            `Файл: ${document.original_filename || "—"} · ` +
-            `Статус: ${document.status} · ` +
-            `Фрагментов: ${document.actual_chunks || document.total_chunks || 0} · ` +
-            `Загружен: ${formatDate(document.created_at)}`;
+            `Файл: ${doc.original_filename || "—"} · ` +
+            `Статус: ${doc.status} · ` +
+            `Фрагментов: ${doc.actual_chunks || doc.total_chunks || 0} · ` +
+            `Загружен: ${formatDate(doc.created_at)}`;
 
           info.append(title, meta);
 
-          const deleteButton = document.createElement("button");
+          const deleteButton = window.document.createElement("button");
           deleteButton.type = "button";
           deleteButton.className = "document-delete";
           deleteButton.textContent = "Удалить";
 
           deleteButton.addEventListener("click", async () => {
             const confirmed = confirm(
-              `Удалить документ «${document.title}» и все его фрагменты из памяти?`
+              `Удалить документ «${doc.title}» и все его фрагменты из памяти?`
             );
 
             if (!confirmed) return;
@@ -394,7 +394,7 @@
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  document_id: document.id
+                  document_id: doc.id
                 })
               });
 
@@ -421,6 +421,10 @@
           row.append(info, deleteButton);
           documentsList.appendChild(row);
         });
+
+
+
+        
       } catch (error) {
         documentsStatus.textContent =
           `Ошибка загрузки списка: ${error.message}`;
