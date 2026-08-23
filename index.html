@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Деловой агент — личный ассистент</title>
 
@@ -19,6 +19,7 @@
       --muted: #9aabbd;
       --accent: #61d4b3;
       --line: #2d4057;
+      --danger: #f87171;
     }
 
     * {
@@ -51,10 +52,49 @@
       font-size: 14px;
     }
 
+    .upload-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .upload-panel input {
+      max-width: 320px;
+      color: var(--muted);
+    }
+
+    .upload-panel button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: var(--accent);
+      color: #0f1620;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .upload-panel button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .upload-status {
+      width: 100%;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .upload-status.error {
+      color: var(--danger);
+    }
+
     main {
       max-width: 1100px;
-      height: calc(100vh - 100px);
-      min-height: 600px;
+      height: calc(100vh - 180px);
+      min-height: 520px;
       margin: 0 auto;
       padding: 0 24px 24px;
     }
@@ -68,9 +108,26 @@
 <body>
   <header>
     <h1>Деловой агент — личный ассистент</h1>
+
     <p class="sub">
       Рабочий чат с памятью проектов, PostgreSQL и pgvector.
     </p>
+
+    <div class="upload-panel">
+      <input
+        id="knowledge-file"
+        type="file"
+        accept=".txt,.md,text/plain,text/markdown"
+      >
+
+      <button id="upload-button" type="button">
+        📎 Добавить в память
+      </button>
+
+      <p id="upload-status" class="upload-status">
+        Поддерживаются TXT и Markdown-файлы до 20 МБ.
+      </p>
+    </div>
   </header>
 
   <main>
@@ -99,6 +156,69 @@
           inputPlaceholder: "Напишите задачу или вопрос...",
           getStarted: "Начать диалог"
         }
+      }
+    });
+
+    const fileInput = document.getElementById("knowledge-file");
+    const uploadButton = document.getElementById("upload-button");
+    const uploadStatus = document.getElementById("upload-status");
+
+    uploadButton.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+
+      if (!file) {
+        uploadStatus.textContent = "Сначала выберите TXT или Markdown-файл.";
+        uploadStatus.classList.add("error");
+        return;
+      }
+
+      const allowedExtensions = [".txt", ".md"];
+      const lowerName = file.name.toLowerCase();
+
+      if (!allowedExtensions.some((ext) => lowerName.endsWith(ext))) {
+        uploadStatus.textContent = "Пока поддерживаются только файлы TXT и MD.";
+        uploadStatus.classList.add("error");
+        return;
+      }
+
+      if (file.size > 20 * 1024 * 1024) {
+        uploadStatus.textContent = "Файл больше 20 МБ. Выберите файл меньшего размера.";
+        uploadStatus.classList.add("error");
+        return;
+      }
+
+      const formData = new FormData();
+
+      formData.append("knowledge_file", file);
+
+      uploadButton.disabled = true;
+      uploadStatus.classList.remove("error");
+      uploadStatus.textContent = "Файл загружается и ставится в очередь обработки...";
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось отправить файл в n8n."
+          );
+        }
+
+        uploadStatus.textContent =
+          "✅ Файл принят. Агент сможет использовать его после обработки.";
+
+        fileInput.value = "";
+      } catch (error) {
+        uploadStatus.textContent =
+          `❌ Ошибка загрузки: ${error.message}`;
+        uploadStatus.classList.add("error");
+      } finally {
+        uploadButton.disabled = false;
       }
     });
   </script>
