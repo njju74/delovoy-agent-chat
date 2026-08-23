@@ -12,6 +12,76 @@
   >
 
   <style>
+
+    .documents-panel {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+    }
+
+    .documents-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .documents-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .documents-head button,
+    .document-delete {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 7px 10px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .document-delete {
+      border-color: #8f3f49;
+      color: #ff9aa6;
+    }
+
+    .documents-status {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .documents-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .document-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .document-title {
+      font-weight: 700;
+    }
+
+    .document-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    
     :root {
       --bg: #0f1620;
       --card: #172233;
@@ -128,6 +198,23 @@
         Поддерживаются TXT и Markdown-файлы до 20 МБ.
       </p>
     </div>
+    
+    <div class="documents-panel">
+  <div class="documents-head">
+    <h2>Память и документы</h2>
+
+    <button id="refresh-documents" type="button">
+      ↻ Обновить
+    </button>
+  </div>
+
+  <p id="documents-status" class="documents-status">
+    Загружаем список документов...
+  </p>
+
+  <div id="documents-list" class="documents-list"></div>
+</div>
+
   </header>
 
   <main>
@@ -213,6 +300,7 @@
           "✅ Файл принят. Агент сможет использовать его после обработки.";
 
         fileInput.value = "";
+        setTimeout(loadDocuments, 1500);
       } catch (error) {
         uploadStatus.textContent =
           `❌ Ошибка загрузки: ${error.message}`;
@@ -221,6 +309,130 @@
         uploadButton.disabled = false;
       }
     });
+
+    const refreshDocumentsButton =
+      document.getElementById("refresh-documents");
+
+    const documentsStatus =
+      document.getElementById("documents-status");
+
+    const documentsList =
+      document.getElementById("documents-list");
+
+    function formatDate(value) {
+      if (!value) return "—";
+
+      return new Date(value).toLocaleString("ru-RU");
+    }
+
+    async function loadDocuments() {
+      documentsStatus.classList.remove("error");
+      documentsStatus.textContent = "Загружаем список документов...";
+      documentsList.innerHTML = "";
+
+      try {
+        const response = await fetch("/api/documents");
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось получить список документов."
+          );
+        }
+
+        const documents = result.documents || [];
+
+        if (documents.length === 0) {
+          documentsStatus.textContent =
+            "В память пока не загружено ни одного документа.";
+          return;
+        }
+
+        documentsStatus.textContent =
+          `Документов в памяти: ${documents.length}`;
+
+        documents.forEach((document) => {
+          const row = document.createElement("div");
+          row.className = "document-row";
+
+          const info = document.createElement("div");
+
+          const title = document.createElement("div");
+          title.className = "document-title";
+          title.textContent = document.title || "Без названия";
+
+          const meta = document.createElement("div");
+          meta.className = "document-meta";
+
+          meta.textContent =
+            `Файл: ${document.original_filename || "—"} · ` +
+            `Статус: ${document.status} · ` +
+            `Фрагментов: ${document.actual_chunks || document.total_chunks || 0} · ` +
+            `Загружен: ${formatDate(document.created_at)}`;
+
+          info.append(title, meta);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "document-delete";
+          deleteButton.textContent = "Удалить";
+
+          deleteButton.addEventListener("click", async () => {
+            const confirmed = confirm(
+              `Удалить документ «${document.title}» и все его фрагменты из памяти?`
+            );
+
+            if (!confirmed) return;
+
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Удаляем...";
+
+            try {
+              const response = await fetch("/api/delete-document", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  document_id: document.id
+                })
+              });
+
+              const result = await response.json();
+
+              if (!response.ok || !result.ok) {
+                throw new Error(
+                  result.message || "Не удалось удалить документ."
+                );
+              }
+
+              await loadDocuments();
+            } catch (error) {
+              documentsStatus.textContent =
+                `Ошибка удаления: ${error.message}`;
+
+              documentsStatus.classList.add("error");
+
+              deleteButton.disabled = false;
+              deleteButton.textContent = "Удалить";
+            }
+          });
+
+          row.append(info, deleteButton);
+          documentsList.appendChild(row);
+        });
+      } catch (error) {
+        documentsStatus.textContent =
+          `Ошибка загрузки списка: ${error.message}`;
+
+        documentsStatus.classList.add("error");
+      }
+    }
+
+    refreshDocumentsButton.addEventListener("click", loadDocuments);
+
+    loadDocuments();
+
   </script>
 </body>
 </html>
