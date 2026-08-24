@@ -4,6 +4,7 @@ RUN apk add --no-cache apache2-utils gettext
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY index.html /usr/share/nginx/html/index.html
+COPY memory.html /usr/share/nginx/html/memory.html
 COPY config.template.js /usr/share/nginx/html/config.template.js
 COPY entrypoint.sh /entrypoint.sh
 
