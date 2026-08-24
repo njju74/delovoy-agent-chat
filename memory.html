@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Память и документы — Деловой агент</title>
+
+  <style>
+    :root {
+      --bg: #0f1620;
+      --card: #172233;
+      --text: #edf3f9;
+      --muted: #9aabbd;
+      --accent: #61d4b3;
+      --line: #2d4057;
+      --danger: #f87171;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 24px 50px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .sub {
+      margin: 8px 0 24px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .card {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+    }
+
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .upload-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    input[type="file"] {
+      color: var(--muted);
+      max-width: 360px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: var(--accent);
+      color: #0f1620;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .button-danger {
+      border: 1px solid #8f3f49;
+      background: transparent;
+      color: #ff9aa6;
+      padding: 7px 10px;
+    }
+
+    .status {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .documents-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .document-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+
+    .document-title {
+      font-weight: 700;
+    }
+
+    .document-meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 650px) {
+      main {
+        padding: 22px 16px 40px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <a class="back-link" href="/">
+      ← Вернуться в чат
+    </a>
+
+    <h1>Память и документы</h1>
+
+    <p class="sub">
+      Здесь можно добавлять материалы в долгосрочную память
+      личного агента, просматривать импортированные документы
+      и удалять лишние данные.
+    </p>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Добавить документ в память</h2>
+      </div>
+
+      <p class="muted">
+        Поддерживаются TXT и Markdown-файлы до 20 МБ.
+        После обработки агент сможет находить релевантные
+        фрагменты через pgvector.
+      </p>
+
+      <div class="upload-controls">
+        <input
+          id="knowledge-file"
+          type="file"
+          accept=".txt,.md,text/plain,text/markdown"
+        >
+
+        <button id="upload-button" type="button">
+          📎 Загрузить файл
+        </button>
+      </div>
+
+      <p id="upload-status" class="status">
+        Выберите файл для добавления в память.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h2>Синхронизация памяти проекта</h2>
+
+          <p class="muted">
+            Обновляет краткую карточку памяти на основе
+            проектного summary-документа.
+          </p>
+        </div>
+
+        <button id="sync-memory-button" type="button">
+          🔄 Синхронизировать память проекта
+        </button>
+      </div>
+
+      <p id="sync-status" class="status">
+        Синхронизация выполняется вручную по вашему запросу.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Загруженные документы</h2>
+
+        <button
+          id="refresh-documents"
+          class="button-secondary"
+          type="button"
+        >
+          ↻ Обновить
+        </button>
+      </div>
+
+      <p id="documents-status" class="status">
+        Загружаем список документов...
+      </p>
+
+      <div id="documents-list" class="documents-list"></div>
+    </section>
+  </main>
+
+  <script>
+    const fileInput = document.getElementById("knowledge-file");
+    const uploadButton = document.getElementById("upload-button");
+    const uploadStatus = document.getElementById("upload-status");
+
+    const syncButton = document.getElementById("sync-memory-button");
+    const syncStatus = document.getElementById("sync-status");
+
+    const refreshDocumentsButton =
+      document.getElementById("refresh-documents");
+
+    const documentsStatus =
+      document.getElementById("documents-status");
+
+    const documentsList =
+      document.getElementById("documents-list");
+
+    function setStatus(element, text, isError = false) {
+      element.textContent = text;
+      element.classList.toggle("error", isError);
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+
+      return new Date(value).toLocaleString("ru-RU");
+    }
+
+    async function loadDocuments() {
+      setStatus(documentsStatus, "Загружаем список документов...");
+      documentsList.innerHTML = "";
+
+      try {
+        const response = await fetch("/api/documents");
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось получить список документов."
+          );
+        }
+
+        const documents = result.documents || [];
+
+        if (documents.length === 0) {
+          setStatus(
+            documentsStatus,
+            "В память пока не загружено ни одного документа."
+          );
+          return;
+        }
+
+        setStatus(
+          documentsStatus,
+          `Документов в памяти: ${documents.length}`
+        );
+
+        documents.forEach((doc) => {
+          const row = window.document.createElement("div");
+          row.className = "document-row";
+
+          const info = window.document.createElement("div");
+
+          const title = window.document.createElement("div");
+          title.className = "document-title";
+          title.textContent = doc.title || "Без названия";
+
+          const meta = window.document.createElement("div");
+          meta.className = "document-meta";
+
+          meta.textContent =
+            `Файл: ${doc.original_filename || "—"} · ` +
+            `Статус: ${doc.status} · ` +
+            `Фрагментов: ${doc.actual_chunks || doc.total_chunks || 0} · ` +
+            `Загружен: ${formatDate(doc.created_at)}`;
+
+          info.append(title, meta);
+
+          const deleteButton = window.document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "button-danger";
+          deleteButton.textContent = "Удалить";
+
+          deleteButton.addEventListener("click", async () => {
+            const confirmed = confirm(
+              `Удалить документ «${doc.title}» и все его фрагменты из памяти?`
+            );
+
+            if (!confirmed) return;
+
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Удаляем...";
+
+            try {
+              const response = await fetch("/api/delete-document", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  document_id: doc.id
+                })
+              });
+
+              const result = await response.json();
+
+              if (!response.ok || !result.ok) {
+                throw new Error(
+                  result.message || "Не удалось удалить документ."
+                );
+              }
+
+              await loadDocuments();
+            } catch (error) {
+              setStatus(
+                documentsStatus,
+                `Ошибка удаления: ${error.message}`,
+                true
+              );
+
+              deleteButton.disabled = false;
+              deleteButton.textContent = "Удалить";
+            }
+          });
+
+          row.append(info, deleteButton);
+          documentsList.appendChild(row);
+        });
+      } catch (error) {
+        setStatus(
+          documentsStatus,
+          `Ошибка загрузки списка: ${error.message}`,
+          true
+        );
+      }
+    }
+
+    uploadButton.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+
+      if (!file) {
+        setStatus(
+          uploadStatus,
+          "Сначала выберите TXT или Markdown-файл.",
+          true
+        );
+        return;
+      }
+
+      const lowerName = file.name.toLowerCase();
+
+      if (!lowerName.endsWith(".txt") && !lowerName.endsWith(".md")) {
+        setStatus(
+          uploadStatus,
+          "Пока поддерживаются только TXT и MD-файлы.",
+          true
+        );
+        return;
+      }
+
+      if (file.size > 20 * 1024 * 1024) {
+        setStatus(
+          uploadStatus,
+          "Файл больше 20 МБ. Выберите файл меньшего размера.",
+          true
+        );
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("knowledge_file", file);
+
+      uploadButton.disabled = true;
+      setStatus(
+        uploadStatus,
+        "Файл загружается и ставится в очередь обработки..."
+      );
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось отправить файл в n8n."
+          );
+        }
+
+        setStatus(
+          uploadStatus,
+          "✅ Файл принят. После обработки агент сможет использовать его."
+        );
+
+        fileInput.value = "";
+
+        setTimeout(loadDocuments, 1500);
+      } catch (error) {
+        setStatus(
+          uploadStatus,
+          `Ошибка загрузки: ${error.message}`,
+          true
+        );
+      } finally {
+        uploadButton.disabled = false;
+      }
+    });
+
+    syncButton.addEventListener("click", async () => {
+      syncButton.disabled = true;
+      setStatus(syncStatus, "Запускаем синхронизацию памяти...");
+
+      try {
+        const response = await fetch("/api/sync-memory", {
+          method: "POST"
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось запустить синхронизацию."
+          );
+        }
+
+        setStatus(
+          syncStatus,
+          "✅ Синхронизация запущена. Обновление памяти займёт некоторое время."
+        );
+      } catch (error) {
+        setStatus(
+          syncStatus,
+          `Ошибка синхронизации: ${error.message}`,
+          true
+        );
+      } finally {
+        syncButton.disabled = false;
+      }
+    });
+
+    refreshDocumentsButton.addEventListener("click", loadDocuments);
+
+    loadDocuments();
+  </script>
+</body>
+</html>
