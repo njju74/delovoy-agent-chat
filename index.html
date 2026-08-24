@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Деловой агент — личный ассистент</title>
 
@@ -12,76 +12,6 @@
   >
 
   <style>
-
-    .documents-panel {
-      margin-top: 18px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--card);
-    }
-
-    .documents-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .documents-head h2 {
-      margin: 0;
-      font-size: 12px;
-    }
-
-    .documents-head button,
-    .document-delete {
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      padding: 7px 10px;
-      background: transparent;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .document-delete {
-      border-color: #3f858f;
-      color: #b4ff99;
-    }
-
-    .documents-status {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .documents-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .document-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-    }
-
-    .document-title {
-      font-weight: 700;
-    }
-
-    .document-meta {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    
     :root {
       --bg: #0f1620;
       --card: #172233;
@@ -107,13 +37,21 @@
     header {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 20px 24px 14px;
+      padding: 18px 24px 14px;
       border-bottom: 1px solid var(--line);
+    }
+
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
     }
 
     h1 {
       margin: 0;
-      font-size: 12px;
+      font-size: 22px;
     }
 
     .sub {
@@ -122,99 +60,113 @@
       font-size: 14px;
     }
 
-    .upload-panel {
+    .model-panel {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
       align-items: center;
-      margin-top: 16px;
+      justify-content: flex-end;
+      gap: 8px;
     }
 
-    .upload-panel input {
-      max-width: 320px;
-      color: var(--muted);
-    }
-
-    .upload-panel button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      background: var(--accent);
-      color: #0f1620;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .upload-panel button:disabled {
-      cursor: wait;
-      opacity: 0.6;
-    }
-
-    .upload-status {
-      width: 100%;
-      margin: 0;
+    .model-panel label {
       color: var(--muted);
       font-size: 13px;
     }
 
-    .upload-status.error {
+    .model-panel select {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      min-width: 180px;
+    }
+
+    .model-status {
+      width: 100%;
+      margin: 0;
+      text-align: right;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .model-status.error {
       color: var(--danger);
+    }
+
+    .memory-link {
+      display: inline-block;
+      margin-top: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .memory-link:hover {
+      text-decoration: underline;
     }
 
     main {
       max-width: 1100px;
-      height: calc(100vh - 180px);
+      height: calc(100vh - 150px);
       min-height: 520px;
       margin: 0 auto;
       padding: 0 24px 24px;
     }
 
-    n8n-chat {
+    #n8n-chat {
       height: 100%;
+    }
+
+    @media (max-width: 650px) {
+      .model-panel {
+        justify-content: flex-start;
+      }
+
+      .model-status {
+        text-align: left;
+      }
+
+      main {
+        height: calc(100vh - 185px);
+      }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>Деловой агент — личный ассистент</h1>
+    <div class="header-row">
+      <div>
+        <h1>Деловой агент — личный ассистент</h1>
 
-    <p class="sub">
-      Рабочий чат с памятью проектов, PostgreSQL и pgvector.
-    </p>
+        <p class="sub">
+          Рабочий чат с памятью проектов, PostgreSQL и pgvector.
+        </p>
+      </div>
 
-    <div class="upload-panel">
-      <input
-        id="knowledge-file"
-        type="file"
-        accept=".txt,.md,text/plain,text/markdown"
-      >
+      <div class="model-panel">
+        <label for="model-select">Модель:</label>
 
-      <button id="upload-button" type="button">
-        📎 Добавить в память
-      </button>
+        <select id="model-select">
+          <option value="yandex|yandexgpt-lite">
+            YandexGPT Lite
+          </option>
 
-      <p id="upload-status" class="upload-status">
-        Поддерживаются TXT и Markdown-файлы до 20 МБ.
-      </p>
+          <option value="plusvibe|gpt-5.6-luna">
+            PlusVibe / gpt-5.6-luna
+          </option>
+        </select>
+
+        <p id="model-status" class="model-status">
+          Загружаем текущую модель...
+        </p>
+      </div>
     </div>
-    
-    <div class="documents-panel">
-  <div class="documents-head">
-    <h2>Память и документы</h2>
 
-    <button id="refresh-documents" type="button">
-      ↻ Обновить
-    </button>
-  </div>
-
-  <p id="documents-status" class="documents-status">
-    Загружаем список документов...
-  </p>
-
-  <div id="documents-list" class="documents-list"></div>
-</div>
-
+    <a class="memory-link" href="/memory.html">
+      📚 Память и документы
+    </a>
   </header>
 
   <main>
@@ -246,197 +198,91 @@
       }
     });
 
-    const fileInput = document.getElementById("knowledge-file");
-    const uploadButton = document.getElementById("upload-button");
-    const uploadStatus = document.getElementById("upload-status");
+    const modelSelect = document.getElementById("model-select");
+    const modelStatus = document.getElementById("model-status");
 
-    uploadButton.addEventListener("click", async () => {
-      const file = fileInput.files[0];
+    const models = {
+      "yandex|yandexgpt-lite": "YandexGPT Lite",
+      "plusvibe|gpt-5.6-luna": "PlusVibe / gpt-5.6-luna"
+    };
 
-      if (!file) {
-        uploadStatus.textContent = "Сначала выберите TXT или Markdown-файл.";
-        uploadStatus.classList.add("error");
-        return;
+    function setModelStatus(text, isError = false) {
+      modelStatus.textContent = text;
+      modelStatus.classList.toggle("error", isError);
+    }
+
+    async function loadCurrentModel() {
+      try {
+        const response = await fetch("/api/model/current");
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось получить текущую модель."
+          );
+        }
+
+        const value = `${result.provider}|${result.model}`;
+
+        if (models[value]) {
+          modelSelect.value = value;
+        }
+
+        setModelStatus(
+          `Сейчас отвечает: ${models[value] || result.model}`
+        );
+      } catch (error) {
+        setModelStatus(
+          `Ошибка загрузки модели: ${error.message}`,
+          true
+        );
       }
+    }
 
-      const allowedExtensions = [".txt", ".md"];
-      const lowerName = file.name.toLowerCase();
+    modelSelect.addEventListener("change", async () => {
+      const [provider, model] = modelSelect.value.split("|");
 
-      if (!allowedExtensions.some((ext) => lowerName.endsWith(ext))) {
-        uploadStatus.textContent = "Пока поддерживаются только файлы TXT и MD.";
-        uploadStatus.classList.add("error");
-        return;
-      }
-
-      if (file.size > 20 * 1024 * 1024) {
-        uploadStatus.textContent = "Файл больше 20 МБ. Выберите файл меньшего размера.";
-        uploadStatus.classList.add("error");
-        return;
-      }
-
-      const formData = new FormData();
-
-      formData.append("knowledge_file", file);
-
-      uploadButton.disabled = true;
-      uploadStatus.classList.remove("error");
-      uploadStatus.textContent = "Файл загружается и ставится в очередь обработки...";
+      modelSelect.disabled = true;
+      setModelStatus("Переключаем модель...");
 
       try {
-        const response = await fetch("/api/upload", {
+        const response = await fetch("/api/model/select", {
           method: "POST",
-          body: formData
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            provider,
+            model
+          })
         });
 
         const result = await response.json();
 
         if (!response.ok || !result.ok) {
           throw new Error(
-            result.message || "Не удалось отправить файл в n8n."
+            result.message || "Не удалось переключить модель."
           );
         }
 
-        uploadStatus.textContent =
-          "✅ Файл принят. Агент сможет использовать его после обработки.";
+        const value = `${result.provider}|${result.model}`;
 
-        fileInput.value = "";
-        setTimeout(loadDocuments, 1500);
+        setModelStatus(
+          `✅ Следующий ответ: ${models[value] || result.model}`
+        );
       } catch (error) {
-        uploadStatus.textContent =
-          `❌ Ошибка загрузки: ${error.message}`;
-        uploadStatus.classList.add("error");
+        setModelStatus(
+          `Ошибка переключения: ${error.message}`,
+          true
+        );
+
+        await loadCurrentModel();
       } finally {
-        uploadButton.disabled = false;
+        modelSelect.disabled = false;
       }
     });
 
-    const refreshDocumentsButton =
-      document.getElementById("refresh-documents");
-
-    const documentsStatus =
-      document.getElementById("documents-status");
-
-    const documentsList =
-      document.getElementById("documents-list");
-
-    function formatDate(value) {
-      if (!value) return "—";
-
-      return new Date(value).toLocaleString("ru-RU");
-    }
-
-    async function loadDocuments() {
-      documentsStatus.classList.remove("error");
-      documentsStatus.textContent = "Загружаем список документов...";
-      documentsList.innerHTML = "";
-
-      try {
-        const response = await fetch("/api/documents");
-        const result = await response.json();
-
-        if (!response.ok || !result.ok) {
-          throw new Error(
-            result.message || "Не удалось получить список документов."
-          );
-        }
-
-        const documents = result.documents || [];
-
-        if (documents.length === 0) {
-          documentsStatus.textContent =
-            "В память пока не загружено ни одного документа.";
-          return;
-        }
-
-        documentsStatus.textContent =
-          `Документов в памяти: ${documents.length}`;
-
-       documents.forEach((doc) => {
-          const row = window.document.createElement("div");
-          row.className = "document-row";
-
-          const info = window.document.createElement("div");
-
-          const title = window.document.createElement("div");
-          title.className = "document-title";
-          title.textContent = doc.title || "Без названия";
-
-          const meta = window.document.createElement("div");
-          meta.className = "document-meta";
-
-          meta.textContent =
-            `Файл: ${doc.original_filename || "—"} · ` +
-            `Статус: ${doc.status} · ` +
-            `Фрагментов: ${doc.actual_chunks || doc.total_chunks || 0} · ` +
-            `Загружен: ${formatDate(doc.created_at)}`;
-
-          info.append(title, meta);
-
-          const deleteButton = window.document.createElement("button");
-          deleteButton.type = "button";
-          deleteButton.className = "document-delete";
-          deleteButton.textContent = "Удалить";
-
-          deleteButton.addEventListener("click", async () => {
-            const confirmed = confirm(
-              `Удалить документ «${doc.title}» и все его фрагменты из памяти?`
-            );
-
-            if (!confirmed) return;
-
-            deleteButton.disabled = true;
-            deleteButton.textContent = "Удаляем...";
-
-            try {
-              const response = await fetch("/api/delete-document", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  document_id: doc.id
-                })
-              });
-
-              const result = await response.json();
-
-              if (!response.ok || !result.ok) {
-                throw new Error(
-                  result.message || "Не удалось удалить документ."
-                );
-              }
-
-              await loadDocuments();
-            } catch (error) {
-              documentsStatus.textContent =
-                `Ошибка удаления: ${error.message}`;
-
-              documentsStatus.classList.add("error");
-
-              deleteButton.disabled = false;
-              deleteButton.textContent = "Удалить";
-            }
-          });
-
-          row.append(info, deleteButton);
-          documentsList.appendChild(row);
-        });
-
-
-
-        
-      } catch (error) {
-        documentsStatus.textContent =
-          `Ошибка загрузки списка: ${error.message}`;
-
-        documentsStatus.classList.add("error");
-      }
-    }
-
-    refreshDocumentsButton.addEventListener("click", loadDocuments);
-
-    loadDocuments();
-
+    loadCurrentModel();
   </script>
 </body>
 </html>
