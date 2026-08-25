@@ -31,6 +31,106 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
+.sidebar {
+      width: 285px;
+      flex: 0 0 285px;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--card-2);
+    }
+
+    .sidebar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sidebar-head h2 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .sidebar-head button {
+      padding: 5px 9px;
+    }
+
+    .conversation-list {
+      display: grid;
+      gap: 5px;
+      padding: 8px;
+    }
+
+    .conversation-item {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 10px;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      font-weight: 400;
+    }
+
+    .conversation-item:hover {
+      border-color: var(--line);
+      background: var(--card);
+    }
+
+    .conversation-item.active {
+      border-color: var(--accent);
+      background: #1a4643;
+    }
+
+    .conversation-title {
+      display: block;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .conversation-preview {
+      display: -webkit-box;
+      overflow: hidden;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .conversation-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    @media (max-width: 780px) {
+      .chat-shell {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-basis: auto;
+        max-height: 200px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .conversation-list {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      .conversation-item {
+        min-width: 220px;
+      }
+    }
 
     .app {
       max-width: 1100px;
@@ -299,12 +399,34 @@
     </header>
 
     <section class="chat-shell">
-      <div id="messages" class="messages">
-        <div class="empty-state">
-          Создаём личный рабочий диалог...
-        </div>
-      </div>
-    </section>
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2>Диалоги</h2>
+
+      <button
+        id="refresh-conversations"
+        class="button-secondary"
+        type="button"
+      >
+        ↻
+      </button>
+    </div>
+
+    <div
+      id="conversation-list"
+      class="conversation-list"
+    >
+      Загружаем диалоги...
+    </div>
+  </aside>
+
+  <div id="messages" class="messages">
+    <div class="empty-state">
+      Создаём личный рабочий диалог...
+    </div>
+  </div>
+</section>
+
 
     <section class="composer">
       <textarea
@@ -335,6 +457,13 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
+    
+    const conversationList =
+      document.getElementById("conversation-list");
+
+    const refreshConversationsButton =
+      document.getElementById("refresh-conversations");
+
 
     const models = {
       "yandex|yandexgpt-lite": "YandexGPT Lite",
@@ -456,7 +585,84 @@
         `Сейчас отвечает: ${models[value] || model}`
       );
     }
+function renderConversations(conversations) {
+      conversationList.innerHTML = "";
 
+      if (!conversations || conversations.length === 0) {
+        conversationList.textContent =
+          "Сохранённых диалогов пока нет.";
+        return;
+      }
+
+      conversations.forEach((conversation) => {
+        const item = document.createElement("button");
+
+        item.type = "button";
+        item.className = "conversation-item";
+
+        if (conversation.id === conversationId) {
+          item.classList.add("active");
+        }
+
+        const title = document.createElement("span");
+        title.className = "conversation-title";
+        title.textContent =
+          conversation.title || "Новый рабочий диалог";
+
+        const preview = document.createElement("span");
+        preview.className = "conversation-preview";
+        preview.textContent =
+          conversation.last_message_preview ||
+          "В этом диалоге пока нет сообщений.";
+
+        const meta = document.createElement("span");
+        meta.className = "conversation-meta";
+        meta.textContent =
+          `${formatDate(conversation.last_message_at)} · ` +
+          `${conversation.model || ""}`;
+
+        item.append(title, preview, meta);
+
+        item.addEventListener("click", async () => {
+          if (conversation.id === conversationId) {
+            return;
+          }
+
+          conversationId = conversation.id;
+
+          localStorage.setItem(
+            STORAGE_KEY,
+            conversationId
+          );
+
+          try {
+            await loadHistory();
+            await loadConversations();
+          } catch (error) {
+            setStatus(
+              chatStatus,
+              `Ошибка открытия диалога: ${error.message}`,
+              true
+            );
+          }
+        });
+
+        conversationList.appendChild(item);
+      });
+    }
+
+    async function loadConversations() {
+      try {
+        const result = await fetchJson("/api/chat/list");
+
+        renderConversations(result.conversations || []);
+      } catch (error) {
+        conversationList.textContent =
+          `Ошибка загрузки диалогов: ${error.message}`;
+      }
+    }
+
+    
     async function createNewConversation() {
       setStatus(chatStatus, "Создаём новый диалог...");
 
@@ -473,6 +679,8 @@
 
       setModel(result.provider, result.model);
       renderHistory([]);
+      
+      await loadConversations();
 
       setStatus(
         chatStatus,
@@ -501,6 +709,8 @@
 
       setModel(result.provider, result.model);
       renderHistory(result.messages || []);
+
+      await loadConversations();
 
       setStatus(chatStatus, "Диалог загружен.");
     }
@@ -562,6 +772,11 @@
         setModel(result.provider, result.model);
         setStatus(chatStatus, "Готово.");
         scrollToBottom();
+
+await loadConversations();
+
+
+        
       } catch (error) {
         setStatus(
           chatStatus,
@@ -688,6 +903,10 @@
         );
       }
     }
+refreshConversationsButton.addEventListener(
+      "click",
+      loadConversations
+    );
 
     initializeChat();
   </script>
