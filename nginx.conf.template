@@ -1,7 +1,7 @@
 server {
     listen 80;
     server_name _;
-    proxy_set_header X-Agent-Internal-Key "${INTERNAL_API_KEY}";
+    proxy_set_header X-Agent-Internal-Key "${INTERNAL_API_KEY}"; 
 
     root /usr/share/nginx/html;
     index index.html;
