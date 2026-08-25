@@ -544,9 +544,10 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            conversation_id: conversationId,
-            message
-          })
+  provider,
+  model,
+  conversation_id: conversationId
+})
         });
 
         renderMessage({
