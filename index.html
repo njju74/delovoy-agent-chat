@@ -31,6 +31,44 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
+    .conversation-row {
+      display: flex;
+      gap: 5px;
+      align-items: stretch;
+    }
+
+    .conversation-open {
+      flex: 1;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 10px;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .conversation-open:hover {
+      border-color: var(--line);
+      background: var(--card);
+    }
+
+    .conversation-row.active .conversation-open {
+      border-color: var(--accent);
+      background: #1a4643;
+    }
+
+    .conversation-delete {
+      align-self: center;
+      border: 1px solid #8f3f49;
+      border-radius: 7px;
+      padding: 6px 8px;
+      background: transparent;
+      color: #ff9aa6;
+      cursor: pointer;
+    }
+
 .sidebar {
       width: 285px;
       flex: 0 0 285px;
@@ -595,14 +633,16 @@ function renderConversations(conversations) {
       }
 
       conversations.forEach((conversation) => {
-        const item = document.createElement("button");
-
-        item.type = "button";
-        item.className = "conversation-item";
+        const row = document.createElement("div");
+        row.className = "conversation-row";
 
         if (conversation.id === conversationId) {
-          item.classList.add("active");
+          row.classList.add("active");
         }
+
+        const openButton = document.createElement("button");
+        openButton.type = "button";
+        openButton.className = "conversation-open";
 
         const title = document.createElement("span");
         title.className = "conversation-title";
@@ -621,9 +661,9 @@ function renderConversations(conversations) {
           `${formatDate(conversation.last_message_at)} · ` +
           `${conversation.model || ""}`;
 
-        item.append(title, preview, meta);
+        openButton.append(title, preview, meta);
 
-        item.addEventListener("click", async () => {
+        openButton.addEventListener("click", async () => {
           if (conversation.id === conversationId) {
             return;
           }
@@ -637,7 +677,6 @@ function renderConversations(conversations) {
 
           try {
             await loadHistory();
-            await loadConversations();
           } catch (error) {
             setStatus(
               chatStatus,
@@ -647,8 +686,66 @@ function renderConversations(conversations) {
           }
         });
 
-        conversationList.appendChild(item);
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "conversation-delete";
+        deleteButton.textContent = "×";
+        deleteButton.title = "Удалить диалог";
+
+        deleteButton.addEventListener("click", async () => {
+          const confirmed = confirm(
+            `Удалить диалог «${conversation.title}»? ` +
+            "Все сообщения и summary этого диалога будут удалены."
+          );
+
+          if (!confirmed) {
+            return;
+          }
+
+          deleteButton.disabled = true;
+          deleteButton.textContent = "…";
+
+          try {
+            const result = await fetchJson("/api/chat/delete", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                conversation_id: conversation.id
+              })
+            });
+
+            if (!result.ok) {
+              throw new Error(
+                result.message || "Не удалось удалить диалог."
+              );
+            }
+
+            if (conversation.id === conversationId) {
+              localStorage.removeItem(STORAGE_KEY);
+              conversationId = null;
+
+              await createNewConversation();
+            } else {
+              await loadConversations();
+            }
+          } catch (error) {
+            setStatus(
+              chatStatus,
+              `Ошибка удаления: ${error.message}`,
+              true
+            );
+
+            deleteButton.disabled = false;
+            deleteButton.textContent = "×";
+          }
+        });
+
+        row.append(openButton, deleteButton);
+        conversationList.appendChild(row);
       });
+
     }
 
     async function loadConversations() {
