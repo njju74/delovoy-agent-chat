@@ -576,9 +576,31 @@
       }
     }
 
-    modelSelect.addEventListener("change", async () => {
-      const [provider, model] =
-        modelSelect.value.split("|");
+modelSelect.addEventListener("change", async () => {
+      const selectedValue = modelSelect.value;
+
+      const [
+        selectedProvider,
+        selectedModel
+      ] = selectedValue.split("|");
+
+      if (!selectedProvider || !selectedModel) {
+        setStatus(
+          modelStatus,
+          "Ошибка: не удалось определить выбранную модель.",
+          true
+        );
+        return;
+      }
+
+      if (!conversationId) {
+        setStatus(
+          modelStatus,
+          "Ошибка: сначала создайте или откройте диалог.",
+          true
+        );
+        return;
+      }
 
       modelSelect.disabled = true;
 
@@ -588,24 +610,35 @@
       );
 
       try {
-        const result = await fetchJson("/api/model/select", {
+        const response = await fetch("/api/model/select", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            provider,
-            model
+            provider: selectedProvider,
+            model: selectedModel,
+            conversation_id: conversationId
           })
         });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось переключить модель."
+          );
+        }
+
+        const resultValue =
+          `${result.provider}|${result.model}`;
 
         setModel(result.provider, result.model);
 
         setStatus(
           modelStatus,
           `✅ Следующий ответ: ${
-            models[`${result.provider}|${result.model}`] ||
-            result.model
+            models[resultValue] || result.model
           }`
         );
       } catch (error) {
@@ -620,6 +653,7 @@
         modelSelect.disabled = false;
       }
     });
+
 
     newChatButton.addEventListener("click", async () => {
       newChatButton.disabled = true;
