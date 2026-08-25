@@ -575,9 +575,22 @@
       }
     }
 
-    modelSelect.addEventListener("change", async () => {
-      const [provider, model] =
-        modelSelect.value.split("|");
+ modelSelect.addEventListener("change", async () => {
+      const selectedValue = modelSelect.value;
+
+      const selectedParts = selectedValue.split("|");
+
+      const selectedProvider = selectedParts[0];
+      const selectedModel = selectedParts[1];
+
+      if (!selectedProvider || !selectedModel) {
+        setStatus(
+          modelStatus,
+          "Ошибка: не удалось определить выбранную модель.",
+          true
+        );
+        return;
+      }
 
       modelSelect.disabled = true;
 
@@ -587,24 +600,34 @@
       );
 
       try {
-        const result = await fetchJson("/api/model/select", {
+        const response = await fetch("/api/model/select", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            provider,
-            model
+            provider: selectedProvider,
+            model: selectedModel
           })
         });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось переключить модель."
+          );
+        }
+
+        const resultValue =
+          `${result.provider}|${result.model}`;
 
         setModel(result.provider, result.model);
 
         setStatus(
           modelStatus,
           `✅ Следующий ответ: ${
-            models[`${result.provider}|${result.model}`] ||
-            result.model
+            models[resultValue] || result.model
           }`
         );
       } catch (error) {
@@ -613,12 +636,11 @@
           `Ошибка переключения: ${error.message}`,
           true
         );
-
-        await loadHistory();
       } finally {
         modelSelect.disabled = false;
       }
     });
+
 
     newChatButton.addEventListener("click", async () => {
       newChatButton.disabled = true;
