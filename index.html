@@ -537,8 +537,8 @@
 
       setStatus(chatStatus, "Агент думает...");
 
-      try {
-        const result = await fetchJson("/api/chat/send", {
+     try {
+      /*    const result = await fetchJson("/api/chat/send", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -548,7 +548,7 @@
   model: selectedModel
 })
         });
-
+  */
         renderMessage({
           role: "assistant",
           content: result.answer,
@@ -578,24 +578,15 @@
 modelSelect.addEventListener("change", async () => {
       const selectedValue = modelSelect.value;
 
-      const [
-        selectedProvider,
-        selectedModel
-      ] = selectedValue.split("|");
+      const selectedParts = selectedValue.split("|");
+
+      const selectedProvider = selectedParts[0];
+      const selectedModel = selectedParts[1];
 
       if (!selectedProvider || !selectedModel) {
         setStatus(
           modelStatus,
           "Ошибка: не удалось определить выбранную модель.",
-          true
-        );
-        return;
-      }
-
-      if (!conversationId) {
-        setStatus(
-          modelStatus,
-          "Ошибка: сначала создайте или откройте диалог.",
           true
         );
         return;
@@ -616,10 +607,39 @@ modelSelect.addEventListener("change", async () => {
           },
           body: JSON.stringify({
             provider: selectedProvider,
-            model: selectedModel,
-            conversation_id: conversationId
+            model: selectedModel
           })
         });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.message || "Не удалось переключить модель."
+          );
+        }
+
+        const resultValue =
+          `${result.provider}|${result.model}`;
+
+        setModel(result.provider, result.model);
+
+        setStatus(
+          modelStatus,
+          `✅ Следующий ответ: ${
+            models[resultValue] || result.model
+          }`
+        );
+      } catch (error) {
+        setStatus(
+          modelStatus,
+          `Ошибка переключения: ${error.message}`,
+          true
+        );
+      } finally {
+        modelSelect.disabled = false;
+      }
+    });
 
         const result = await response.json();
 
