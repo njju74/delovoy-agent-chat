@@ -6,20 +6,18 @@
 
   <title>Деловой агент — личный ассистент</title>
 
-  <link
-    href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
-    rel="stylesheet"
-  >
-
   <style>
     :root {
       --bg: #0f1620;
       --card: #172233;
+      --card-2: #1d2c40;
       --text: #edf3f9;
       --muted: #9aabbd;
       --accent: #61d4b3;
       --line: #2d4057;
       --danger: #f87171;
+      --user: #1d5a55;
+      --assistant: #1b2a3d;
     }
 
     * {
@@ -34,19 +32,23 @@
       font-family: Inter, Arial, sans-serif;
     }
 
-    header {
+    .app {
       max-width: 1100px;
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 18px 24px 14px;
-      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px 22px;
     }
 
-    .header-row {
+    header {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 18px;
       align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--line);
     }
 
     h1 {
@@ -60,26 +62,52 @@
       font-size: 14px;
     }
 
-    .model-panel {
+    .controls {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       justify-content: flex-end;
+      align-items: center;
       gap: 8px;
     }
 
-    .model-panel label {
+    .controls label {
       color: var(--muted);
       font-size: 13px;
     }
 
-    .model-panel select {
-      background: var(--card);
-      color: var(--text);
+    select,
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    select {
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 8px 10px;
-      min-width: 180px;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: var(--accent);
+      color: #0f1620;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
     }
 
     .model-status {
@@ -90,13 +118,14 @@
       font-size: 12px;
     }
 
-    .model-status.error {
+    .model-status.error,
+    .chat-status.error {
       color: var(--danger);
     }
 
     .memory-link {
       display: inline-block;
-      margin-top: 14px;
+      margin-top: 13px;
       color: var(--accent);
       text-decoration: none;
       font-size: 14px;
@@ -106,20 +135,113 @@
       text-decoration: underline;
     }
 
-    main {
-      max-width: 1100px;
-      height: calc(100vh - 150px);
-      min-height: 520px;
-      margin: 0 auto;
-      padding: 0 24px 24px;
+    .chat-shell {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card);
     }
 
-    #n8n-chat {
-      height: 100%;
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
     }
 
-    @media (max-width: 650px) {
-      .model-panel {
+    .empty-state {
+      margin: 55px auto;
+      max-width: 620px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .message {
+      max-width: 82%;
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .message.user {
+      margin-left: auto;
+      background: var(--user);
+      border-bottom-right-radius: 3px;
+    }
+
+    .message.assistant {
+      margin-right: auto;
+      background: var(--assistant);
+      border-bottom-left-radius: 3px;
+    }
+
+    .message-role {
+      margin-bottom: 7px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .message-meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .composer {
+      border-top: 1px solid var(--line);
+      padding: 14px;
+      background: var(--card-2);
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 76px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 11px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .composer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .chat-status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 680px) {
+      .app {
+        padding: 16px;
+      }
+
+      .controls {
         justify-content: flex-start;
       }
 
@@ -127,25 +249,37 @@
         text-align: left;
       }
 
-      main {
-        height: calc(100vh - 185px);
+      .message {
+        max-width: 94%;
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="header-row">
+  <div class="app">
+    <header>
       <div>
         <h1>Деловой агент — личный ассистент</h1>
 
         <p class="sub">
           Рабочий чат с памятью проектов, PostgreSQL и pgvector.
         </p>
+
+        <a class="memory-link" href="/memory.html">
+          📚 Память и документы
+        </a>
       </div>
 
-      <div class="model-panel">
+      <div class="controls">
+        <button
+          id="new-chat-button"
+          class="button-secondary"
+          type="button"
+        >
+          ＋ Новый диалог
+        </button>
+
         <label for="model-select">Модель:</label>
 
         <select id="model-select">
@@ -159,94 +293,301 @@
         </select>
 
         <p id="model-status" class="model-status">
-          Загружаем текущую модель...
+          Загружаем модель...
         </p>
       </div>
-    </div>
+    </header>
 
-    <a class="memory-link" href="/memory.html">
-      📚 Память и документы
-    </a>
-  </header>
+    <section class="chat-shell">
+      <div id="messages" class="messages">
+        <div class="empty-state">
+          Создаём личный рабочий диалог...
+        </div>
+      </div>
+    </section>
 
-  <main>
-    <div id="n8n-chat"></div>
-  </main>
+    <section class="composer">
+      <textarea
+        id="message-input"
+        placeholder="Напишите задачу или вопрос..."
+      ></textarea>
 
-  <script src="/config.js"></script>
+      <div class="composer-bottom">
+        <p id="chat-status" class="chat-status">
+          Готовим чат...
+        </p>
 
-  <script type="module">
-    import {
-      createChat
-    } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
+        <button id="send-button" type="button">
+          Отправить
+        </button>
+      </div>
+    </section>
+  </div>
 
-    createChat({
-      webhookUrl: window.CHAT_CONFIG.webhookUrl,
-      mode: "fullscreen",
-      target: "#n8n-chat",
-      showWelcomeScreen: true,
-      initialMessages: [
-        "Здравствуйте. Я ваш личный рабочий ассистент Делового агента."
-      ],
-      i18n: {
-        en: {
-          title: "Деловой агент",
-          subtitle: "Личный рабочий ассистент",
-          inputPlaceholder: "Напишите задачу или вопрос...",
-          getStarted: "Начать диалог"
-        }
-      }
-    });
+  <script>
+    const STORAGE_KEY = "delovoy_agent_conversation_id";
+
+    const messagesElement = document.getElementById("messages");
+    const messageInput = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+    const newChatButton = document.getElementById("new-chat-button");
 
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
+    const chatStatus = document.getElementById("chat-status");
 
     const models = {
       "yandex|yandexgpt-lite": "YandexGPT Lite",
       "plusvibe|gpt-5.6-luna": "PlusVibe / gpt-5.6-luna"
     };
 
-    function setModelStatus(text, isError = false) {
-      modelStatus.textContent = text;
-      modelStatus.classList.toggle("error", isError);
+    let conversationId = null;
+
+    function setStatus(element, text, isError = false) {
+      element.textContent = text;
+      element.classList.toggle("error", isError);
     }
 
-    async function loadCurrentModel() {
-      try {
-        const response = await fetch("/api/model/current");
-        const result = await response.json();
+    async function fetchJson(url, options = {}) {
+      const response = await fetch(url, options);
 
-        if (!response.ok || !result.ok) {
-          throw new Error(
-            result.message || "Не удалось получить текущую модель."
+      let result = {};
+
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("Сервер вернул некорректный JSON.");
+      }
+
+      if (!response.ok || !result.ok) {
+        throw new Error(
+          result.message || "Сервер вернул ошибку."
+        );
+      }
+
+      return result;
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+
+      return new Date(value).toLocaleString("ru-RU");
+    }
+
+    function scrollToBottom() {
+      messagesElement.scrollTop = messagesElement.scrollHeight;
+    }
+
+    function renderMessage(message) {
+      const role = message.role === "user"
+        ? "user"
+        : "assistant";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = `message ${role}`;
+
+      const roleLabel = document.createElement("div");
+      roleLabel.className = "message-role";
+      roleLabel.textContent = role === "user"
+        ? "Вы"
+        : "Деловой агент";
+
+      const content = document.createElement("div");
+      content.textContent = message.content || "";
+
+      wrapper.append(roleLabel, content);
+
+      if (message.created_at || message.metadata?.model) {
+        const meta = document.createElement("div");
+        meta.className = "message-meta";
+
+        const parts = [];
+
+        if (message.created_at) {
+          parts.push(formatDate(message.created_at));
+        }
+
+        if (message.metadata?.model) {
+          parts.push(
+            `${message.metadata.provider || "model"} / ` +
+            `${message.metadata.model}`
           );
         }
 
-        const value = `${result.provider}|${result.model}`;
+        meta.textContent = parts.join(" · ");
+        wrapper.appendChild(meta);
+      }
 
-        if (models[value]) {
-          modelSelect.value = value;
-        }
+      messagesElement.appendChild(wrapper);
+    }
 
-        setModelStatus(
-          `Сейчас отвечает: ${models[value] || result.model}`
-        );
+    function renderHistory(history) {
+      messagesElement.innerHTML = "";
+
+      if (!history || history.length === 0) {
+        messagesElement.innerHTML = `
+          <div class="empty-state">
+            Новый диалог готов.<br>
+            Напишите первую задачу или вопрос.
+          </div>
+        `;
+
+        return;
+      }
+
+      history
+        .filter((message) =>
+          ["user", "assistant"].includes(message.role)
+        )
+        .forEach(renderMessage);
+
+      scrollToBottom();
+    }
+
+    function setModel(provider, model) {
+      const value = `${provider}|${model}`;
+
+      if (models[value]) {
+        modelSelect.value = value;
+      }
+
+      setStatus(
+        modelStatus,
+        `Сейчас отвечает: ${models[value] || model}`
+      );
+    }
+
+    async function createNewConversation() {
+      setStatus(chatStatus, "Создаём новый диалог...");
+
+      const result = await fetchJson("/api/chat/new", {
+        method: "POST"
+      });
+
+      conversationId = result.conversation_id;
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        conversationId
+      );
+
+      setModel(result.provider, result.model);
+      renderHistory([]);
+
+      setStatus(
+        chatStatus,
+        "Новый диалог готов."
+      );
+    }
+
+    async function loadHistory() {
+      if (!conversationId) {
+        await createNewConversation();
+        return;
+      }
+
+      setStatus(chatStatus, "Загружаем историю диалога...");
+
+      const result = await fetchJson(
+        `/api/chat/history?conversation_id=${encodeURIComponent(conversationId)}`
+      );
+
+      conversationId = result.conversation_id;
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        conversationId
+      );
+
+      setModel(result.provider, result.model);
+      renderHistory(result.messages || []);
+
+      setStatus(chatStatus, "Диалог загружен.");
+    }
+
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+
+      if (!message) {
+        return;
+      }
+
+      if (!conversationId) {
+        await createNewConversation();
+      }
+
+      const userMessage = {
+        role: "user",
+        content: message,
+        created_at: new Date().toISOString()
+      };
+
+      if (
+        messagesElement.querySelector(".empty-state")
+      ) {
+        messagesElement.innerHTML = "";
+      }
+
+      renderMessage(userMessage);
+      scrollToBottom();
+
+      messageInput.value = "";
+      messageInput.disabled = true;
+      sendButton.disabled = true;
+
+      setStatus(chatStatus, "Агент думает...");
+
+      try {
+        const result = await fetchJson("/api/chat/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            conversation_id: conversationId,
+            message
+          })
+        });
+
+        renderMessage({
+          role: "assistant",
+          content: result.answer,
+          created_at: new Date().toISOString(),
+          metadata: {
+            provider: result.provider,
+            model: result.model
+          }
+        });
+
+        setModel(result.provider, result.model);
+        setStatus(chatStatus, "Готово.");
+        scrollToBottom();
       } catch (error) {
-        setModelStatus(
-          `Ошибка загрузки модели: ${error.message}`,
+        setStatus(
+          chatStatus,
+          `Ошибка ответа: ${error.message}`,
           true
         );
+      } finally {
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        messageInput.focus();
       }
     }
 
     modelSelect.addEventListener("change", async () => {
-      const [provider, model] = modelSelect.value.split("|");
+      const [provider, model] =
+        modelSelect.value.split("|");
 
       modelSelect.disabled = true;
-      setModelStatus("Переключаем модель...");
+
+      setStatus(
+        modelStatus,
+        "Переключаем модель..."
+      );
 
       try {
-        const response = await fetch("/api/model/select", {
+        const result = await fetchJson("/api/model/select", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -257,32 +598,76 @@
           })
         });
 
-        const result = await response.json();
+        setModel(result.provider, result.model);
 
-        if (!response.ok || !result.ok) {
-          throw new Error(
-            result.message || "Не удалось переключить модель."
-          );
-        }
-
-        const value = `${result.provider}|${result.model}`;
-
-        setModelStatus(
-          `✅ Следующий ответ: ${models[value] || result.model}`
+        setStatus(
+          modelStatus,
+          `✅ Следующий ответ: ${
+            models[`${result.provider}|${result.model}`] ||
+            result.model
+          }`
         );
       } catch (error) {
-        setModelStatus(
+        setStatus(
+          modelStatus,
           `Ошибка переключения: ${error.message}`,
           true
         );
 
-        await loadCurrentModel();
+        await loadHistory();
       } finally {
         modelSelect.disabled = false;
       }
     });
 
-    loadCurrentModel();
+    newChatButton.addEventListener("click", async () => {
+      newChatButton.disabled = true;
+
+      try {
+        await createNewConversation();
+      } catch (error) {
+        setStatus(
+          chatStatus,
+          `Ошибка нового диалога: ${error.message}`,
+          true
+        );
+      } finally {
+        newChatButton.disabled = false;
+      }
+    });
+
+    sendButton.addEventListener("click", sendMessage);
+
+    messageInput.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    async function initializeChat() {
+      conversationId =
+        localStorage.getItem(STORAGE_KEY);
+
+      try {
+        if (conversationId) {
+          await loadHistory();
+        } else {
+          await createNewConversation();
+        }
+      } catch (error) {
+        setStatus(
+          chatStatus,
+          `Ошибка запуска чата: ${error.message}`,
+          true
+        );
+      }
+    }
+
+    initializeChat();
   </script>
 </body>
 </html>
