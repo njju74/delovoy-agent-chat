@@ -293,13 +293,25 @@
 
       try {
         const response = await fetch("/api/documents");
-        const result = await response.json();
+        const responseText = await response.text();
+
+        let result;
+
+        try {
+          result = JSON.parse(responseText);
+        } catch {
+          throw new Error(
+            `HTTP ${response.status}. API вернул не JSON: ` +
+            responseText.slice(0, 120)
+          );
+        }
 
         if (!response.ok || !result.ok) {
           throw new Error(
-            result.message || "Не удалось получить список документов."
+            result.message || "Не удалось отправить файл в n8n."
           );
         }
+
 
         const documents = result.documents || [];
 
