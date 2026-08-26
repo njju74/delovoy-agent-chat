@@ -31,6 +31,132 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
+
+.message-content {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.code-block {
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #f6f8fa;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #edf1f5;
+  border-bottom: 1px solid #d9dee8;
+}
+
+.code-language {
+  color: #667085;
+  font: 12px monospace;
+}
+
+.copy-code-button {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid #c8ced8;
+  border-radius: 6px;
+  background: #fff;
+  color: #344054;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copy-code-button:hover {
+  background: #e8eef5;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-block code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+    
+.code-block {
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px solid #d9dee8;
+  border-radius: 10px;
+  background: #f6f8fa;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid #d9dee8;
+  background: #edf1f5;
+  color: #667085;
+  font-size: 12px;
+}
+
+.code-language {
+  font-family: monospace;
+  text-transform: lowercase;
+}
+
+.copy-code-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border: 1px solid #c8ced8;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #344054;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copy-code-button:hover {
+  background: #e8eef5;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-block code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message-text {
+  white-space: pre-wrap;
+}
+
+
+
+
+
+
+    
 .chat-shell.sidebar-hidden .sidebar {
       width: 0;
       flex-basis: 0;
@@ -709,6 +835,130 @@ function modelKey(provider, model) {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
 
+
+function renderMessageContent(content) {
+  const fragment = document.createDocumentFragment();
+
+  const codeBlockRegex =
+    /```([a-zA-Z0-9_+-]*)[ \t]*\n?([\s\S]*?)```/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(content)) !== null) {
+    // Обычный текст перед блоком кода
+    const textBefore = content.slice(lastIndex, match.index);
+
+    if (textBefore) {
+      const textElement = document.createElement("div");
+      textElement.className = "message-content";
+      textElement.textContent = textBefore;
+      fragment.appendChild(textElement);
+    }
+
+    const language = match[1] || "text";
+    const codeText = match[2]
+      .replace(/^\n/, "")
+      .replace(/\n$/, "");
+
+    const codeBlock = document.createElement("div");
+    codeBlock.className = "code-block";
+
+    const header = document.createElement("div");
+    header.className = "code-block-header";
+
+    const languageElement = document.createElement("span");
+    languageElement.className = "code-language";
+    languageElement.textContent = language;
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "copy-code-button";
+    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+
+    // textContent безопасно отображает HTML, JS и CSS как текст
+    code.textContent = codeText;
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(codeText);
+
+        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+
+        setTimeout(() => {
+          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+        }, 1500);
+      } catch (error) {
+        console.error("Ошибка копирования:", error);
+        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
+      }
+    });
+
+    header.appendChild(languageElement);
+    header.appendChild(copyButton);
+
+    pre.appendChild(code);
+    codeBlock.appendChild(header);
+    codeBlock.appendChild(pre);
+
+    fragment.appendChild(codeBlock);
+
+    lastIndex = codeBlockRegex.lastIndex;
+  }
+
+  // Обычный текст после последнего блока
+  const textAfter = content.slice(lastIndex);
+
+  if (textAfter) {
+    const textElement = document.createElement("div");
+    textElement.className = "message-content";
+    textElement.textContent = textAfter;
+    fragment.appendChild(textElement);
+  }
+
+  return fragment;
+}
+
+
+
+В текущей функции `renderMessage` найдите участок, похожий на этот:
+
+```javascript
+const content = document.createElement("div");
+content.className = "message-content";
+content.textContent = message.content;
+wrapper.appendChild(content);
+```
+
+Замените его на:
+
+```javascript
+const content = document.createElement("div");
+content.className = "message-content";
+
+content.appendChild(
+  renderMessageContent(message.content || "")
+);
+
+wrapper.appendChild(content);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
     function renderMessage(message) {
       const role = message.role === "user"
         ? "user"
@@ -723,10 +973,14 @@ function modelKey(provider, model) {
         ? "Вы"
         : "Деловой агент";
 
-      const content = document.createElement("div");
-      content.textContent = message.content || "";
+     const content = document.createElement("div");
+content.className = "message-content";
 
-      wrapper.append(roleLabel, content);
+content.appendChild(
+  renderMessageContent(message.content || "")
+);
+
+wrapper.appendChild(content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
@@ -987,7 +1241,98 @@ function renderConversations(conversations) {
       if (!conversationId) {
         await createNewConversation();
       }
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
+function renderAssistantMessage(text) {
+  const fragment = document.createDocumentFragment();
+
+  // Ищем блоки вида:
+  // ```text
+  // содержимое
+  // ```
+  const codeBlockRegex = /```([a-zA-Z0-9_+-]*)\s*\n?([\s\S]*?)```/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(text)) !== null) {
+    // Обычный текст перед кодовым блоком
+    const beforeText = text.slice(lastIndex, match.index);
+
+    if (beforeText) {
+      const textElement = document.createElement('div');
+      textElement.className = 'message-text';
+      textElement.textContent = beforeText;
+      fragment.appendChild(textElement);
+    }
+
+    const language = match[1] || 'text';
+    const codeText = match[2].replace(/^\n|\n$/g, '');
+
+    const codeBlock = document.createElement('div');
+    codeBlock.className = 'code-block';
+
+    codeBlock.innerHTML = `
+      <div class="code-block-header">
+        <span class="code-language">${escapeHtml(language)}</span>
+        <button
+          type="button"
+          class="copy-code-button"
+          aria-label="Скопировать код"
+        >
+          <span aria-hidden="true">⧉</span>
+          <span>Скопировать</span>
+        </button>
+      </div>
+      <pre><code>${escapeHtml(codeText)}</code></pre>
+    `;
+
+    const copyButton = codeBlock.querySelector('.copy-code-button');
+
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codeText);
+
+        const originalText = copyButton.innerHTML;
+
+        copyButton.innerHTML = `
+          <span aria-hidden="true">✓</span>
+          <span>Скопировано</span>
+        `;
+
+        setTimeout(() => {
+          copyButton.innerHTML = originalText;
+        }, 1500);
+      } catch (error) {
+        console.error('Не удалось скопировать текст:', error);
+        copyButton.querySelector('span:last-child').textContent = 'Ошибка';
+      }
+    });
+
+    fragment.appendChild(codeBlock);
+
+    lastIndex = codeBlockRegex.lastIndex;
+  }
+
+  // Текст после последнего блока
+  const afterText = text.slice(lastIndex);
+
+  if (afterText) {
+    const textElement = document.createElement('div');
+    textElement.className = 'message-text';
+    textElement.textContent = afterText;
+    fragment.appendChild(textElement);
+  }
+
+  return fragment;
+}
       const userMessage = {
         role: "user",
         content: message,
@@ -1035,11 +1380,9 @@ function renderConversations(conversations) {
         setStatus(chatStatus, "Готово.");
         scrollToBottom();
 
-await loadConversations();
-
-
-        
-      } catch (error) {
+await loadConversations();   
+      } 
+      catch (error) {
         setStatus(
           chatStatus,
           `Ошибка ответа: ${error.message}`,
