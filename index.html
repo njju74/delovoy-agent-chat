@@ -10,14 +10,17 @@
     :root {
       --bg: #0f1620; 
       --card: #172233;
-      --card-2: #1d2c40;
-      --text: #edf3f9;
+      --card-2: #083b13;
+      --text: #99abbd;
       --muted: #9aabbd;
-      --accent: #c0ebe6;
+      --accent: #15b312;
       --line: #2d4057;
       --danger: #0afa3e;
       --user: #1d5a55;
       --assistant: #1b2a3d;
+      --codding: #d2edbe
+      --texcod: #000
+      
     }
 
     * {
@@ -46,6 +49,7 @@
     .message-content {
   white-space: pre-wrap;
   line-height: 1.5;
+      background: #a7aeb5;
 }
 
 .code-block {
@@ -53,7 +57,7 @@
   overflow: hidden;
   border: 1px solid #d9dee8;
   border-radius: 8px;
-  background: #f6f8fa;
+  background: var(--texcod);
 }
 
 .code-block-header {
@@ -93,11 +97,13 @@
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  
 }
 
 .code-block code {
   font-family: Consolas, Monaco, monospace;
   font-size: 13px;
+  text-color:  var(--text);
   line-height: 1.5;
 }
     .conversation-row {
@@ -114,7 +120,7 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      font-weight: 400;
+      font-weight: 200;
       cursor: pointer;
     }
 
@@ -177,7 +183,7 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      font-weight: 400;
+      font-weight: 200;
     }
 
     .conversation-item:hover {
@@ -224,11 +230,12 @@
       .sidebar {
         width: 100%;
         flex-basis: auto;
-        max-height: 400px;
+        max-height: 200px;
         border-right: 0;
         border-bottom: 1px solid var(--line);
         overflow-y: auto;
         overflow-x: auto;
+        
       }
 
       .conversation-list {
@@ -249,6 +256,7 @@
       flex-direction: column;
       padding: 18px 24px 22px;
       overflow-y: auto;
+      font-size: 12px;
     }
 
     header {
