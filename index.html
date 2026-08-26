@@ -13,9 +13,9 @@
       --card-2: #1d2c40;
       --text: #edf3f9;
       --muted: #9aabbd;
-      --accent: #61d4b3;
+      --accent: #c0ebe6;
       --line: #2d4057;
-      --danger: #f87171;
+      --danger: #0afa3e;
       --user: #1d5a55;
       --assistant: #1b2a3d;
     }
@@ -61,8 +61,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #edf1f5;
-  border-bottom: 1px solid #d9dee8;
+  background: #a7aeb5;
+  border-bottom: 1px solid #a7aeb5;
 }
 
 .code-language {
@@ -854,7 +854,7 @@ function renderMessageContent(content) {
     const copyButton = document.createElement("button");
     copyButton.type = "button";
     copyButton.className = "copy-code-button";
-    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+    copyButton.innerHTML = "⧉ <span></span>";
 
     const pre = document.createElement("pre");
     const code = document.createElement("code");
