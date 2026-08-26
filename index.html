@@ -31,19 +31,6 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
-.chat-shell.sidebar-hidden .sidebar {
-      width: 0;
-      flex-basis: 0;
-      overflow: hidden;
-      border-right: 0;
-    }
-
-    .chat-shell.sidebar-hidden .sidebar-head,
-    .chat-shell.sidebar-hidden .conversation-list {
-      display: none;
-    }
-
-    
     .conversation-row {
       display: flex;
       gap: 5px;
@@ -297,10 +284,10 @@
       background: var(--card);
     }
 
- .messages {
+    .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 13px;
+      padding: 18px;
     }
 
     .empty-state {
@@ -314,12 +301,11 @@
     .message {
       max-width: 82%;
       margin: 0 0 14px;
-      padding: 9px 11px;
-      font-size: 13px;
+      padding: 12px 14px;
       border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
-      line-height: 1.42;
+      line-height: 1.55;
       overflow-wrap: anywhere;
     }
 
@@ -336,70 +322,18 @@
     }
 
     .message-role {
-      margin-bottom: 4px;
+      margin-bottom: 7px;
       color: var(--accent);
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-.code-language {
-  color: #667085;
-  font: 12px monospace;
-}
 
-.copy-code-button {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  padding: 4px 8px;
-  border: 1px solid #c8ced8;
-  border-radius: 6px;
-  background: #fff;
-  color: #344054;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.copy-code-button:hover {
-  background: #e8eef5;
-}
-
-.code-block pre {
-  margin: 0;
-  padding: 12px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.code-block code {
-  font-family: Consolas, Monaco, monospace;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.code-block {
-  margin: 12px 0;
-  overflow: hidden;
-  border: 1px solid #d9dee8;
-  border-radius: 8px;
-  background: #f6f8fa;
-}
-
-.code-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  background: #edf1f5;
-  border-bottom: 1px solid #d9dee8;
-}
     .message-meta {
-      margin-top: 5px;
+      margin-top: 8px;
       color: var(--muted);
-      font-size: 9px;
-      white-space: pre-wrap;
-  line-height: 1.5;
+      font-size: 10px;
     }
 
     .composer {
@@ -419,8 +353,6 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
-      font-size: 13px;
-      line-height: 1.4;
     }
 
     textarea:focus {
@@ -524,35 +456,12 @@
   </aside>
 
   <div id="messages" class="messages">
-   <!-- <div class="chat-area"> -->
-      <div class="empty-state">
+    <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
-
- <div >
-  <div class="chat-area">
-   <button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
-
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
-  </div>
-     </div>
-    
   </div>
 </section>
+
 
     <section class="composer">
       <textarea
@@ -570,7 +479,7 @@
         </button>
       </div>
     </section>
-   </div>
+  </div>
 
   <script>
     const STORAGE_KEY = "delovoy_agent_conversation_id";
@@ -583,23 +492,7 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
-
-    const chatShell =
-      document.querySelector(".chat-shell");
-
-    const toggleSidebarButton =
-      document.getElementById("toggle-sidebar");
-
-    const SIDEBAR_STORAGE_KEY =
-      "delovoy_agent_sidebar_hidden";
-
     
-    const scrollUpButton =
-      document.getElementById("scroll-up-button");
-
-    const scrollDownButton =
-      document.getElementById("scroll-down-button");
-
     const conversationList =
       document.getElementById("conversation-list");
 
@@ -670,64 +563,6 @@
       element.textContent = text;
       element.classList.toggle("error", isError);
     }
-function modelKey(provider, model) {
-      return `${provider}|${model}`;
-    }
-
-    function getModelLabel(provider, model) {
-      return models[modelKey(provider, model)] || model;
-    }
-
-    async function loadModels() {
-      modelSelect.disabled = true;
-
-      try {
-        const result = await fetchJson("/api/models");
-        const availableModels = result.models || [];
-
-        models = {};
-        modelSelect.innerHTML = "";
-
-        availableModels.forEach((item) => {
-          const key = modelKey(
-            item.provider,
-            item.model
-          );
-
-          models[key] =
-            item.display_name || item.model;
-
-          const option =
-            document.createElement("option");
-
-          option.value = key;
-          option.textContent =
-            item.display_name || item.model;
-
-          modelSelect.appendChild(option);
-        });
-
-        if (availableModels.length === 0) {
-          throw new Error(
-            "API не вернул доступные модели."
-          );
-        }
-
-        modelSelect.disabled = false;
-      } catch (error) {
-        modelSelect.innerHTML = `
-          <option value="">
-            Ошибка загрузки моделей
-          </option>
-        `;
-
-        setStatus(
-          modelStatus,
-          `Ошибка загрузки моделей: ${error.message}`,
-          true
-        );
-      }
-    }
 
     async function fetchJson(url, options = {}) {
       const response = await fetch(url, options);
@@ -758,91 +593,7 @@ function modelKey(provider, model) {
     function scrollToBottom() {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
-function renderMessageContent(content) {
-  const fragment = document.createDocumentFragment();
 
-  const codeBlockRegex =
-    /```([a-zA-Z0-9_+-]*)[ \t]*\n?([\s\S]*?)```/g;
-
-  let lastIndex = 0;
-  let match;
-
-  while ((match = codeBlockRegex.exec(content)) !== null) {
-    // Обычный текст перед блоком кода
-    const textBefore = content.slice(lastIndex, match.index);
-
-    if (textBefore) {
-      const textElement = document.createElement("div");
-      textElement.className = "message-meta";
-      textElement.textContent = textBefore;
-      fragment.appendChild(textElement);
-    }
-
-    const language = match[1] || "text";
-    const codeText = match[2]
-      .replace(/^\n/, "")
-      .replace(/\n$/, "");
-
-    const codeBlock = document.createElement("div");
-    codeBlock.className = "code-block";
-
-    const header = document.createElement("div");
-    header.className = "code-block-header";
-
-    const languageElement = document.createElement("span");
-    languageElement.className = "code-language";
-    languageElement.textContent = language;
-
-    const copyButton = document.createElement("button");
-    copyButton.type = "button";
-    copyButton.className = "copy-code-button";
-    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
-
-    const pre = document.createElement("pre");
-    const code = document.createElement("code");
-
-    // textContent безопасно отображает HTML, JS и CSS как текст
-    code.textContent = codeText;
-
-    copyButton.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(codeText);
-
-        copyButton.innerHTML = "✓ <span>Скопировано</span>";
-
-        setTimeout(() => {
-          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
-        }, 1500);
-      } catch (error) {
-        console.error("Ошибка копирования:", error);
-        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
-      }
-    });
-
-    header.appendChild(languageElement);
-    header.appendChild(copyButton);
-
-    pre.appendChild(code);
-    codeBlock.appendChild(header);
-    codeBlock.appendChild(pre);
-
-    fragment.appendChild(codeBlock);
-
-    lastIndex = codeBlockRegex.lastIndex;
-  }
-
-  // Обычный текст после последнего блока
-  const textAfter = content.slice(lastIndex);
-
-  if (textAfter) {
-  const textElement = document.createElement("div");
-    textElement.className = "message-meta";
-    textElement.textContent = textAfter;
-    fragment.appendChild(textElement);
-  }
-
-  return fragment;
-}
     function renderMessage(message) {
       const role = message.role === "user"
         ? "user"
@@ -878,14 +629,12 @@ function renderMessageContent(content) {
             `${message.metadata.model}`
           );
         }
-          content.appendChild(
-  renderMessageContent(message.content || "")
-);
+
         meta.textContent = parts.join(" · ");
         wrapper.appendChild(meta);
       }
 
-      messagesElement.appendChild(wrapper); 
+      messagesElement.appendChild(wrapper);
     }
 
     function renderHistory(history) {
@@ -1310,52 +1059,6 @@ setStatus(
 refreshConversationsButton.addEventListener(
       "click",
       loadConversations
-    );
-scrollUpButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: -Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
-
-    scrollDownButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
-function updateSidebarState(isHidden) {
-      chatShell.classList.toggle(
-        "sidebar-hidden",
-        isHidden
-      );
-
-      toggleSidebarButton.textContent = isHidden
-        ? "☰ Показать диалоги"
-        : "☰ Скрыть диалоги";
-
-      localStorage.setItem(
-        SIDEBAR_STORAGE_KEY,
-        isHidden ? "true" : "false"
-      );
-    }
-
-    toggleSidebarButton.addEventListener("click", () => {
-      const isHidden = chatShell.classList.contains(
-        "sidebar-hidden"
-      );
-
-      updateSidebarState(!isHidden);
-    });
-
-    updateSidebarState(
-      localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true"
     );
 
     initializeChat();
