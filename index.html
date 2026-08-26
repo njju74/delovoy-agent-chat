@@ -420,15 +420,12 @@
 
         <label for="model-select">Модель:</label>
 
-        <select id="model-select">
-          <option value="yandex|yandexgpt-lite">
-            YandexGPT Lite
-          </option>
+       <select id="model-select" disabled>
+  <option value="">
+    Загружаем модели...
+  </option>
+</select>
 
-          <option value="plusvibe|gpt-5.6-luna">
-            PlusVibe / gpt-5.6-luna
-          </option>
-        </select>
 
         <p id="model-status" class="model-status">
           Загружаем модель...
@@ -502,15 +499,67 @@
     const refreshConversationsButton =
       document.getElementById("refresh-conversations");
 
-
-    const models = {
-      "yandex|yandexgpt-lite": "YandexGPT Lite",
-      "plusvibe|gpt-5.6-luna": "PlusVibe / gpt-5.6-luna"
-    };
-
+    let models = {};
     let conversationId = null;
 
     function setStatus(element, text, isError = false) {
+      function modelKey(provider, model) {
+      return `${provider}|${model}`;
+    }
+
+    function getModelLabel(provider, model) {
+      return models[modelKey(provider, model)] || model;
+    }
+
+    async function loadModels() {
+      modelSelect.disabled = true;
+
+      try {
+        const result = await fetchJson("/api/models");
+        const availableModels = result.models || [];
+
+        models = {};
+        modelSelect.innerHTML = "";
+
+        availableModels.forEach((item) => {
+          const key = modelKey(
+            item.provider,
+            item.model
+          );
+
+          models[key] = item.display_name || item.model;
+
+          const option = document.createElement("option");
+
+          option.value = key;
+          option.textContent =
+            item.display_name || item.model;
+
+          modelSelect.appendChild(option);
+        });
+
+        if (availableModels.length === 0) {
+          throw new Error(
+            "API не вернул доступные модели."
+          );
+        }
+
+        modelSelect.disabled = false;
+      } catch (error) {
+        modelSelect.innerHTML = `
+          <option value="">
+            Ошибка загрузки моделей
+          </option>
+        `;
+
+        setStatus(
+          modelStatus,
+          `Ошибка загрузки моделей: ${error.message}`,
+          true
+        );
+      }
+    }
+
       element.textContent = text;
       element.classList.toggle("error", isError);
     }
@@ -611,8 +660,8 @@
       scrollToBottom();
     }
 
-    function setModel(provider, model) {
-      const value = `${provider}|${model}`;
+function setModel(provider, model) {
+      const value = modelKey(provider, model);
 
       if (models[value]) {
         modelSelect.value = value;
@@ -620,9 +669,10 @@
 
       setStatus(
         modelStatus,
-        `Сейчас отвечает: ${models[value] || model}`
+        `Сейчас отвечает: ${getModelLabel(provider, model)}`
       );
     }
+
 function renderConversations(conversations) {
       conversationList.innerHTML = "";
 
@@ -931,17 +981,21 @@ await loadConversations();
           );
         }
 
-        const resultValue =
-          `${result.provider}|${result.model}`;
 
-        setModel(result.provider, result.model);
+setModel(result.provider, result.model);
 
-        setStatus(
-          modelStatus,
-          `✅ Следующий ответ: ${
-            models[resultValue] || result.model
-          }`
-        );
+setStatus(
+  modelStatus,
+  `✅ Следующий ответ: ${
+    getModelLabel(
+      result.provider,
+      result.model
+    )
+  }`
+);
+
+
+        
       } catch (error) {
         setStatus(
           modelStatus,
@@ -983,6 +1037,8 @@ await loadConversations();
     });
 
     async function initializeChat() {
+      await loadModels();
+
       conversationId =
         localStorage.getItem(STORAGE_KEY);
 
