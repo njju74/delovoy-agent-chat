@@ -800,9 +800,13 @@ function modelKey(provider, model) {
         : "Деловой агент";
 
       const content = document.createElement("div");
-      content.textContent = message.content || "";
+content.className = "message-content";
 
-      wrapper.append(roleLabel, content);
+content.appendChild(
+  renderMessageContent(message.content || "")
+);
+
+wrapper.appendChild(content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
