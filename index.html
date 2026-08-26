@@ -786,14 +786,14 @@ function modelKey(provider, model) {
         ? "Вы"
         : "Деловой агент";
   const content = document.createElement("div");
+  content.textContent = message.content || ""; 
   content.className = "message-content";
-  content.appendChild(
-  renderMessageContent(message.content || "")
-  );
+  wrapper.append(roleLabel, content);
+  
      // const content = document.createElement("div");
      // content.textContent = message.content || ""; 
        // content.className = "message-content"; 
-        wrapper.append(roleLabel, content);
+        
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
@@ -814,7 +814,10 @@ function modelKey(provider, model) {
       meta.textContent = parts.join(" · ");
       wrapper.appendChild(meta);
       wrapper.appendChild(content);
-      );
+      
+        content.appendChild(
+  renderMessageContent(message.content || "")
+  );
       messagesElement.appendChild(wrapper);
       }
 function renderMessageContent(content) {
