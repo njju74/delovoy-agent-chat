@@ -524,20 +524,40 @@
   </aside>
 
   <div id="messages" class="messages">
-    <div class="empty-state">
+    <div class="chat-area">
       Создаём личный рабочий диалог...
     </div>
   </div>
 </section>
+ <div >
+  <div class="chat-area">
+   <button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
 
-    <div class="chat-area">
-  тут Создаём личный рабочий диалог...
-    <!-- сообщения чата -->
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
+
+  <button
+    id="scroll-top"
+    class="scroll-button scroll-button-top"
+    type="button"
+    aria-label="Прокрутить вверх"
+  >
+    ↑
+  </button>
   </div>
-  </div>
-  
-
-
     <section class="composer">
       <textarea
         id="message-input"
