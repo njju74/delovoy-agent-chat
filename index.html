@@ -31,6 +31,19 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
+.chat-shell.sidebar-hidden .sidebar {
+      width: 0;
+      flex-basis: 0;
+      overflow: hidden;
+      border-right: 0;
+    }
+
+    .chat-shell.sidebar-hidden .sidebar-head,
+    .chat-shell.sidebar-hidden .conversation-list {
+      display: none;
+    }
+
+    
     .conversation-row {
       display: flex;
       gap: 5px;
@@ -284,10 +297,10 @@
       background: var(--card);
     }
 
-    .messages {
+ .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 18px;
+      padding: 13px;
     }
 
     .empty-state {
@@ -301,11 +314,12 @@
     .message {
       max-width: 82%;
       margin: 0 0 14px;
-      padding: 12px 14px;
+      padding: 9px 11px;
+      font-size: 13px;
       border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
-      line-height: 1.55;
+      line-height: 1.42;
       overflow-wrap: anywhere;
     }
 
@@ -322,18 +336,18 @@
     }
 
     .message-role {
-      margin-bottom: 7px;
+      margin-bottom: 4px;
       color: var(--accent);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .message-meta {
-      margin-top: 8px;
+      margin-top: 5px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
     }
 
     .composer {
@@ -353,6 +367,8 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     textarea:focus {
@@ -410,11 +426,36 @@
       </div>
 
       <div class="controls">
+<button
+  id="toggle-sidebar"
+  class="button-secondary"
+  type="button"
+>
+  ☰ Диалоги
+</button>
+        
+        <button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
+
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
+
         <button
           id="new-chat-button"
           class="button-secondary"
-          type="button"
-        >
+          type="button">
           ＋ Новый диалог
         </button>
 
@@ -492,7 +533,23 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
+
+    const chatShell =
+      document.querySelector(".chat-shell");
+
+    const toggleSidebarButton =
+      document.getElementById("toggle-sidebar");
+
+    const SIDEBAR_STORAGE_KEY =
+      "delovoy_agent_sidebar_hidden";
+
     
+    const scrollUpButton =
+      document.getElementById("scroll-up-button");
+
+    const scrollDownButton =
+      document.getElementById("scroll-down-button");
+
     const conversationList =
       document.getElementById("conversation-list");
 
@@ -1117,6 +1174,52 @@ setStatus(
 refreshConversationsButton.addEventListener(
       "click",
       loadConversations
+    );
+scrollUpButton.addEventListener("click", () => {
+      messagesElement.scrollBy({
+        top: -Math.max(
+          400,
+          messagesElement.clientHeight * 0.8
+        ),
+        behavior: "smooth"
+      });
+    });
+
+    scrollDownButton.addEventListener("click", () => {
+      messagesElement.scrollBy({
+        top: Math.max(
+          400,
+          messagesElement.clientHeight * 0.8
+        ),
+        behavior: "smooth"
+      });
+    });
+function updateSidebarState(isHidden) {
+      chatShell.classList.toggle(
+        "sidebar-hidden",
+        isHidden
+      );
+
+      toggleSidebarButton.textContent = isHidden
+        ? "☰ Показать диалоги"
+        : "☰ Скрыть диалоги";
+
+      localStorage.setItem(
+        SIDEBAR_STORAGE_KEY,
+        isHidden ? "true" : "false"
+      );
+    }
+
+    toggleSidebarButton.addEventListener("click", () => {
+      const isHidden = chatShell.classList.contains(
+        "sidebar-hidden"
+      );
+
+      updateSidebarState(!isHidden);
+    });
+
+    updateSidebarState(
+      localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true"
     );
 
     initializeChat();
