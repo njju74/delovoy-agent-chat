@@ -785,20 +785,16 @@ function modelKey(provider, model) {
       roleLabel.textContent = role === "user"
         ? "Вы"
         : "Деловой агент";
-  const content = document.createElement("div");
-  content.textContent = message.content || ""; 
-  content.className = "message-content";
-  wrapper.append(roleLabel, content);
-  
-     // const content = document.createElement("div");
-     // content.textContent = message.content || ""; 
-       // content.className = "message-content"; 
-        
+
+      const content = document.createElement("div");
+      content.textContent = message.content || "";
+
+      wrapper.append(roleLabel, content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
-         meta.className = "message-meta";
-     
+        meta.className = "message-meta";
+
         const parts = [];
 
         if (message.created_at) {
@@ -811,15 +807,15 @@ function modelKey(provider, model) {
             `${message.metadata.model}`
           );
         }
-      meta.textContent = parts.join(" · ");
-      wrapper.appendChild(meta);
-      wrapper.appendChild(content);
-      
-        content.appendChild(
+          content.appendChild(
   renderMessageContent(message.content || "")
-  );
-      messagesElement.appendChild(wrapper);
+);
+        meta.textContent = parts.join(" · ");
+        wrapper.appendChild(meta);
       }
+
+      messagesElement.appendChild(wrapper); 
+    }
 function renderMessageContent(content) {
   const fragment = document.createDocumentFragment();
 
