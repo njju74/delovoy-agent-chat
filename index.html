@@ -383,7 +383,7 @@
   overflow: hidden;
   border: 1px solid #d9dee8;
   border-radius: 8px;
-  background: #4d9181;
+  background: #f6f8fa;
 }
 
 .code-block-header {
@@ -397,7 +397,7 @@
     .message-meta {
       margin-top: 5px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 9px;
       white-space: pre-wrap;
   line-height: 1.5;
     }
@@ -416,7 +416,7 @@
       border: 1px solid var(--line);
       border-radius: 9px;
       padding: 11px;
-      background: var(--bg); 
+      background: var(--bg);
       color: var(--text);
       outline: none;
       font-size: 13px;
@@ -486,6 +486,8 @@
   ☰ Диалоги
 </button>
         
+   
+
         <button
           id="new-chat-button"
           class="button-secondary"
@@ -530,11 +532,30 @@
     </div>
   </aside>
 
+  <div id="messages" class="messages">
+
     
 <!------------------------------Н А Ч А Л О--------------------------------------->
 
 <div class="chat-area">
-   
+   <button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
+
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
+
   <button
     id="scroll-top"
     class="scroll-button scroll-button-top"
@@ -545,9 +566,7 @@
   </button>
 
   <div id="messages" class="messages">
-    <div class="empty-state">
-      Создаём личный рабочий диалог...
-    </div>
+    <!-- сообщения чата -->
   </div>
 
   <button
@@ -559,7 +578,14 @@
     ↓
   </button>
 </div>
-   
+
+<!------------------------------К О Н Е Ц--------------------------------------->
+
+
+    
+    <div class="empty-state">
+      Создаём личный рабочий диалог...
+    </div>
   </div>
 </section>
 
@@ -806,7 +832,7 @@ function renderMessageContent(content) {
     const copyButton = document.createElement("button");
     copyButton.type = "button";
     copyButton.className = "copy-code-button";
-    copyButton.innerHTML = "⧉ <span></span>";
+    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
 
     const pre = document.createElement("pre");
     const code = document.createElement("code");
