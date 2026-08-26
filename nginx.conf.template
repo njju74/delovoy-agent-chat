@@ -146,5 +146,15 @@ proxy_set_header X-Agent-Internal-Key "${INTERNAL_API_KEY}";
 proxy_set_header X-Agent-Internal-Key "${INTERNAL_API_KEY}";
 
     }
+    location = /api/models {
+        proxy_pass https://n8n.agent3d.ru/webhook/agent-model-list-v1;
+
+        proxy_ssl_server_name on;
+        proxy_set_header Host n8n.agent3d.ru;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Agent-Internal-Key "${INTERNAL_API_KEY}";
+    }
 
 }
