@@ -808,7 +808,7 @@ function renderMessageContent(content) {
     const textBefore = content.slice(lastIndex, match.index);
 
     if (textBefore) {
-      //   const textElement = document.createElement("div");
+      const textElement = document.createElement("div");
       textElement.className = "message-meta";
       textElement.textContent = textBefore;
       fragment.appendChild(textElement);
@@ -871,7 +871,7 @@ function renderMessageContent(content) {
   const textAfter = content.slice(lastIndex);
 
   if (textAfter) {
-  //  const textElement = document.createElement("div");
+  const textElement = document.createElement("div");
     textElement.className = "message-meta";
     textElement.textContent = textAfter;
     fragment.appendChild(textElement);
