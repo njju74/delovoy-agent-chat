@@ -20,6 +20,7 @@
       --assistant: #1b2a3d;
       --texcod: #000
       --codi: #737d87
+      --bahecod: #1f6960;
       
     }
 
@@ -55,7 +56,7 @@
 .code-block {
   margin: 12px 0;
   overflow: hidden;
-  border: 1px solid #d9dee8;
+  border: 1px solid var(--accent);
   border-radius: 8px;
   background: var(--texcod);
 }
@@ -65,8 +66,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #a7aeb5;
-  border-bottom: 1px solid #a7aeb5;
+  background: var(--bahecod);
+  border-bottom: 1px solid var(--accent);
 }
 
 .code-language {
@@ -131,7 +132,7 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: #1a4643;
+      background: var(--bahecod);
     }
 
     .conversation-delete {
@@ -145,7 +146,7 @@
     }
 
 .sidebar {
-      width: 285px;
+      width: 200px;
       flex: 0 0 285px;
       overflow-y: auto;
       border-right: 1px solid var(--line);
@@ -161,7 +162,7 @@
     }
 
     .sidebar-head h2 {
-      margin: 0;
+      margin: 3;
       font-size: 15px;
     }
 
@@ -183,7 +184,6 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      font-weight: 200;
     }
 
     .conversation-item:hover {
@@ -200,7 +200,7 @@
       display: block;
       overflow: hidden;
       font-size: 13px;
-      font-weight: 700;
+      font-weight:200;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -244,7 +244,7 @@
       }
 
       .conversation-item {
-        min-width: 220px;
+        min-width: 200px;
       }
     }
 
@@ -554,7 +554,8 @@
 
 <div>
 </button>
-        
+        <div>
+               
         <button
   id="scroll-up-button"
   class="button-secondary"
@@ -883,10 +884,10 @@ function renderMessageContent(content) {
       try {
         await navigator.clipboard.writeText(codeText);
 
-        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+        copyButton.innerHTML = "✓ <span>✅</span>";
 
         setTimeout(() => {
-          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+          copyButton.innerHTML = "⧉ <span></span>";
         }, 1500);
       } catch (error) {
         console.error("Ошибка копирования:", error);
