@@ -8,7 +8,7 @@
 
   <style>
     :root {
-      --bg: #0f1620;
+      --bg: #0f1620; 
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
@@ -785,15 +785,19 @@ function modelKey(provider, model) {
       roleLabel.textContent = role === "user"
         ? "Вы"
         : "Деловой агент";
-
-     const content = document.createElement("div");
-     */  content.textContent = message.content || ""; 
-        content.className = "message-content"; 
+  const content = document.createElement("div");
+  content.className = "message-content";
+  content.appendChild(
+  renderMessageContent(message.content || "")
+  );
+     // const content = document.createElement("div");
+     // content.textContent = message.content || ""; 
+       // content.className = "message-content"; 
         wrapper.append(roleLabel, content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
-        */ meta.className = "message-meta";
+         meta.className = "message-meta";
      
         const parts = [];
 
@@ -807,17 +811,12 @@ function modelKey(provider, model) {
             `${message.metadata.model}`
           );
         }
-
-        meta.textContent = parts.join(" · ");
-     */   wrapper.appendChild(meta);
-     wrapper.appendChild(content);
-);
-
-wrapper.appendChild(content);
+      meta.textContent = parts.join(" · ");
+      wrapper.appendChild(meta);
+      wrapper.appendChild(content);
+      );
+      messagesElement.appendChild(wrapper);
       }
-
-     */ messagesElement.appendChild(wrapper);
-    }
 function renderMessageContent(content) {
   const fragment = document.createDocumentFragment();
 
