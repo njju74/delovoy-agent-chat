@@ -563,6 +563,64 @@
       element.textContent = text;
       element.classList.toggle("error", isError);
     }
+function modelKey(provider, model) {
+      return `${provider}|${model}`;
+    }
+
+    function getModelLabel(provider, model) {
+      return models[modelKey(provider, model)] || model;
+    }
+
+    async function loadModels() {
+      modelSelect.disabled = true;
+
+      try {
+        const result = await fetchJson("/api/models");
+        const availableModels = result.models || [];
+
+        models = {};
+        modelSelect.innerHTML = "";
+
+        availableModels.forEach((item) => {
+          const key = modelKey(
+            item.provider,
+            item.model
+          );
+
+          models[key] =
+            item.display_name || item.model;
+
+          const option =
+            document.createElement("option");
+
+          option.value = key;
+          option.textContent =
+            item.display_name || item.model;
+
+          modelSelect.appendChild(option);
+        });
+
+        if (availableModels.length === 0) {
+          throw new Error(
+            "API не вернул доступные модели."
+          );
+        }
+
+        modelSelect.disabled = false;
+      } catch (error) {
+        modelSelect.innerHTML = `
+          <option value="">
+            Ошибка загрузки моделей
+          </option>
+        `;
+
+        setStatus(
+          modelStatus,
+          `Ошибка загрузки моделей: ${error.message}`,
+          true
+        );
+      }
+    }
 
     async function fetchJson(url, options = {}) {
       const response = await fetch(url, options);
