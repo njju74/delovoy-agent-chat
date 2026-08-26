@@ -801,39 +801,34 @@ function modelKey(provider, model) {
         : "Деловой агент";
 
       const content = document.createElement("div");
-content.className = "message-content";
-
-content.appendChild(
-  renderMessageContent(message.content || "")
-);
-
-wrapper.appendChild(content);
+//content.className = "message-content";
+//content.appendChild(
+//  renderMessageContent(message.content || ""));
+//wrapper.appendChild(content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
         meta.className = "message-meta";
-
         const parts = [];
-
         if (message.created_at) {
           parts.push(formatDate(message.created_at));
         }
-
+        
         if (message.metadata?.model) {
           parts.push(
             `${message.metadata.provider || "model"} / ` +
             `${message.metadata.model}`
           );
         }
+        
           content.appendChild(
-  renderMessageContent(message.content || "")
-);
+  renderMessageContent(message.content || ""));
         meta.textContent = parts.join(" · ");
         wrapper.appendChild(meta);
       }
-
       messagesElement.appendChild(wrapper); 
     }
+    
 function renderMessageContent(content) {
   const fragment = document.createDocumentFragment();
 
