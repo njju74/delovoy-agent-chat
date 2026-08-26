@@ -366,7 +366,7 @@
       background: var(--card);
     }
 
- .messages {
+ .s {
       flex: 1;
       overflow-y: auto;
       padding: 13px;
@@ -380,7 +380,7 @@
       line-height: 1.6;
     }
 
-    .message {
+    . {
       max-width: 82%;
       margin: 0 0 14px;
       padding: 9px 11px;
@@ -392,19 +392,19 @@
       overflow-wrap: anywhere;
     }
 
-    .message.user {
+    ..user {
       margin-left: auto;
       background: var(--user);
       border-bottom-right-radius: 3px;
     }
 
-    .message.assistant {
+    ..assistant {
       margin-right: auto;
       background: var(--assistant);
       border-bottom-left-radius: 3px;
     }
 
-    .message-role {
+    .-role {
       margin-bottom: 4px;
       color: var(--accent);
       font-size: 9px;
@@ -413,7 +413,7 @@
       text-transform: uppercase;
     }
 
-    .message-meta {
+    .-meta {
       margin-top: 5px;
       color: var(--muted);
       font-size: 9px;
@@ -472,7 +472,7 @@
         text-align: left;
       }
 
-      .message {
+      . {
         max-width: 94%;
       }
     }
@@ -547,13 +547,13 @@
     </div>
   </aside>
 
-  <div id="messages" class="messages">
+  <div id="s" class="messages">
     <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
 
-<div>
-</button>
+  </div>
+
         <div>
                
         <button
@@ -801,10 +801,10 @@ function modelKey(provider, model) {
         : "Деловой агент";
 
       const content = document.createElement("div");
-//content.className = "message-content";
+content.className = "message-content";
 //content.appendChild(
 //  renderMessageContent(message.content || ""));
-//wrapper.appendChild(content);
+wrapper.appendChild(content);
 
       if (message.created_at || message.metadata?.model) {
         const meta = document.createElement("div");
