@@ -770,50 +770,60 @@ function modelKey(provider, model) {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
 
-    function renderMessage(message) {
-      const role = message.role === "user"
-        ? "user"
-        : "assistant";
+  function renderMessage(message) {
+  const role = message.role === "user"
+    ? "user"
+    : "assistant";
 
-      const wrapper = document.createElement("div");
-      wrapper.className = `message ${role}`;
+  const wrapper = document.createElement("div");
+  wrapper.className = `message ${role}`;
 
-      const roleLabel = document.createElement("div");
-      roleLabel.className = "message-role";
-      roleLabel.textContent = role === "user"
-        ? "Вы"
-        : "Деловой агент";
+  const roleLabel = document.createElement("div");
+  roleLabel.className = "message-role";
+  roleLabel.textContent = role === "user"
+    ? "Вы"
+    : "Деловой агент";
 
-      const content = document.createElement("div");
-      content.textContent = message.content || "";
+  const content = document.createElement("div");
+  content.className = "message-content";
 
-      wrapper.append(roleLabel, content);
+  const messageText = message.content || "";
 
-      if (message.created_at || message.metadata?.model) {
-        const meta = document.createElement("div");
-        meta.className = "message-meta";
+  if (role === "assistant") {
+    // Для ответа ассистента обрабатываем блоки ```...```
+    content.appendChild(
+      renderMessageContent(messageText)
+    );
+  } else {
+    // Вопрос пользователя показываем обычным текстом
+    content.textContent = messageText;
+  }
 
-        const parts = [];
+  wrapper.append(roleLabel, content);
 
-        if (message.created_at) {
-          parts.push(formatDate(message.created_at));
-        }
+  if (message.created_at || message.metadata?.model) {
+    const meta = document.createElement("div");
+    meta.className = "message-meta";
 
-        if (message.metadata?.model) {
-          parts.push(
-            `${message.metadata.provider || "model"} / ` +
-            `${message.metadata.model}`
-          );
-        }
-          content.appendChild(
-  renderMessageContent(message.content || "")
-);
-        meta.textContent = parts.join(" · ");
-        wrapper.appendChild(meta);
-      }
+    const parts = [];
 
-      messagesElement.appendChild(wrapper); 
+    if (message.created_at) {
+      parts.push(formatDate(message.created_at));
     }
+
+    if (message.metadata?.model) {
+      parts.push(
+        `${message.metadata.provider || "model"} / ` +
+        `${message.metadata.model}`
+      );
+    }
+
+    meta.textContent = parts.join(" · ");
+    wrapper.appendChild(meta);
+  }
+
+  messagesElement.appendChild(wrapper);
+}
 function renderMessageContent(content) {
   const fragment = document.createDocumentFragment();
 
