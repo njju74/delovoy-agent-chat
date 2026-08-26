@@ -343,11 +343,63 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
+.code-language {
+  color: #667085;
+  font: 12px monospace;
+}
 
+.copy-code-button {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid #c8ced8;
+  border-radius: 6px;
+  background: #fff;
+  color: #344054;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copy-code-button:hover {
+  background: #e8eef5;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-block code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.code-block {
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #f6f8fa;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #edf1f5;
+  border-bottom: 1px solid #d9dee8;
+}
     .message-meta {
       margin-top: 5px;
       color: var(--muted);
       font-size: 9px;
+      white-space: pre-wrap;
+  line-height: 1.5;
     }
 
     .composer {
@@ -742,7 +794,91 @@ function modelKey(provider, model) {
     function scrollToBottom() {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
+function renderMessageContent(content) {
+  const fragment = document.createDocumentFragment();
 
+  const codeBlockRegex =
+    /```([a-zA-Z0-9_+-]*)[ \t]*\n?([\s\S]*?)```/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(content)) !== null) {
+    // Обычный текст перед блоком кода
+    const textBefore = content.slice(lastIndex, match.index);
+
+    if (textBefore) {
+      const textElement = document.createElement("div");
+      textElement.className = "message-meta";
+      textElement.textContent = textBefore;
+      fragment.appendChild(textElement);
+    }
+
+    const language = match[1] || "text";
+    const codeText = match[2]
+      .replace(/^\n/, "")
+      .replace(/\n$/, "");
+
+    const codeBlock = document.createElement("div");
+    codeBlock.className = "code-block";
+
+    const header = document.createElement("div");
+    header.className = "code-block-header";
+
+    const languageElement = document.createElement("span");
+    languageElement.className = "code-language";
+    languageElement.textContent = language;
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "copy-code-button";
+    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+
+    // textContent безопасно отображает HTML, JS и CSS как текст
+    code.textContent = codeText;
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(codeText);
+
+        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+
+        setTimeout(() => {
+          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+        }, 1500);
+      } catch (error) {
+        console.error("Ошибка копирования:", error);
+        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
+      }
+    });
+
+    header.appendChild(languageElement);
+    header.appendChild(copyButton);
+
+    pre.appendChild(code);
+    codeBlock.appendChild(header);
+    codeBlock.appendChild(pre);
+
+    fragment.appendChild(codeBlock);
+
+    lastIndex = codeBlockRegex.lastIndex;
+  }
+
+  // Обычный текст после последнего блока
+  const textAfter = content.slice(lastIndex);
+
+  if (textAfter) {
+    const textElement = document.createElement("div");
+    textElement.className = "message-meta";
+    textElement.textContent = textAfter;
+    fragment.appendChild(textElement);
+  }
+
+  return fragment;
+}
     function renderMessage(message) {
       const role = message.role === "user"
         ? "user"
@@ -778,12 +914,14 @@ function modelKey(provider, model) {
             `${message.metadata.model}`
           );
         }
-
+          content.appendChild(
+  renderMessageContent(message.content || "")
+);
         meta.textContent = parts.join(" · ");
         wrapper.appendChild(meta);
       }
 
-      messagesElement.appendChild(wrapper);
+      messagesElement.appendChild(wrapper); 
     }
 
     function renderHistory(history) {
