@@ -802,8 +802,13 @@ function modelKey(provider, model) {
 
       const content = document.createElement("div");
 content.className = "message-content";
-//content.appendChild(
-//  renderMessageContent(message.content || ""));
+       content.appendChild(
+  renderMessageContent(message.content || ""));
+        meta.textContent = parts.join(" · ");
+        wrapper.appendChild(meta);
+     
+content.appendChild(
+ renderMessageContent(message.content || ""));
 wrapper.appendChild(content);
 
       if (message.created_at || message.metadata?.model) {
@@ -821,11 +826,7 @@ wrapper.appendChild(content);
           );
         }
         
-          content.appendChild(
-  renderMessageContent(message.content || ""));
-        meta.textContent = parts.join(" · ");
-        wrapper.appendChild(meta);
-      }
+          }
       messagesElement.appendChild(wrapper); 
     }
     
