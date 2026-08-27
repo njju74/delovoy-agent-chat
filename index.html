@@ -18,7 +18,7 @@
       --slid: #2d4057;
       --zel: #27f714;
       --spich: #1d4e59;
-      --user: #2d2863;
+      --user: #0d516e;
       --assistant: #1b353d;
       --mur: #01050d;
       --codebl: #999fa8;
@@ -66,8 +66,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: var(--hed);
-  border-bottom: 1px solid  var(--line);
+ background: var(--hed);
 }
 
 .code-language {
@@ -80,12 +79,9 @@
   gap: 5px;
   align-items: center;
   padding: 4px 8px;
-  border: 1px solid var(--zel);
   border-radius: 6px;
-  background: var(--mur);
-  color:var(--text);
   cursor: pointer;
-  font-size: 12px;
+ 
 }
 
 .copy-code-button:hover {
@@ -106,22 +102,20 @@
   line-height: 1.5;
 }
     .conversation-row {
-     
-      border-color: var(--line);
-      width: 260px;
-      gap: 5px;
+     border-color: var(--line);
+      gap: 10px;
       align-items: stretch;
     }
 
     .conversation-open {
       flex: 1;
-      border: 1px solid transparent;
+      border: 1px solid var(--line);
       border-radius: 8px;
       padding: 10px;
-      background: transparent;
+      background: var(--bg);
       color: var(--text);
       text-align: left;
-      width: 285px;
+      width: 300px;
       cursor: pointer;
     }
 
@@ -138,7 +132,7 @@
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid var(--accent);
+      border: 1px solid green;
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
@@ -148,8 +142,6 @@
 
 .sidebar {
       width: auto;
-      border-right: 1px solid var(--line);
-      background: var(--card-2);
     }
 
     .sidebar-head {
@@ -157,7 +149,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px;
-      border-bottom: 1px solid var(--line);
+     
     }
 
     .sidebar-head h2 {
@@ -166,16 +158,14 @@
     }
 
     .sidebar-head button {
-      width: 285px;
+     
       padding: 5px 9px;
        border-right: 1px solid var(--line);
     }
 
     .conversation-list {
-      width: 285px;
-     
-      gap: 5px;
-      padding: 8px;
+      gap: 10px;
+      padding: 10px;
        border-right: 1px solid var(--line);
     }
 
@@ -310,13 +300,6 @@
     }
 
     button {
-      border: 0;
-      border-radius: 8px;
-      padding: 9px 12px;
-      background: var(--accent);
-      color: var(--bg);
-    
-      cursor: pointer;
     }
 
     button:disabled {
@@ -359,9 +342,6 @@
       display: flex;
       flex: 1;
       min-height: 0;
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
       overflow: hidden;
       background: var(--card);
     }
@@ -381,11 +361,10 @@
     }
 
     .message {
-      max-width: 82%;
+      max-width: 100%;
       margin: 0 0 14px;
       padding: 9px 11px;
       font-size: 13px;
-      border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
       line-height: 1.42;
@@ -452,7 +431,7 @@
       align-items: center;
       margin-top: 10px;
        color: var(--text);
-      font-size: 9px;
+     
       
     }
 
