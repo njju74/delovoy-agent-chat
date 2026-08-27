@@ -615,31 +615,10 @@
     const STORAGE_KEY = "delovoy_agent_conversation_id";
 
     const messagesElement = document.getElementById("messages");
-    
-const scrollChatBottomButton =
-  document.getElementById("scroll-chat-bottom");
-
-scrollChatTopButton?.addEventListener("click", () => {
-  messagesElement.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-});
-
-scrollChatBottomButton?.addEventListener("click", () => {
-  messagesElement.scrollTo({
-    top: messagesElement.scrollHeight,
-    behavior: "smooth"
-  });
-});
-
-
-
-    
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
     const newChatButton = document.getElementById("new-chat-button");
-const scrollChatTopButton =
+    const scrollChatTopButton =
   document.getElementById("scroll-chat-top");
 
 
@@ -669,6 +648,25 @@ const scrollChatTopButton =
     const refreshConversationsButton =
       document.getElementById("refresh-conversations");
 
+    const scrollChatBottomButton =
+  document.getElementById("scroll-chat-bottom");
+
+scrollChatTopButton?.addEventListener("click", () => {
+  messagesElement.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
+scrollChatBottomButton?.addEventListener("click", () => {
+  messagesElement.scrollTo({
+    top: messagesElement.scrollHeight,
+    behavior: "smooth"
+  });
+});
+
+
+    
     let models = {};
     let conversationId = null;
 
