@@ -18,7 +18,7 @@
       --slid: #2d4057;
       --zel: #27f714;
       --spich: #1d4e59;
-      --user: #0b336b;
+      --user: #144040;
       --assistant: #1b353d;
       --mur: #01050d;
       --codebl: #999fa8;
@@ -58,7 +58,7 @@
   overflow: hidden;
   border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: var(--line);
+  background: var(--bg);
 }
 
 .code-block-header {
@@ -66,7 +66,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: var(--text);
+  background: var(--bg);
   border-bottom: 1px solid  var(--mur);
 }
 
@@ -107,6 +107,7 @@
 }
     .conversation-row {
       display: flex;
+      width: 285px;
       gap: 5px;
       align-items: stretch;
     }
@@ -119,13 +120,14 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      font-weight: 400;
+      width: 285px;
       cursor: pointer;
     }
 
     .conversation-open:hover {
       border-color: var(--line);
       background: var(--card);
+      width: 285px;
     }
 
     .conversation-row.active .conversation-open {
@@ -167,6 +169,7 @@
     .sidebar-head button {
       width: 285px;
       padding: 5px 9px;
+       border-right: 1px solid var(--line);
     }
 
     .conversation-list {
@@ -174,6 +177,7 @@
       display: grid;
       gap: 5px;
       padding: 8px;
+       border-right: 1px solid var(--line);
     }
 
     .conversation-item {
@@ -232,7 +236,7 @@
       }
 
       .sidebar {
-        width: 50%;
+        width: 100%;
         flex-basis: auto;
         max-height: 200px;
         border-right: 0;
