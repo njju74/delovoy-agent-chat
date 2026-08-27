@@ -51,9 +51,9 @@
 .code-block {
   margin: 12px 0;
   overflow: hidden;
-  border: 1px solid #d9dee8;
+  border: 1px solid #01050d;
   border-radius: 8px;
-  background: #f6f8fa;
+  background: #0cf24d;
 }
 
 .code-block-header {
@@ -61,7 +61,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #edf1f5;
+  background: #0cf24d;
   border-bottom: 1px solid #d9dee8;
 }
 
@@ -77,14 +77,14 @@
   padding: 4px 8px;
   border: 1px solid #c8ced8;
   border-radius: 6px;
-  background: #fff;
+  background: #0cf24d;
   color: #344054;
   cursor: pointer;
   font-size: 12px;
 }
 
 .copy-code-button:hover {
-  background: #e8eef5;
+  background: #0cf24d;
 }
 
 .code-block pre {
@@ -125,7 +125,7 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: #1a4643;
+      background: #0cf24d;
     }
 
     .conversation-delete {
@@ -187,7 +187,7 @@
 
     .conversation-item.active {
       border-color: var(--accent);
-      background: #1a4643;
+      background: #0cf24d;
     }
 
     .conversation-title {
@@ -540,7 +540,21 @@
     </div>
 
         
-        <button
+      
+
+
+
+    
+  </div>
+</section>
+
+
+    <section class="composer">
+      <textarea
+        id="message-input"
+        placeholder="Напишите задачу или вопрос..."
+      ></textarea>
+  <button
   id="scroll-up-button"
   class="button-secondary"
   type="button"
@@ -557,20 +571,6 @@
 >
   ↓
 </button>
-
-
-
-    
-  </div>
-</section>
-
-
-    <section class="composer">
-      <textarea
-        id="message-input"
-        placeholder="Напишите задачу или вопрос..."
-      ></textarea>
-
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
