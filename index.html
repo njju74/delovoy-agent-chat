@@ -67,8 +67,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: var(--cher);
-  border-bottom: 1px solid  var(--line);
+  background: var(--muted);
+  border-bottom: 1px solid  var(--mur);
 }
 
 .code-language {
@@ -81,10 +81,10 @@
   gap: 5px;
   align-items: center;
   padding: 4px 8px;
-  border: 1px solid var(--cher);
+  border: 1px solid var(--zel);
   border-radius: 6px;
   background: var(--mur);
-  color:var(--bg);
+  color:var(--muted);
   cursor: pointer;
   font-size: 12px;
 }
@@ -162,14 +162,16 @@
 
     .sidebar-head h2 {
       margin: 0;
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .sidebar-head button {
+      width: 285px;
       padding: 5px 9px;
     }
 
     .conversation-list {
+      width: 285px;
       display: grid;
       gap: 5px;
       padding: 8px;
@@ -187,16 +189,19 @@
     }
 
     .conversation-item:hover {
+      width: 285px;
       border-color: var(--line);
       background: var(--card);
     }
 
     .conversation-item.active {
+     width: 285px;
       border-color: var(--accent);
       background: var(--zel);
     }
 
     .conversation-title {
+      
       display: block;
       overflow: hidden;
       font-size: 13px;
@@ -228,7 +233,7 @@
       }
 
       .sidebar {
-        width: 100%;
+        width: 50%;
         flex-basis: auto;
         max-height: 200px;
         border-right: 0;
@@ -241,7 +246,7 @@
       }
 
       .conversation-item {
-        min-width: 220px;
+        min-width: 20px;
       }
     }
 
@@ -474,7 +479,7 @@
 </head>
 
 <body>
-  <div class="app">
+  <div class="controls">
     <header>
       <div>
         <h1>Деловой агент — личный ассистент</h1>
