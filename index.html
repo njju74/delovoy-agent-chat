@@ -481,16 +481,17 @@
         <a class="memory-link" href="/memory.html">
           📚 Память и документы
         </a>
-      </div>
-
-      <div class="controls">
-<button
+        <button
   id="toggle-sidebar"
   class="button-secondary"
   type="button"
 >
   ☰ Диалоги
  </button>
+      </div>
+
+      <div class="controls">
+
 
         <button
           id="new-chat-button"
@@ -561,25 +562,7 @@
         <p id="chat-status" class="chat-status">
           Готовим чат...
         </p>
- <!---------------КНОПКИ прокрутки чата-------------------->
-<button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
 
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
- <!---------------КНОПКИ прокрутки чата-------------------->
         <button id="send-button" type="button">
           Отправить
         </button>
@@ -1386,4 +1369,27 @@ function updateSidebarState(isHidden) {
     initializeChat();
   </script>
 </body>
+  
+   <!---------------КНОПКИ прокрутки чата-------------------->
+  <div>
+<button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
+
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
+    </div>
+ <!---------------КНОПКИ прокрутки чата-------------------->
+    
 </html>
