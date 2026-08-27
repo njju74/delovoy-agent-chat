@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+
   <title>Деловой агент — личный ассистент</title> 
 
   <style>
@@ -103,7 +103,6 @@
     .conversation-row {
       display: flex;
       gap: 5px;
-      font-weight: 400;
       align-items: stretch;
     }
 
@@ -126,7 +125,7 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: #047a57;
+      background: #0cf24d;
     }
 
     .conversation-delete {
@@ -140,8 +139,8 @@
     }
 
 .sidebar {
-      width: 400px;
-      flex: 0 0 400px;
+      width: 285px;
+      flex: 0 0 285px;
       overflow-y: auto;
       border-right: 1px solid var(--line);
       background: var(--card-2);
@@ -275,7 +274,6 @@
       flex-wrap: wrap;
       justify-content: flex-end;
       align-items: center;
-       font-size: 10px;
       gap: 8px;
     }
 
@@ -477,21 +475,19 @@
         <p class="sub">
           Рабочий чат с памятью проектов, PostgreSQL и pgvector.
         </p>
-<div class="controls">
+
         <a class="memory-link" href="/memory.html">
           📚 Память и документы
         </a>
-        
-        <button
+      </div>
+
+      <div class="controls">
+<button
   id="toggle-sidebar"
   class="button-secondary"
   type="button"
 >
   ☰ Диалоги
- </button>
-      </div>
- 
-      <div class="controls">
 
 
         <button
@@ -514,7 +510,6 @@
           Загружаем модель...
         </p>
       </div>
-        </div>
     </header>
 
     <section class="chat-shell">
@@ -559,7 +554,23 @@
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
       ></textarea>
-  
+  <button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
+
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -1371,7 +1382,4 @@ function updateSidebarState(isHidden) {
     initializeChat();
   </script>
 </body>
-  
-  
-    
 </html>
