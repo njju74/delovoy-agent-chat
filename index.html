@@ -8,16 +8,18 @@
 
   <style>
     :root {
+      --accent: ##0cf24d;
       --bg: #0f1620; 
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
-      --muted: #9aabbd;
-      --accent: #61d4b3;
-      --line: #2d4057;
-      --danger: #f87171;
-      --user: #1d5a55;
-      --assistant: #1b2a3d;
+      --hed: #9aabbd;
+      --slid: #2d4057;
+      --zel: #27f714;
+      --user: #1d4e59;
+      --assistant: #1b353d;
+      --codebl: #01050d;
+      
     }
 
     * {
@@ -51,9 +53,9 @@
 .code-block {
   margin: 12px 0;
   overflow: hidden;
-  border: 1px solid #01050d;
+  border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: #0cf24d;
+  background: var(--zel);
 }
 
 .code-block-header {
@@ -61,7 +63,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #0cf24d;
+  background: var(--zel);
   border-bottom: 1px solid #d9dee8;
 }
 
@@ -77,14 +79,14 @@
   padding: 4px 8px;
   border: 1px solid #c8ced8;
   border-radius: 6px;
-  background: #0cf24d;
+  background: var(--zel);
   color: #344054;
   cursor: pointer;
   font-size: 12px;
 }
 
 .copy-code-button:hover {
-  background: #0cf24d;
+  background: var(--zel);
 }
 
 .code-block pre {
@@ -125,7 +127,7 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: #0cf24d;
+      background: var(--zel);
     }
 
     .conversation-delete {
@@ -187,7 +189,7 @@
 
     .conversation-item.active {
       border-color: var(--accent);
-      background: #0cf24d;
+      background: var(--zel);
     }
 
     .conversation-title {
@@ -301,7 +303,7 @@
       border-radius: 8px;
       padding: 9px 12px;
       background: var(--accent);
-      color: #0f1620;
+      color: var(--bg);
       font-weight: 700;
       cursor: pointer;
     }
