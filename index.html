@@ -176,7 +176,7 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      font-weight: 400;
+      font-weight: 200;
     }
 
     .conversation-item:hover {
@@ -193,7 +193,7 @@
       display: block;
       overflow: hidden;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 500;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -301,7 +301,7 @@
       padding: 9px 12px;
       background: var(--accent);
       color: #0f1620;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
     }
 
@@ -464,9 +464,9 @@
   </style>
 </head>
 <body>
-  <div class="app">
+   <div class="app">
     <header>
-      <div>
+     <div>
         <h1>Деловой агент — личный ассистент</h1>
         <p class="sub">
           Рабочий чат с памятью проектов, PostgreSQL и pgvector.
@@ -475,7 +475,7 @@
           📚 Память и документы
         </a>
       </div>
-
+		
       <div class="controls">
 <button
   id="toggle-sidebar"
@@ -483,8 +483,7 @@
   type="button"
 >
   ☰ Диалоги
-
-
+</button>
         <button
           id="new-chat-button"
           class="button-secondary"
@@ -1347,7 +1346,7 @@ function updateSidebarState(isHidden) {
 
     initializeChat();
   </script>
-  <div>
+  
     <button
   id="scroll-up-button"
   class="button-secondary"
@@ -1365,6 +1364,6 @@ function updateSidebarState(isHidden) {
 >
   ↓
 </button>
-</div>
+
 </body>
 </html>
