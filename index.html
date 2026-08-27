@@ -13,12 +13,15 @@
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
+      --line: #f1f2e9;
       --hed: #9aabbd;
       --slid: #2d4057;
       --zel: #27f714;
-      --user: #1d4e59;
+      --spich: #1d4e59;
+      --user: #0b336b;
       --assistant: #1b353d;
-      --codebl: #01050d;
+      --mur: #01050d;
+      --codebl: #999fa8;
       
     }
 
@@ -55,7 +58,7 @@
   overflow: hidden;
   border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: var(--zel);
+  background: var(--line);
 }
 
 .code-block-header {
@@ -63,12 +66,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: var(--zel);
-  border-bottom: 1px solid #d9dee8;
+  background: var(--text);
+  border-bottom: 1px solid  var(--mur);
 }
 
 .code-language {
-  color: #667085;
+  color: var(--mur);
   font: 12px monospace;
 }
 
@@ -77,10 +80,10 @@
   gap: 5px;
   align-items: center;
   padding: 4px 8px;
-  border: 1px solid #c8ced8;
+  border: 1px solid var(--zel);
   border-radius: 6px;
-  background: var(--zel);
-  color: #344054;
+  background: var(--mur);
+  color:var(--text);
   cursor: pointer;
   font-size: 12px;
 }
@@ -127,16 +130,16 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: var(--zel);
+      background: var(--spich);
     }
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid #8f3f49;
+      border: 1px solid var(--accent);
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
-      color: #ff9aa6;
+      color: var(--zel);
       cursor: pointer;
     }
 
@@ -158,14 +161,16 @@
 
     .sidebar-head h2 {
       margin: 0;
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .sidebar-head button {
+      width: 285px;
       padding: 5px 9px;
     }
 
     .conversation-list {
+      width: 285px;
       display: grid;
       gap: 5px;
       padding: 8px;
@@ -183,20 +188,23 @@
     }
 
     .conversation-item:hover {
+      width: 285px;
       border-color: var(--line);
       background: var(--card);
     }
 
     .conversation-item.active {
+     width: 285px;
       border-color: var(--accent);
       background: var(--zel);
     }
 
     .conversation-title {
+      
       display: block;
       overflow: hidden;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 351;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -205,7 +213,7 @@
       display: -webkit-box;
       overflow: hidden;
       margin-top: 5px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
@@ -214,7 +222,7 @@
 
     .conversation-meta {
       margin-top: 6px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -224,7 +232,7 @@
       }
 
       .sidebar {
-        width: 100%;
+        width: 50%;
         flex-basis: auto;
         max-height: 200px;
         border-right: 0;
@@ -237,7 +245,7 @@
       }
 
       .conversation-item {
-        min-width: 220px;
+        min-width: 20px;
       }
     }
 
@@ -267,7 +275,7 @@
 
     .sub {
       margin: 7px 0 0;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -280,7 +288,7 @@
     }
 
     .controls label {
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -304,7 +312,7 @@
       padding: 9px 12px;
       background: var(--accent);
       color: var(--bg);
-      font-weight: 700;
+      font-weight: 351;
       cursor: pointer;
     }
 
@@ -323,7 +331,7 @@
       width: 100%;
       margin: 0;
       text-align: right;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -365,7 +373,7 @@
       margin: 55px auto;
       max-width: 620px;
       text-align: center;
-      color: var(--muted);
+      color: var(--text);
       line-height: 1.6;
     }
 
@@ -382,13 +390,13 @@
     }
 
     .message.user {
-      margin-left: auto;
+     
       background: var(--user);
       border-bottom-right-radius: 3px;
     }
 
     .message.assistant {
-      margin-right: auto;
+     
       background: var(--assistant);
       border-bottom-left-radius: 3px;
     }
@@ -404,7 +412,7 @@
 
     .message-meta {
       margin-top: 5px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 9px;
     }
 
@@ -425,7 +433,7 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
-      font-size: 13px;
+      font-size: 10px;
       line-height: 1.4;
     }
 
@@ -444,13 +452,14 @@
 
     .chat-status {
       margin: 0;
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--text);
+      font-size: 11px;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 280px) {
       .app {
         padding: 16px;
+        font-size: 10px;
       }
 
       .controls {
@@ -546,17 +555,7 @@
 
 
 
-    
-  </div>
-</section>
-
-
-    <section class="composer">
-      <textarea
-        id="message-input"
-        placeholder="Напишите задачу или вопрос..."
-      ></textarea>
-  <button
+    <button
   id="scroll-up-button"
   class="button-secondary"
   type="button"
@@ -573,6 +572,18 @@
 >
   ↓
 </button>
+  </div>
+</section>
+
+
+    <section class="composer">
+      <textarea
+        id="message-input"
+        placeholder="Напишите задачу или вопрос..."
+      >
+        
+      </textarea>
+  
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
