@@ -21,7 +21,6 @@
       --user: #0b336b;
       --assistant: #1b353d;
       --mur: #01050d;
-      --muted: #f3f70c;
       --codebl: #999fa8;
       
     }
@@ -67,7 +66,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: var(--muted);
+  background: var(--text);
   border-bottom: 1px solid  var(--mur);
 }
 
@@ -84,7 +83,7 @@
   border: 1px solid var(--zel);
   border-radius: 6px;
   background: var(--mur);
-  color:var(--muted);
+  color:var(--text);
   cursor: pointer;
   font-size: 12px;
 }
@@ -214,7 +213,7 @@
       display: -webkit-box;
       overflow: hidden;
       margin-top: 5px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
@@ -223,7 +222,7 @@
 
     .conversation-meta {
       margin-top: 6px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -276,7 +275,7 @@
 
     .sub {
       margin: 7px 0 0;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -289,7 +288,7 @@
     }
 
     .controls label {
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -332,7 +331,7 @@
       width: 100%;
       margin: 0;
       text-align: right;
-      color: var(--muted);
+      color: var(--text);
       font-size: 10px;
     }
 
@@ -374,7 +373,7 @@
       margin: 55px auto;
       max-width: 620px;
       text-align: center;
-      color: var(--muted);
+      color: var(--text);
       line-height: 1.6;
     }
 
@@ -413,7 +412,7 @@
 
     .message-meta {
       margin-top: 5px;
-      color: var(--muted);
+      color: var(--text);
       font-size: 9px;
     }
 
@@ -453,7 +452,7 @@
 
     .chat-status {
       margin: 0;
-      color: var(--muted);
+      color: var(--text);
       font-size: 11px;
     }
 
@@ -479,7 +478,7 @@
 </head>
 
 <body>
-  <div class="controls">
+  <div class="app">
     <header>
       <div>
         <h1>Деловой агент — личный ассистент</h1>
@@ -556,17 +555,7 @@
 
 
 
-    
-  </div>
-</section>
-
-
-    <section class="composer">
-      <textarea
-        id="message-input"
-        placeholder="Напишите задачу или вопрос..."
-      ></textarea>
-  <button
+    <button
   id="scroll-up-button"
   class="button-secondary"
   type="button"
@@ -583,6 +572,18 @@
 >
   ↓
 </button>
+  </div>
+</section>
+
+
+    <section class="composer">
+      <textarea
+        id="message-input"
+        placeholder="Напишите задачу или вопрос..."
+      >
+        
+      </textarea>
+  
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
