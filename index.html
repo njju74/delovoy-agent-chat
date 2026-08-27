@@ -598,23 +598,9 @@
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
       ></textarea>
-  <button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
+ 
 
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
+
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -634,25 +620,6 @@
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
     const newChatButton = document.getElementById("new-chat-button");
-const scrollChatTopButton =
-  document.getElementById("scroll-chat-top");
-
-const scrollChatBottomButton =
-  document.getElementById("scroll-chat-bottom");
-
-scrollChatTopButton?.addEventListener("click", () => {
-  messagesElement.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-});
-
-scrollChatBottomButton?.addEventListener("click", () => {
-  messagesElement.scrollTo({
-    top: messagesElement.scrollHeight,
-    behavior: "smooth"
-  });
-});
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
@@ -1442,6 +1409,29 @@ function updateSidebarState(isHidden) {
     );
 
     initializeChat();
+
+
+const scrollChatTopButton =
+  document.getElementById("scroll-chat-top");
+
+const scrollChatBottomButton =
+  document.getElementById("scroll-chat-bottom");
+
+scrollChatTopButton?.addEventListener("click", () => {
+  messagesElement.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
+scrollChatBottomButton?.addEventListener("click", () => {
+  messagesElement.scrollTo({
+    top: messagesElement.scrollHeight,
+    behavior: "smooth"
+  });
+});
+
+    
   </script>
   <div class="chat-scroll-controls">
   <button
