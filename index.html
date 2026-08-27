@@ -13,12 +13,10 @@
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
-      --line: #27f714;
       --hed: #9aabbd;
       --slid: #2d4057;
       --zel: #27f714;
-      --spich: #1d4e59;
-      --user: #0b336b;
+      --user: #1d4e59;
       --assistant: #1b353d;
       --codebl: #01050d;
       
@@ -129,16 +127,16 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: var(--spich);
+      background: var(--zel);
     }
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid var(--accent);
+      border: 1px solid #8f3f49;
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
-      color: var(--zel);
+      color: #ff9aa6;
       cursor: pointer;
     }
 
@@ -198,7 +196,7 @@
       display: block;
       overflow: hidden;
       font-size: 13px;
-      font-weight: 351;
+      font-weight: 700;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -306,7 +304,7 @@
       padding: 9px 12px;
       background: var(--accent);
       color: var(--bg);
-      font-weight: 351;
+      font-weight: 700;
       cursor: pointer;
     }
 
@@ -384,13 +382,13 @@
     }
 
     .message.user {
-     
+      margin-left: auto;
       background: var(--user);
       border-bottom-right-radius: 3px;
     }
 
     .message.assistant {
-     
+      margin-right: auto;
       background: var(--assistant);
       border-bottom-left-radius: 3px;
     }
