@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
@@ -13,15 +13,14 @@
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
-      --line: #f1f2e9;
+      --line: #27f714;
       --hed: #9aabbd;
       --slid: #2d4057;
       --zel: #27f714;
       --spich: #1d4e59;
-      --user: #0d516e;
+      --user: #0b336b;
       --assistant: #1b353d;
-      --mur: #01050d;
-      --codebl: #999fa8;
+      --codebl: #01050d;
       
     }
 
@@ -58,7 +57,7 @@
   overflow: hidden;
   border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: var(--bg);
+  background: var(--zel);
 }
 
 .code-block-header {
@@ -66,11 +65,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
- background: var(--hed);
+  background: var(--zel);
+  border-bottom: 1px solid #d9dee8;
 }
 
 .code-language {
-  color: var(--mur);
+  color: #667085;
   font: 12px monospace;
 }
 
@@ -79,9 +79,12 @@
   gap: 5px;
   align-items: center;
   padding: 4px 8px;
+  border: 1px solid #c8ced8;
   border-radius: 6px;
+  background: var(--zel);
+  color: #344054;
   cursor: pointer;
- 
+  font-size: 12px;
 }
 
 .copy-code-button:hover {
@@ -102,27 +105,26 @@
   line-height: 1.5;
 }
     .conversation-row {
-     border-color: var(--line);
-      gap: 10px;
+      display: flex;
+      gap: 5px;
       align-items: stretch;
     }
 
     .conversation-open {
       flex: 1;
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: 8px;
       padding: 10px;
-      background: var(--bg);
+      background: transparent;
       color: var(--text);
       text-align: left;
-      width: 300px;
+      font-weight: 400;
       cursor: pointer;
     }
 
     .conversation-open:hover {
       border-color: var(--line);
       background: var(--card);
-      width: 285px;
     }
 
     .conversation-row.active .conversation-open {
@@ -132,7 +134,7 @@
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid green;
+      border: 1px solid var(--accent);
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
@@ -141,7 +143,11 @@
     }
 
 .sidebar {
-      width: auto;
+      width: 285px;
+      flex: 0 0 285px;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--card-2);
     }
 
     .sidebar-head {
@@ -149,24 +155,22 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px;
-     
+      border-bottom: 1px solid var(--line);
     }
 
     .sidebar-head h2 {
       margin: 0;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .sidebar-head button {
-     
       padding: 5px 9px;
-       border-right: 1px solid var(--line);
     }
 
     .conversation-list {
-      gap: 10px;
-      padding: 10px;
-       border-right: 1px solid var(--line);
+      display: grid;
+      gap: 5px;
+      padding: 8px;
     }
 
     .conversation-item {
@@ -177,36 +181,33 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-     
+      font-weight: 400;
     }
 
     .conversation-item:hover {
-      width: 285px;
       border-color: var(--line);
       background: var(--card);
     }
 
     .conversation-item.active {
-     width: 285px;
       border-color: var(--accent);
       background: var(--zel);
     }
 
     .conversation-title {
-      
       display: block;
       overflow: hidden;
       font-size: 13px;
-     
+      font-weight: 351;
       text-overflow: ellipsis;
-     
+      white-space: nowrap;
     }
 
     .conversation-preview {
       display: -webkit-box;
       overflow: hidden;
       margin-top: 5px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
@@ -215,7 +216,7 @@
 
     .conversation-meta {
       margin-top: 6px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -238,7 +239,7 @@
       }
 
       .conversation-item {
-        min-width: 20px;
+        min-width: 220px;
       }
     }
 
@@ -268,7 +269,7 @@
 
     .sub {
       margin: 7px 0 0;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -281,7 +282,7 @@
     }
 
     .controls label {
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -300,6 +301,13 @@
     }
 
     button {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 351;
+      cursor: pointer;
     }
 
     button:disabled {
@@ -317,7 +325,7 @@
       width: 100%;
       margin: 0;
       text-align: right;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -342,6 +350,9 @@
       display: flex;
       flex: 1;
       min-height: 0;
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
       overflow: hidden;
       background: var(--card);
     }
@@ -356,15 +367,16 @@
       margin: 55px auto;
       max-width: 620px;
       text-align: center;
-      color: var(--text);
+      color: var(--muted);
       line-height: 1.6;
     }
 
     .message {
-      max-width: 100%;
+      max-width: 82%;
       margin: 0 0 14px;
       padding: 9px 11px;
       font-size: 13px;
+      border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
       line-height: 1.42;
@@ -387,14 +399,14 @@
       margin-bottom: 4px;
       color: var(--accent);
       font-size: 9px;
-     
+      font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .message-meta {
       margin-top: 5px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 9px;
     }
 
@@ -415,7 +427,7 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
-      font-size: 10px;
+      font-size: 13px;
       line-height: 1.4;
     }
 
@@ -430,21 +442,17 @@
       gap: 10px;
       align-items: center;
       margin-top: 10px;
-       color: var(--text);
-     
-      
     }
 
     .chat-status {
       margin: 0;
-      color: var(--text);
-      font-size: 11px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    @media (max-width: 280px) {
+    @media (max-width: 680px) {
       .app {
         padding: 16px;
-        font-size: 10px;
       }
 
       .controls {
@@ -540,7 +548,17 @@
 
 
 
-    <button
+    
+  </div>
+</section>
+
+
+    <section class="composer">
+      <textarea
+        id="message-input"
+        placeholder="Напишите задачу или вопрос..."
+      ></textarea>
+  <button
   id="scroll-up-button"
   class="button-secondary"
   type="button"
@@ -557,18 +575,6 @@
 >
   ↓
 </button>
-  </div>
-</section>
-
-
-    <section class="composer">
-      <textarea
-        id="message-input"
-        placeholder="Напишите задачу или вопрос..."
-      >
-        
-      </textarea>
-  
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
