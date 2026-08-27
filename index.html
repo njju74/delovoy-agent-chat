@@ -205,30 +205,34 @@
     }
 
     .conversation-title {
-      
+       width: 285px;
       display: block;
       overflow: hidden;
       font-size: 13px;
       font-weight: 351;
       text-overflow: ellipsis;
       white-space: nowrap;
+       border-color: var(--accent);
     }
 
     .conversation-preview {
       display: -webkit-box;
+      width: 260px;
       overflow: hidden;
       margin-top: 5px;
       color: var(--text);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 6;
+       border-color: var(--accent);
     }
 
     .conversation-meta {
       margin-top: 6px;
       color: var(--text);
       font-size: 10px;
+       border-color: var(--accent);
     }
 
     @media (max-width: 780px) {
@@ -330,6 +334,7 @@
       border: 1px solid var(--line);
       background: transparent;
       color: var(--text);
+        font-size: 10px;
     }
 
     .model-status {
@@ -484,22 +489,18 @@
     }
   </style>
 </head>
-
 <body>
   <div class="app">
     <header>
       <div>
         <h1>Деловой агент — личный ассистент</h1>
-
         <p class="sub">
           Рабочий чат с памятью проектов, PostgreSQL и pgvector.
         </p>
-
         <a class="memory-link" href="/memory.html">
           📚 Память и документы
         </a>
       </div>
-
       <div class="controls">
 <button
   id="toggle-sidebar"
@@ -507,24 +508,18 @@
   type="button"
 >
   ☰ Диалоги
-
-
         <button
           id="new-chat-button"
           class="button-secondary"
           type="button">
           ＋ Новый диалог
         </button>
-
         <label for="model-select">Модель:</label>
-
        <select id="model-select" disabled>
   <option value="">
     Загружаем модели...
   </option>
 </select>
-
-
         <p id="model-status" class="model-status">
           Загружаем модель...
         </p>
