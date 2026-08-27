@@ -105,10 +105,8 @@
   font-size: 13px;
   line-height: 1.5;
 }
-    .conversation-row {
+   .conversation-row {
       display: flex;
-      border-color: var(--line);
-      width: 260px;
       gap: 5px;
       align-items: stretch;
     }
@@ -121,28 +119,27 @@
       background: transparent;
       color: var(--text);
       text-align: left;
-      width: 285px;
+      font-weight: 400;
       cursor: pointer;
     }
 
     .conversation-open:hover {
       border-color: var(--line);
       background: var(--card);
-      width: 285px;
     }
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: var(--spich);
+      background: #1a4643;
     }
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid var(--accent);
+      border: 1px solid #8f3f49;
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
-      color: var(--zel);
+      color: #ff9aa6;
       cursor: pointer;
     }
 
@@ -164,21 +161,17 @@
 
     .sidebar-head h2 {
       margin: 0;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .sidebar-head button {
-      width: 285px;
       padding: 5px 9px;
-       border-right: 1px solid var(--line);
     }
 
     .conversation-list {
-      width: 260px;
       display: grid;
-      gap: 8px;
-      padding: 10px;
-       border-right: 1px solid var(--line);
+      gap: 5px;
+      padding: 8px;
     }
 
     .conversation-item {
@@ -193,46 +186,39 @@
     }
 
     .conversation-item:hover {
-      width: 260px;
       border-color: var(--line);
       background: var(--card);
     }
 
     .conversation-item.active {
-     width: 260px;
       border-color: var(--accent);
-      background: var(--zel);
+      background: #1a4643;
     }
 
     .conversation-title {
-       width: 260px;
       display: block;
       overflow: hidden;
       font-size: 13px;
-      font-weight: 351;
+      font-weight: 700;
       text-overflow: ellipsis;
       white-space: nowrap;
-       border-color: var(--accent);
     }
 
     .conversation-preview {
       display: -webkit-box;
-      width: 260px;
       overflow: hidden;
       margin-top: 5px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 6;
-       border-color: var(--accent);
+      -webkit-line-clamp: 2;
     }
 
     .conversation-meta {
       margin-top: 6px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
-       border-color: var(--accent);
     }
 
     @media (max-width: 780px) {
@@ -254,7 +240,7 @@
       }
 
       .conversation-item {
-        min-width: 20px;
+        min-width: 220px;
       }
     }
 
