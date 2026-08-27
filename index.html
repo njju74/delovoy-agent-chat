@@ -13,15 +13,16 @@
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
-      --line: #27f714;
+      --line: #f1f2e9;
       --hed: #9aabbd;
       --slid: #2d4057;
       --zel: #27f714;
       --spich: #1d4e59;
       --user: #0b336b;
       --assistant: #1b353d;
-      --codebl: #01050d;
-      --mur: #999fa8;
+      --mur: #01050d;
+      --muted: #f3f70c;
+      --codebl: #999fa8;
       
     }
 
@@ -58,7 +59,7 @@
   overflow: hidden;
   border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: var(--zel);
+  background: var(--line);
 }
 
 .code-block-header {
@@ -67,11 +68,11 @@
   justify-content: space-between;
   padding: 6px 10px;
   background: var(--cher);
-  border-bottom: 1px solid  var(--zel);
+  border-bottom: 1px solid  var(--line);
 }
 
 .code-language {
-  color: #667085;
+  color: var(--mur);
   font: 12px monospace;
 }
 
@@ -80,7 +81,7 @@
   gap: 5px;
   align-items: center;
   padding: 4px 8px;
-  border: 1px solid var(--zel);
+  border: 1px solid var(--cher);
   border-radius: 6px;
   background: var(--mur);
   color:var(--bg);
@@ -428,7 +429,7 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
-      font-size: 13px;
+      font-size: 10px;
       line-height: 1.4;
     }
 
@@ -448,12 +449,13 @@
     .chat-status {
       margin: 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 280px) {
       .app {
         padding: 16px;
+        font-size: 10px;
       }
 
       .controls {
