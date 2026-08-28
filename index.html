@@ -58,7 +58,7 @@
   overflow: hidden;
   border: 1px solid var(--codebl);
   border-radius: 8px;
-  background: var(--line);
+  background: var(--bg);
 }
 
 .code-block-header {
@@ -378,7 +378,7 @@
     }
 
     .message {
-      max-width: 82%;
+      max-width: 95%;
       margin: 0 0 14px;
       padding: 9px 11px;
       font-size: 13px;
@@ -390,13 +390,13 @@
     }
 
     .message.user {
-     
+      margin-left: auto;
       background: var(--user);
       border-bottom-right-radius: 3px;
     }
 
     .message.assistant {
-     
+     margin-right: auto;
       background: var(--assistant);
       border-bottom-left-radius: 3px;
     }
@@ -875,7 +875,7 @@ function renderMessageContent(content) {
     const copyButton = document.createElement("button");
     copyButton.type = "button";
     copyButton.className = "copy-code-button";
-    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+    copyButton.innerHTML = "⧉ <span></span>";
 
     const pre = document.createElement("pre");
     const code = document.createElement("code");
@@ -887,10 +887,10 @@ function renderMessageContent(content) {
       try {
         await navigator.clipboard.writeText(codeText);
 
-        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+        copyButton.innerHTML = "✓ <span></span>";
 
         setTimeout(() => {
-          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+          copyButton.innerHTML = "⧉ <span></span>";
         }, 1500);
       } catch (error) {
         console.error("Ошибка копирования:", error);
