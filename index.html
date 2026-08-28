@@ -4,25 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Деловой агент — личный ассистент</title> 
+  <title>Деловой агент — личный ассистент</title>
 
   <style>
     :root {
-      --accent: #0cf24d;
-      --bg: #0f1620; 
+      --bg: #0f1620;
       --card: #172233;
       --card-2: #1d2c40;
       --text: #edf3f9;
-      --line: #f1f2e9;
-      --hed: #9aabbd;
-      --slid: #2d4057;
-      --zel: #27f714;
-      --spich: #1d4e59;
-      --user: #0b336b;
-      --assistant: #1b353d;
-      --mur: #01050d;
-      --codebl: #999fa8;
-      
+      --muted: #9aabbd;
+      --accent: #61d4b3;
+      --line: #2d4057;
+      --danger: #f87171;
+      --user: #1d5a55;
+      --assistant: #1b2a3d;
     }
 
     * {
@@ -36,83 +31,7 @@
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
     }
-.chat-shell.sidebar-hidden .sidebar {
-      width: 0;
-      flex-basis: 0;
-      overflow: hidden;
-      border-right: 0;
-    }
-
-    .chat-shell.sidebar-hidden .sidebar-head,
-    .chat-shell.sidebar-hidden .conversation-list {
-      display: none;
-    }
-
-    .message-content {
-  white-space: pre-wrap;
-  line-height: 1.5;
-}
-
-.code-block {
-  margin: 12px 0;
-  overflow: hidden;
-  border: 1px solid var(--codebl);
-  border-radius: 8px;
-  background: var(--bg);
-}
-
-.code-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  background: var(--text);
-  border-bottom: 1px solid  var(--mur);
-}
-
-.code-language {
-  color: var(--mur);
-  font: 12px monospace;
-}
-
-.copy-code-button {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  padding: 4px 8px;
-  border: 1px solid var(--zel);
-  border-radius: 6px;
-  background: var(--mur);
-  color:var(--text);
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.copy-code-button:hover {
-  background: var(--zel);
-}
-
-.code-block pre {
-  margin: 0;
-  padding: 12px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.code-block code {
-  font-family: Consolas, Monaco, monospace;
-  font-size: 13px;
-  line-height: 1.5;
-}
     .conversation-row {
- flex: 1;
-      overflow-y: auto;
-       overflow-x: auto;
-      padding: 13px;
-
-
-      
       display: flex;
       gap: 5px;
       align-items: stretch;
@@ -137,16 +56,16 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: var(--spich);
+      background: #1a4643;
     }
 
     .conversation-delete {
       align-self: center;
-      border: 1px solid var(--accent);
+      border: 1px solid #8f3f49;
       border-radius: 7px;
       padding: 6px 8px;
       background: transparent;
-      color: var(--zel);
+      color: #ff9aa6;
       cursor: pointer;
     }
 
@@ -168,16 +87,14 @@
 
     .sidebar-head h2 {
       margin: 0;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .sidebar-head button {
-      width: 285px;
       padding: 5px 9px;
     }
 
     .conversation-list {
-      width: 285px;
       display: grid;
       gap: 5px;
       padding: 8px;
@@ -195,23 +112,20 @@
     }
 
     .conversation-item:hover {
-      width: 285px;
       border-color: var(--line);
       background: var(--card);
     }
 
     .conversation-item.active {
-     width: 285px;
       border-color: var(--accent);
-      background: var(--zel);
+      background: #1a4643;
     }
 
     .conversation-title {
-      
       display: block;
       overflow: hidden;
       font-size: 13px;
-      font-weight: 351;
+      font-weight: 700;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -220,7 +134,7 @@
       display: -webkit-box;
       overflow: hidden;
       margin-top: 5px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 11px;
       line-height: 1.4;
       -webkit-box-orient: vertical;
@@ -229,7 +143,7 @@
 
     .conversation-meta {
       margin-top: 6px;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -239,7 +153,7 @@
       }
 
       .sidebar {
-        width: 50%;
+        width: 100%;
         flex-basis: auto;
         max-height: 200px;
         border-right: 0;
@@ -252,7 +166,7 @@
       }
 
       .conversation-item {
-        min-width: 20px;
+        min-width: 220px;
       }
     }
 
@@ -282,7 +196,7 @@
 
     .sub {
       margin: 7px 0 0;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -295,7 +209,7 @@
     }
 
     .controls label {
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -318,8 +232,8 @@
       border-radius: 8px;
       padding: 9px 12px;
       background: var(--accent);
-      color: var(--bg);
-      font-weight: 351;
+      color: #0f1620;
+      font-weight: 700;
       cursor: pointer;
     }
 
@@ -338,7 +252,7 @@
       width: 100%;
       margin: 0;
       text-align: right;
-      color: var(--text);
+      color: var(--muted);
       font-size: 10px;
     }
 
@@ -370,29 +284,28 @@
       background: var(--card);
     }
 
- .messages {
+    .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 13px;
+      padding: 18px;
     }
 
     .empty-state {
       margin: 55px auto;
       max-width: 620px;
       text-align: center;
-      color: var(--text);
+      color: var(--muted);
       line-height: 1.6;
     }
 
     .message {
-      max-width: 95%;
+      max-width: 82%;
       margin: 0 0 14px;
-      padding: 9px 11px;
-      font-size: 13px;
+      padding: 12px 14px;
       border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
-      line-height: 1.42;
+      line-height: 1.55;
       overflow-wrap: anywhere;
     }
 
@@ -403,24 +316,24 @@
     }
 
     .message.assistant {
-     margin-right: auto;
+      margin-right: auto;
       background: var(--assistant);
       border-bottom-left-radius: 3px;
     }
 
     .message-role {
-      margin-bottom: 4px;
+      margin-bottom: 7px;
       color: var(--accent);
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .message-meta {
-      margin-top: 5px;
-      color: var(--text);
-      font-size: 9px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 10px;
     }
 
     .composer {
@@ -440,8 +353,6 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
-      font-size: 10px;
-      line-height: 1.4;
     }
 
     textarea:focus {
@@ -459,14 +370,13 @@
 
     .chat-status {
       margin: 0;
-      color: var(--text);
-      font-size: 11px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    @media (max-width: 280px) {
+    @media (max-width: 680px) {
       .app {
         padding: 16px;
-        font-size: 10px;
       }
 
       .controls {
@@ -500,18 +410,11 @@
       </div>
 
       <div class="controls">
-<button
-  id="toggle-sidebar"
-  class="button-secondary"
-  type="button"
->
-  ☰ Диалоги
-
-
         <button
           id="new-chat-button"
           class="button-secondary"
-          type="button">
+          type="button"
+        >
           ＋ Новый диалог
         </button>
 
@@ -556,29 +459,6 @@
     <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
-
-        
-      
-
-
-
-    <button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
-
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
   </div>
 </section>
 
@@ -587,10 +467,8 @@
       <textarea
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
-      >
-        
-      </textarea>
-  
+      ></textarea>
+
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -614,23 +492,7 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
-
-    const chatShell =
-      document.querySelector(".chat-shell");
-
-    const toggleSidebarButton =
-      document.getElementById("toggle-sidebar");
-
-    const SIDEBAR_STORAGE_KEY =
-      "delovoy_agent_sidebar_hidden";
-
     
-    const scrollUpButton =
-      document.getElementById("scroll-up-button");
-
-    const scrollDownButton =
-      document.getElementById("scroll-down-button");
-
     const conversationList =
       document.getElementById("conversation-list");
 
@@ -790,145 +652,49 @@ function modelKey(provider, model) {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
 
-  function renderMessage(message) {
-  const role = message.role === "user"
-    ? "user"
-    : "assistant";
+    function renderMessage(message) {
+      const role = message.role === "user"
+        ? "user"
+        : "assistant";
 
-  const wrapper = document.createElement("div");
-  wrapper.className = `message ${role}`;
+      const wrapper = document.createElement("div");
+      wrapper.className = `message ${role}`;
 
-  const roleLabel = document.createElement("div");
-  roleLabel.className = "message-role";
-  roleLabel.textContent = role === "user"
-    ? "Вы"
-    : "Деловой агент";
+      const roleLabel = document.createElement("div");
+      roleLabel.className = "message-role";
+      roleLabel.textContent = role === "user"
+        ? "Вы"
+        : "Деловой агент";
 
-  const content = document.createElement("div");
-  content.className = "message-content";
+      const content = document.createElement("div");
+      content.textContent = message.content || "";
 
-  const messageText = message.content || "";
+      wrapper.append(roleLabel, content);
 
-  if (role === "assistant") {
-    // Для ответа ассистента обрабатываем блоки ```...```
-    content.appendChild(
-      renderMessageContent(messageText)
-    );
-  } else {
-    // Вопрос пользователя показываем обычным текстом
-    content.textContent = messageText;
-  }
+      if (message.created_at || message.metadata?.model) {
+        const meta = document.createElement("div");
+        meta.className = "message-meta";
 
-  wrapper.append(roleLabel, content);
+        const parts = [];
 
-  if (message.created_at || message.metadata?.model) {
-    const meta = document.createElement("div");
-    meta.className = "message-meta";
+        if (message.created_at) {
+          parts.push(formatDate(message.created_at));
+        }
 
-    const parts = [];
+        if (message.metadata?.model) {
+          parts.push(
+            `${message.metadata.provider || "model"} / ` +
+            `${message.metadata.model}`
+          );
+        }
 
-    if (message.created_at) {
-      parts.push(formatDate(message.created_at));
-    }
-
-    if (message.metadata?.model) {
-      parts.push(
-        `${message.metadata.provider || "model"} / ` +
-        `${message.metadata.model}`
-      );
-    }
-
-    meta.textContent = parts.join(" · ");
-    wrapper.appendChild(meta);
-  }
-
-  messagesElement.appendChild(wrapper);
-}
-function renderMessageContent(content) {
-  const fragment = document.createDocumentFragment();
-
-  const codeBlockRegex =
-    /```([a-zA-Z0-9_+-]*)[ \t]*\n?([\s\S]*?)```/g;
-
-  let lastIndex = 0;
-  let match;
-
-  while ((match = codeBlockRegex.exec(content)) !== null) {
-    // Обычный текст перед блоком кода
-    const textBefore = content.slice(lastIndex, match.index);
-
-    if (textBefore) {
-      const textElement = document.createElement("div");
-      textElement.className = "message-content";
-      textElement.textContent = textBefore;
-      fragment.appendChild(textElement);
-    }
-
-    const language = match[1] || "text";
-    const codeText = match[2]
-      .replace(/^\n/, "")
-      .replace(/\n$/, "");
-
-    const codeBlock = document.createElement("div");
-    codeBlock.className = "code-block";
-
-    const header = document.createElement("div");
-    header.className = "code-block-header";
-
-    const languageElement = document.createElement("span");
-    languageElement.className = "code-language";
-    languageElement.textContent = language;
-
-    const copyButton = document.createElement("button");
-    copyButton.type = "button";
-    copyButton.className = "copy-code-button";
-    copyButton.innerHTML = "⧉ <span></span>";
-
-    const pre = document.createElement("pre");
-    const code = document.createElement("code");
-
-    // textContent безопасно отображает HTML, JS и CSS как текст
-    code.textContent = codeText;
-
-    copyButton.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(codeText);
-
-        copyButton.innerHTML = "✓ <span></span>";
-
-        setTimeout(() => {
-          copyButton.innerHTML = "⧉ <span></span>";
-        }, 1500);
-      } catch (error) {
-        console.error("Ошибка копирования:", error);
-        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
+        meta.textContent = parts.join(" · ");
+        wrapper.appendChild(meta);
       }
-    });
 
-    header.appendChild(languageElement);
-    header.appendChild(copyButton);
+      messagesElement.appendChild(wrapper);
+    }
 
-    pre.appendChild(code);
-    codeBlock.appendChild(header);
-    codeBlock.appendChild(pre);
-
-    fragment.appendChild(codeBlock);
-
-    lastIndex = codeBlockRegex.lastIndex;
-  }
-
-  // Обычный текст после последнего блока
-  const textAfter = content.slice(lastIndex);
-
-  if (textAfter) {
-    const textElement = document.createElement("div");
-    textElement.className = "message-content";
-    textElement.textContent = textAfter;
-    fragment.appendChild(textElement);
-  }
-
-  return fragment;
-}
     function renderHistory(history) {
       messagesElement.innerHTML = "";
 
@@ -1351,52 +1117,6 @@ setStatus(
 refreshConversationsButton.addEventListener(
       "click",
       loadConversations
-    );
-scrollUpButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: -Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
-
-    scrollDownButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
-function updateSidebarState(isHidden) {
-      chatShell.classList.toggle(
-        "sidebar-hidden",
-        isHidden
-      );
-
-      toggleSidebarButton.textContent = isHidden
-        ? "☰ Показать диалоги"
-        : "☰ Скрыть диалоги";
-
-      localStorage.setItem(
-        SIDEBAR_STORAGE_KEY,
-        isHidden ? "true" : "false"
-      );
-    }
-
-    toggleSidebarButton.addEventListener("click", () => {
-      const isHidden = chatShell.classList.contains(
-        "sidebar-hidden"
-      );
-
-      updateSidebarState(!isHidden);
-    });
-
-    updateSidebarState(
-      localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true"
     );
 
     initializeChat();
