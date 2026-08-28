@@ -4,21 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Деловой агент — личный ассистент</title>
+  <title>Деловой агент — личный ассистент</title> 
 
   <style>
     :root {
-    --bg: #0f1620;
-    --card: #172233;
-    --card-2: #1d2c40;
-    --text: #edf3f9;
-    --muted: #b3c9e1;
-    --accent: #61d4b3;
-    --accent2: #9aabbd;
-    --line: #495c73;
-    --danger: #ff9aa6;
-    --user: #1d5a55;
-    --assistant: #1b2a3d;
+      --bg: #0f1620; 
+      --card: #172233;
+      --card-2: #1d2c40;
+      --text: #edf3f9;
+      --muted: #9aabbd;
+      --accent: #61d4b3;
+      --line: #2d4057;
+      --danger: #f87171;
+      --user: #1d5a55;
+      --assistant: #1b2a3d;
     }
 
     * {
@@ -31,20 +30,9 @@
       background: var(--bg);
       color: var(--text);
       font-family: Inter, Arial, sans-serif;
-      font-size: 13px;
     }
-      
-
-     .conversation-row {
-    display: flex;
-    width: 97%;
-    gap: 5px;
-    margin-right: 10px;
-    margin-left: 5px;
-    align-items: stretch;
-    justify-content: flex-end;
-    }
-    .chat-shell.sidebar-hidden .sidebar {
+    
+.chat-shell.sidebar-hidden .sidebar {
       width: 0;
       flex-basis: 0;
       overflow: hidden;
@@ -55,21 +43,84 @@
     .chat-shell.sidebar-hidden .conversation-list {
       display: none;
     }
-    .conversation-open {
-   flex: 1;
-    width: 30%;
-    max-width: 270px;
-    border: 1px solid var(--text);
-    border-radius: 10px;
-    padding: 10px;
-    background: transparent;
-    color: var(--text);
-    margin: 5px;
-    text-align: left;
-    font-weight: 400;
-    cursor: pointer;
+
+    .message-content {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.code-block {
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px solid #01050d;
+  border-radius: 8px;
+  background: #0cf24d;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #0cf24d;
+  border-bottom: 1px solid #d9dee8;
+}
+
+.code-language {
+  color: #667085;
+  font: 12px monospace;
+}
+
+.copy-code-button {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid #c8ced8;
+  border-radius: 6px;
+  background: #0cf24d;
+  color: #344054;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copy-code-button:hover {
+  background: #0cf24d;
+}
+
+
+.code-block pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-block code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+    .conversation-row {
+      display: flex;
+      gap: 5px;
+      align-items: stretch;
     }
 
+    .conversation-open {
+      flex: 1;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 10px;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    
     .conversation-open:hover {
       border-color: var(--line);
       background: var(--card);
@@ -77,34 +128,36 @@
 
     .conversation-row.active .conversation-open {
       border-color: var(--accent);
-      background: #1a4643;
+      background: #0cf24d;
     }
 
     .conversation-delete {
-    align-self: center;
-    border: 1px solid #9aabbd;
-    border-radius: 6px;
-    padding: 1px 5px;
-    background: transparent;
-    color: #9aabbd;
-    cursor: pointer;
+      align-self: center;
+      border: 1px solid #8f3f49;
+      border-radius: 7px;
+      padding: 6px 8px;
+      background: transparent;
+      color: #ff9aa6;
+      cursor: pointer;
     }
 
 .sidebar {
-   width: 30%;
-    border-right: 2px solid var(--line);
-    background: var(--card-2);
+      width: 285px;
+      flex: 0 0 285px;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--card-2);
     }
 
     .sidebar-head {
       display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px;
-    border-bottom: 2px solid var(--line);
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
     }
 
-    .sidebar-head h2 {
+   .sidebar-head h2 {
       margin: 0;
       font-size: 15px;
     }
@@ -114,11 +167,9 @@
     }
 
     .conversation-list {
-   display: contents;
-    gap: 5px;
-    padding: 8px;
-    align-items: stretch;
-    font-size: 12px;
+      display: grid;
+      gap: 5px;
+      padding: 8px;
     }
 
     .conversation-item {
@@ -132,6 +183,7 @@
       font-weight: 400;
     }
 
+    
     .conversation-item:hover {
       border-color: var(--line);
       background: var(--card);
@@ -139,29 +191,30 @@
 
     .conversation-item.active {
       border-color: var(--accent);
-      background: #1a4643;
+      background: #0cf24d;
     }
 
     .conversation-title {
       display: block;
       overflow: hidden;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 13px;
+      font-weight: 700;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .conversation-preview {
-    display: -webkit-box;
-    overflow: hidden;
-    margin-top: 5px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.4;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+      display: -webkit-box;
+      overflow: hidden;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
-
+    
+   
     .conversation-meta {
       margin-top: 6px;
       color: var(--muted);
@@ -222,20 +275,19 @@
     }
 
     .controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
     }
 
     .controls label {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 10px;
     }
 
-    select,
+   select,
     button,
     textarea {
       font: inherit;
@@ -250,13 +302,13 @@
     }
 
     button {
-    border: 0;
-    border-radius: 8px;
-    padding: 5px 10px;
-    background: var(--accent2);
-    color: #0f1620;
-    font-weight: 500;
-    cursor: pointer;
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: var(--accent);
+      color: #0f1620;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     button:disabled {
@@ -275,7 +327,7 @@
       margin: 0;
       text-align: right;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .model-status.error,
@@ -306,10 +358,10 @@
       background: var(--card);
     }
 
-    .messages {
+ .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 10px;
+      padding: 13px;
     }
 
     .empty-state {
@@ -323,11 +375,12 @@
     .message {
       max-width: 82%;
       margin: 0 0 14px;
-      padding: 12px 14px;
+      padding: 9px 11px;
+      font-size: 13px;
       border: 1px solid var(--line);
       border-radius: 12px;
       white-space: pre-wrap;
-      line-height: 1.55;
+      line-height: 1.42;
       overflow-wrap: anywhere;
     }
 
@@ -344,24 +397,24 @@
     }
 
     .message-role {
-      margin-bottom: 7px;
+      margin-bottom: 4px;
       color: var(--accent);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
-  .message-meta {
-      margin-top: 8px;
+
+    .message-meta {
+      margin-top: 5px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
     }
 
     .composer {
-    border-top: 1px solid var(--line);
-    padding: 3px;
-    background: var(--card-2);
-    height: 230px;
+      border-top: 1px solid var(--line);
+      padding: 14px;
+      background: var(--card-2);
     }
 
     textarea {
@@ -375,6 +428,8 @@
       background: var(--bg);
       color: var(--text);
       outline: none;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     textarea:focus {
@@ -412,54 +467,6 @@
       .message {
         max-width: 94%;
       }
-
-
-.copy-code-button {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  padding: 4px 8px;
-  border: 1px solid #c8ced8;
-  border-radius: 6px;
-  background: #fff;
-  color: #344054;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.copy-code-button:hover {
-  background: #e8eef5;
-}
-
-.code-block pre {
-  margin: 0;
-  padding: 12px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.code-block code {
-  font-family: Consolas, Monaco, monospace;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.code-block {
-  margin: 12px 0;
-  overflow: hidden;
-  border: 1px solid #d9dee8;
-  border-radius: 8px;
-  background: #f6f8fa;
-}
-
-.code-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  background: #edf1f5;
-  border-bottom: 1px solid #d9dee8;
-}
     }
   </style>
 </head>
@@ -480,12 +487,13 @@
       </div>
 
       <div class="controls">
-        <button id="toggle-sidebar"
+<button
+  id="toggle-sidebar"
   class="button-secondary"
   type="button"
 >
   ☰ Диалоги
-</button>
+
 
         <button
           id="new-chat-button"
@@ -513,7 +521,8 @@
   <aside class="sidebar">
     <div class="sidebar-head">
       <h2>Диалоги</h2>
-    <button
+
+      <button
         id="refresh-conversations"
         class="button-secondary"
         type="button"
@@ -531,18 +540,42 @@
   </aside>
 
   <div id="messages" class="messages">
- <div class="empty-state">
+    <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
+
+        
+      
+
+
+
+    
   </div>
 </section>
-  
+
+
     <section class="composer">
       <textarea
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
       ></textarea>
+  <button
+  id="scroll-up-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вверх"
+>
+  ↑
+</button>
 
+<button
+  id="scroll-down-button"
+  class="button-secondary"
+  type="button"
+  title="Прокрутить историю вниз"
+>
+  ↓
+</button>
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -566,6 +599,7 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
+
     const chatShell =
       document.querySelector(".chat-shell");
 
@@ -574,6 +608,13 @@
 
     const SIDEBAR_STORAGE_KEY =
       "delovoy_agent_sidebar_hidden";
+
+    
+    const scrollUpButton =
+      document.getElementById("scroll-up-button");
+
+    const scrollDownButton =
+      document.getElementById("scroll-down-button");
 
     const conversationList =
       document.getElementById("conversation-list");
@@ -734,56 +775,145 @@ function modelKey(provider, model) {
       messagesElement.scrollTop = messagesElement.scrollHeight;
     }
 
+  function renderMessage(message) {
+  const role = message.role === "user"
+    ? "user"
+    : "assistant";
 
+  const wrapper = document.createElement("div");
+  wrapper.className = `message ${role}`;
 
+  const roleLabel = document.createElement("div");
+  roleLabel.className = "message-role";
+  roleLabel.textContent = role === "user"
+    ? "Вы"
+    : "Деловой агент";
 
+  const content = document.createElement("div");
+  content.className = "message-content";
 
+  const messageText = message.content || "";
 
+  if (role === "assistant") {
+    // Для ответа ассистента обрабатываем блоки ```...```
+    content.appendChild(
+      renderMessageContent(messageText)
+    );
+  } else {
+    // Вопрос пользователя показываем обычным текстом
+    content.textContent = messageText;
+  }
 
+  wrapper.append(roleLabel, content);
 
-    function renderMessage(message) {
-      const role = message.role === "user"
-        ? "user"
-        : "assistant";
+  if (message.created_at || message.metadata?.model) {
+    const meta = document.createElement("div");
+    meta.className = "message-meta";
 
-      const wrapper = document.createElement("div");
-      wrapper.className = `message ${role}`;
+    const parts = [];
 
-      const roleLabel = document.createElement("div");
-      roleLabel.className = "message-role";
-      roleLabel.textContent = role === "user"
-        ? "Вы"
-        : "Деловой агент";
-
-      const content = document.createElement("div");
-      content.textContent = message.content || "";
-
-      wrapper.append(roleLabel, content);
-
-      if (message.created_at || message.metadata?.model) {
-        const meta = document.createElement("div");
-        meta.className = "message-meta";
-
-        const parts = [];
-
-        if (message.created_at) {
-          parts.push(formatDate(message.created_at));
-        }
-
-        if (message.metadata?.model) {
-          parts.push(
-            `${message.metadata.provider || "model"} / ` +
-            `${message.metadata.model}`
-          );
-        }
-
-        meta.textContent = parts.join(" · ");
-        wrapper.appendChild(meta);
-      }
-
-      messagesElement.appendChild(wrapper);
+    if (message.created_at) {
+      parts.push(formatDate(message.created_at));
     }
 
+    if (message.metadata?.model) {
+      parts.push(
+        `${message.metadata.provider || "model"} / ` +
+        `${message.metadata.model}`
+      );
+    }
+
+    meta.textContent = parts.join(" · ");
+    wrapper.appendChild(meta);
+  }
+
+  messagesElement.appendChild(wrapper);
+}
+function renderMessageContent(content) {
+  const fragment = document.createDocumentFragment();
+
+  const codeBlockRegex =
+    /```([a-zA-Z0-9_+-]*)[ \t]*\n?([\s\S]*?)```/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(content)) !== null) {
+    // Обычный текст перед блоком кода
+    const textBefore = content.slice(lastIndex, match.index);
+
+    if (textBefore) {
+      const textElement = document.createElement("div");
+      textElement.className = "message-content";
+      textElement.textContent = textBefore;
+      fragment.appendChild(textElement);
+    }
+
+    const language = match[1] || "text";
+    const codeText = match[2]
+      .replace(/^\n/, "")
+      .replace(/\n$/, "");
+
+    const codeBlock = document.createElement("div");
+    codeBlock.className = "code-block";
+
+    const header = document.createElement("div");
+    header.className = "code-block-header";
+
+    const languageElement = document.createElement("span");
+    languageElement.className = "code-language";
+    languageElement.textContent = language;
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "copy-code-button";
+    copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+
+    // textContent безопасно отображает HTML, JS и CSS как текст
+    code.textContent = codeText;
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(codeText);
+
+        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+
+        setTimeout(() => {
+          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+        }, 1500);
+      } catch (error) {
+        console.error("Ошибка копирования:", error);
+        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
+      }
+    });
+
+    header.appendChild(languageElement);
+    header.appendChild(copyButton);
+
+    pre.appendChild(code);
+    codeBlock.appendChild(header);
+    codeBlock.appendChild(pre);
+
+    fragment.appendChild(codeBlock);
+
+    lastIndex = codeBlockRegex.lastIndex;
+  }
+
+  // Обычный текст после последнего блока
+  const textAfter = content.slice(lastIndex);
+
+  if (textAfter) {
+    const textElement = document.createElement("div");
+    textElement.className = "message-content";
+    textElement.textContent = textAfter;
+    fragment.appendChild(textElement);
+  }
+
+  return fragment;
+}
     function renderHistory(history) {
       messagesElement.innerHTML = "";
 
@@ -1207,6 +1337,25 @@ refreshConversationsButton.addEventListener(
       "click",
       loadConversations
     );
+scrollUpButton.addEventListener("click", () => {
+      messagesElement.scrollBy({
+        top: -Math.max(
+          400,
+          messagesElement.clientHeight * 0.8
+        ),
+        behavior: "smooth"
+      });
+    });
+
+    scrollDownButton.addEventListener("click", () => {
+      messagesElement.scrollBy({
+        top: Math.max(
+          400,
+          messagesElement.clientHeight * 0.8
+        ),
+        behavior: "smooth"
+      });
+    });
 function updateSidebarState(isHidden) {
       chatShell.classList.toggle(
         "sidebar-hidden",
@@ -1239,5 +1388,3 @@ function updateSidebarState(isHidden) {
   </script>
 </body>
 </html>
-
-
