@@ -36,6 +36,17 @@
       gap: 5px;
       align-items: stretch;
     }
+.chat-shell.sidebar-hidden .sidebar {
+      width: 0;
+      flex-basis: 0;
+      overflow: hidden;
+      border-right: 0;
+    }
+
+    .chat-shell.sidebar-hidden .sidebar-head,
+    .chat-shell.sidebar-hidden .conversation-list {
+      display: none;
+    }
 
     .conversation-open {
       flex: 1;
@@ -411,6 +422,14 @@
 
       <div class="controls">
         <button
+  id="toggle-sidebar"
+  class="button-secondary"
+  type="button"
+>
+  ☰ Диалоги
+</button>
+
+        <button
           id="new-chat-button"
           class="button-secondary"
           type="button"
@@ -492,7 +511,15 @@
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
-    
+    const chatShell =
+      document.querySelector(".chat-shell");
+
+    const toggleSidebarButton =
+      document.getElementById("toggle-sidebar");
+
+    const SIDEBAR_STORAGE_KEY =
+      "delovoy_agent_sidebar_hidden";
+
     const conversationList =
       document.getElementById("conversation-list");
 
@@ -1117,6 +1144,33 @@ setStatus(
 refreshConversationsButton.addEventListener(
       "click",
       loadConversations
+    );
+function updateSidebarState(isHidden) {
+      chatShell.classList.toggle(
+        "sidebar-hidden",
+        isHidden
+      );
+
+      toggleSidebarButton.textContent = isHidden
+        ? "☰ Показать диалоги"
+        : "☰ Скрыть диалоги";
+
+      localStorage.setItem(
+        SIDEBAR_STORAGE_KEY,
+        isHidden ? "true" : "false"
+      );
+    }
+
+    toggleSidebarButton.addEventListener("click", () => {
+      const isHidden = chatShell.classList.contains(
+        "sidebar-hidden"
+      );
+
+      updateSidebarState(!isHidden);
+    });
+
+    updateSidebarState(
+      localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true"
     );
 
     initializeChat();
