@@ -911,14 +911,14 @@ function renderMessageContent(content) {
       try {
         await navigator.clipboard.writeText(codeText);
 
-        copyButton.innerHTML = "✓ <span>Скопировано</span>";
+        copyButton.innerHTML = "✓";
 
         setTimeout(() => {
-          copyButton.innerHTML = "⧉ <span>Скопировать</span>";
+          copyButton.innerHTML = "⧉";
         }, 1500);
       } catch (error) {
         console.error("Ошибка копирования:", error);
-        copyButton.innerHTML = "⚠ <span>Не удалось скопировать</span>";
+        copyButton.innerHTML = "⚠";
       }
     });
 
