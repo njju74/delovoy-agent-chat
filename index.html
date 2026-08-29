@@ -102,19 +102,30 @@
   line-height: 1.5;
 }
     .conversation-row {
-      display: flex;
+      display: grid;
       gap: 5px;
-      align-items: stretch;
+      padding: 3px;
+      height: 200px;
+      align-content: start;
+      align-items: center; /* Центрирует содержимое по вертикали */
+      height: 200px;
     }
 
     .conversation-open {
-      flex: 1;
-      border: 1px solid transparent;
-      border-radius: 8px;
+      border-radius
+Defines the radii of the outer border edge.
+
+Widely available across major browsers (Baseline since January 2018)
+Learn more
+
+Don’t show: 8px;
+      height: 200px;
+      border-bottom: 2px;
+      width: 270px;
+      color: #8dc1b3;
+      border: 1px solid #aeaf5f;
       padding: 10px;
       background: transparent;
-      color: var(--text);
-      text-align: left;
       font-weight: 400;
       cursor: pointer;
     }
@@ -125,23 +136,24 @@
     }
 
     .conversation-row.active .conversation-open {
-      border-color: var(--accent);
-      background: var(--accent);
+      border-color: #aeaf5f;
+      background: #667085;
     }
 
     .conversation-delete {
-      align-self: center;
-      border: 1px solid var(--accent);
-      border-radius: 7px;
-      padding: 6px 8px;
+      border-radius: 5px;
+      margin-top: -30px;
+      width: 25px;
+      padding: 2px 2px;
+      height: 25px;
       background: transparent;
-      color: var(--line);
+      color: #ff9aa6;
       cursor: pointer;
     }
 
 .sidebar {
-    width: 30%;
-    border-right: 2px solid var(--line);
+    width: 300px;
+    min-width: 100px;
     background: var(--card-2);
     }
 
@@ -163,9 +175,14 @@
     }
 
     .conversation-list {
-      display: grid;
-      gap: 5px;
+      gap: 10px;
+      display: flex;
+      /* height: 240px; */
+      width: 100%;
       padding: 8px;
+      justify-content: flex-start;
+      flex-direction: column;
+      /* flex-wrap: nowrap; */
     }
 
     .conversation-item {
@@ -190,12 +207,13 @@
     }
 
     .conversation-title {
-      display: block;
-      overflow: hidden;
-      font-size: 14px;
+      font-size: 13px;
+      /* text-autospace: normal; */
       font-weight: 500;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+       /* задаём фиксированную ширину */
+      overflow: hidden; /* скрываем текст за пределами ячейки */
+      text-overflow: ellipsis; /* многоточие */
+      /* white-space: nowrap; */ /* запрещаем перенос строки */
     }
 
     .conversation-preview {
@@ -222,15 +240,24 @@
 
       .sidebar {
         width: 100%;
-        flex-basis: auto;
-        max-height: 200px;
+        /* height: 100%; */
+        /* flex-basis: auto; */
+        /* max-height: 200px; */
         border-right: 0;
         border-bottom: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
       }
 
       .conversation-list {
-        display: flex;
-        overflow-x: auto;
+        overflow-y: auto;
+        display: -webkit-box;
+        height: 250px;
+        width: -webkit-fill-available;
+        align-content: space-around;
+        justify-content: end;
+        grid-auto-flow: column;
       }
 
       .conversation-item {
@@ -350,12 +377,23 @@
       border-radius: 12px;
       overflow: hidden;
       background: var(--card);
+      align-content: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
  .messages {
       flex: 1;
-      overflow-y: auto;
+      width: 70%;
+      overflow-y: clip;
       padding: 13px;
+      overflow: auto;
+      display: flex;
+      align-content: flex-end;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
     }
 
     .empty-state {
