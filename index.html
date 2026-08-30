@@ -17,7 +17,7 @@
         --accent2: #9aabbd;
         --line: #495c73;
         --danger: #ff9aa6;
-        --user: #2c5550;
+        --user: #2d4340;
         --assistant: #344357;
 
     }
@@ -132,9 +132,14 @@
       background: var(--card);
     }
 
-    .conversation-row.active .conversation-open {
+    .conversation-row.active {
       border-color: #aeaf5f;
-      background: #667085;
+      background: var(--user);
+    }
+
+    .conversation-row.active:hover {
+       border-color: var(--line);
+      background: var(--card);
     }
 
     .conversation-delete {
