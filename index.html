@@ -1092,20 +1092,28 @@ function renderConversations(conversations) {
               })
             });
 
-            if (!result.ok) {
-              throw new Error(
-                result.message || "Не удалось удалить диалог."
-              );
-            }
+if (conversation.id === conversationId) {
+  // Удаляем активный разговор из списка
+  let conversations = JSON.parse(localStorage.getItem(CONVERSATIONS_KEY)) || [];
+  conversations = conversations.filter(c => c.id !== conversationId);
+  localStorage.setItem(CONVERSATIONS_KEY, JSON.stringify(conversations));
 
-            if (conversation.id === conversationId) {
-              localStorage.removeItem(STORAGE_KEY);
-              conversationId = null;
-
-              await createNewConversation();
-            } else {
-              await loadConversations();
-            }
+  // Проверяем, остались ли другие разговоры
+  if (conversations.length > 0) {
+    // Делаем активным последний из оставшихся
+    const lastConversation = conversations[conversations.length - 1];
+    conversationId = lastConversation.id;
+    localStorage.setItem(STORAGE_KEY, lastConversation.id);
+    await loadConversation(lastConversation); // загружаем его содержимое
+  } else {
+    // Других разговоров нет — создаём новый
+    conversationId = null;
+    localStorage.removeItem(STORAGE_KEY);
+    await createNewConversation();
+  }
+} else {
+  await loadConversations();
+}
           } catch (error) {
             setStatus(
               chatStatus,
