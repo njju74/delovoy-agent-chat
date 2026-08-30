@@ -423,7 +423,7 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: flex-end;
-       height: 1600px;
+       height: 800px;
       overflow-y: auto;
     }
 
@@ -1406,25 +1406,8 @@ refreshConversationsButton.addEventListener(
       "click",
       loadConversations
     );
-scrollUpButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: -Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
 
-    scrollDownButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
+
 function updateSidebarState(isHidden) {
       chatShell.classList.toggle(
         "sidebar-hidden",
@@ -1501,7 +1484,7 @@ function updateSidebarState(isHidden) {
   });
 
   // если список диалогов перерисовывается после загрузки — повторяем фильтр
- // window.reapplySearchFilter = applyFilter;
+ window.reapplySearchFilter = applyFilter;
 })();
   </script>
 
