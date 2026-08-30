@@ -40,6 +40,17 @@
       font-family: Inter, Arial, sans-serif;
       font-size: 14px;
     }
+
+.scroll-btn {
+  position: fixed; right: 24px;
+  width: 40px; height: 40px;
+  border-radius: 50%; border: 1px solid #ddd;
+  background: #fff; cursor: pointer;
+  z-index: 50;                /* выше панели ввода */
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.scroll-btn.up   { bottom: 150px; }
+.scroll-btn.down { bottom: 100px; }
     
     .search-box { position: relative; padding: 8px; }
 .search-box input {
@@ -417,7 +428,7 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
  .messages {
       flex: 1;
       width: 70%;
-      overflow-y: clip;
+      overflow-y: auto;
       padding: 13px;
       overflow: auto;
       display: flex;
@@ -622,7 +633,8 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
 
         
       
-
+  <button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
+<button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
 
 
     
@@ -635,23 +647,7 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
       ></textarea>
-  <button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
-
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
+ 
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -1511,5 +1507,6 @@ function updateSidebarState(isHidden) {
   window.reapplySearchFilter = applyFilter;
 })();
   </script>
+
 </body>
 </html>
