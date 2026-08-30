@@ -1094,9 +1094,9 @@ function renderConversations(conversations) {
 
 if (conversation.id === conversationId) {
   // Удаляем активный разговор из списка
-  let conversations = JSON.parse(localStorage.getItem(CONVERSATIONS_KEY)) || [];
+  let conversations = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   conversations = conversations.filter(c => c.id !== conversationId);
-  localStorage.setItem(CONVERSATIONS_KEY, JSON.stringify(conversations));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
 
   // Проверяем, остались ли другие разговоры
   if (conversations.length > 0) {
