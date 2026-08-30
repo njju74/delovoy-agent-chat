@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
  <!-- Иконки  -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -45,16 +45,16 @@
 .search-box input {
   width: 100%; box-sizing: border-box;
   padding: 8px 28px 8px 10px;
-  border: 1px solid #d0d0d0; border-radius: 8px;
+  border: 1px solid var(--bg); border-radius: 8px;
   font-size: 14px;
 }
 #searchClear {
   position: absolute; right: 14px; top: 50%;
   transform: translateY(-50%);
   border: 0; background: none; cursor: pointer;
-  font-size: 18px; color: #888; display: none;
+  font-size: 18px; color:var(--bg); display: none;
 }
-.search-count { font-size: 12px; color: #888; padding: 4px 2px 0; }
+.search-count { font-size: 12px; color: var(--bg); padding: 4px 2px 0; }
 mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
 .is-hidden { display: none !important; }
     
@@ -553,6 +553,10 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
       </div>
 
       <div class="controls">
+
+
+
+        
 <button
   id="toggle-sidebar"
   class="button-secondary"
@@ -583,6 +587,9 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
       </div>
     </header>
 
+
+
+    <!--  ---------------------- Поиск по странице -----------------------  -->
     <section class="chat-shell">
   <aside class="sidebar">
     <div class="search-box">
@@ -592,9 +599,11 @@ mark { background: #ffe58f; padding: 0 1px; border-radius: 2px; }
     placeholder="Поиск по диалогам…"
     autocomplete="off"
   />
-  <button type="button" id="searchClear" title="Очистить">×</button>
+  <button type="button" id="searchClear" title="Очистить"></button>
   <div id="searchCount" class="search-count"></div>
 </div>
+  <!--  ---------------------- Поиск по странице -----------------------  -->
+    
     <div class="sidebar-head">
       <h2>Диалоги</h2>
 
@@ -1461,13 +1470,15 @@ function updateSidebarState(isHidden) {
     );
 
     initializeChat();
+
+    //   код поиска по странице  ----- начало -------
     (function initSearch() {
   const input = document.getElementById('searchInput');
   const clearBtn = document.getElementById('searchClear');
   const counter = document.getElementById('searchCount');
 
   // ВАЖНО: подставьте свой селектор элемента одного диалога в списке
-  const ITEM_SELECTOR = '.conversation-item';
+  const conversation-open = '.conversation-item';
 
   let timer = null;
 
@@ -1477,7 +1488,7 @@ function updateSidebarState(isHidden) {
 
   function applyFilter() {
     const q = normalize(input.value);
-    const items = document.querySelectorAll(ITEM_SELECTOR);
+    const items = document.querySelectorAll(conversation-open);
     let visible = 0;
 
     items.forEach(item => {
@@ -1510,6 +1521,7 @@ function updateSidebarState(isHidden) {
   // если список диалогов перерисовывается после загрузки — повторяем фильтр
   window.reapplySearchFilter = applyFilter;
 })();
+//   код поиска по странице  ----- конец -------
   </script>
 </body>
 </html>
