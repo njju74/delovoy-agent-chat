@@ -41,6 +41,17 @@
       font-size: 14px;
     }
     
+    .scroll-btn {
+  position: fixed; right: 24px;
+  width: 40px; height: 40px;
+  border-radius: 50%; border: 1px solid #ddd;
+  background: #fff; cursor: pointer;
+  z-index: 50;                /* выше панели ввода */
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.scroll-btn.up   { bottom: 150px; }
+.scroll-btn.down { bottom: 100px; }
+    
 .chat-shell.sidebar-hidden .sidebar {
       width: 0;
       flex-basis: 0;
@@ -168,10 +179,10 @@
     }
 
 .sidebar {
-    width: 300px;
-  /*  min-width: 100px;   */
-    background: var(--card-2);
-    }
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;          /* было overflow-y: auto */
+}
 
     .sidebar-head {
       display: flex;
@@ -191,16 +202,45 @@
     }
 
     .conversation-list {
-      gap: 10px;
-      display: flex;
-      /* height: 240px; */
-      width: 100%;
-      padding: 8px;
-      justify-content: flex-start;
-      flex-direction: column;
-      /* flex-wrap: nowrap; */
-    }
+  flex: 1 1 auto;
+  overflow-y: auto;          /* скролл теперь здесь */
+}
 
+    .search-box {
+  position: relative;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+   .search-box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 26px 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: inherit;
+  font-size: 13px;
+}
+
+#searchClear {
+  position: absolute;
+  top: 17px; right: 20px;
+  display: none;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-count {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.is-hidden { display: none !important; } 
+    
     .conversation-item {
       width: 100%;
       border: 1px solid transparent;
@@ -567,64 +607,37 @@
     </header>
 
     <section class="chat-shell">
-  <aside class="sidebar">
-    <div class="sidebar-head">
-      <h2>Диалоги</h2>
+ <aside class="sidebar">
+  <div class="sidebar-head">
+    <h2>Диалоги</h2>
+    <button id="refresh-conversations" class="button-secondary" type="button">↻</button>
+  </div>
+ <div class="search-box">
+    <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
+    <button type="button" id="searchClear" title="Очистить">×</button>
+    <div id="searchCount" class="search-count"></div>
+  </div>
 
-      <button
-        id="refresh-conversations"
-        class="button-secondary"
-        type="button"
-      >
-        ↻
-      </button>
-    </div>
-
-    <div
-      id="conversation-list"
-      class="conversation-list"
-    >
-      Загружаем диалоги...
-    </div>
-  </aside>
+  <div id="conversation-list" class="conversation-list">
+    Загружаем диалоги...
+  </div>
+</aside>
 
   <div id="messages" class="messages">
     <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
-
-        
-      
-
-
-
-    
+ 
   </div>
+<button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
+<button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
 </section>
-
-
-    <section class="composer">
+   <section class="composer">
       <textarea
         id="message-input"
         placeholder="Напишите задачу или вопрос..."
       ></textarea>
-  <button
-  id="scroll-up-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вверх"
->
-  ↑
-</button>
-
-<button
-  id="scroll-down-button"
-  class="button-secondary"
-  type="button"
-  title="Прокрутить историю вниз"
->
-  ↓
-</button>
+ 
       <div class="composer-bottom">
         <p id="chat-status" class="chat-status">
           Готовим чат...
@@ -658,13 +671,6 @@
     const SIDEBAR_STORAGE_KEY =
       "delovoy_agent_sidebar_hidden";
 
-    
-    const scrollUpButton =
-      document.getElementById("scroll-up-button");
-
-    const scrollDownButton =
-      document.getElementById("scroll-down-button");
-
     const conversationList =
       document.getElementById("conversation-list");
 
@@ -674,6 +680,52 @@
     let models = {};
     let conversationId = null;
 
+
+(function initSearch() {
+  const input = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('searchClear');
+  const counter = document.getElementById('searchCount');
+  const ITEM_SELECTOR = '#conversation-list .conversation-item';
+
+  let timer = null;
+
+  const normalize = s => (s || '').toLowerCase().replace(/ё/g, 'е').trim();
+
+  function applyFilter() {
+    const q = normalize(input.value);
+    const items = document.querySelectorAll(ITEM_SELECTOR);
+    let visible = 0;
+
+    items.forEach(item => {
+      const match = q === '' || normalize(item.textContent).includes(q);
+      item.classList.toggle('is-hidden', !match);
+      if (match) visible++;
+    });
+
+    clearBtn.style.display = q ? 'block' : 'none';
+    counter.textContent = q
+      ? (visible ? `Найдено: ${visible}` : 'Ничего не найдено')
+      : '';
+  }
+
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(applyFilter, 150);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { input.value = ''; applyFilter(); }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+    applyFilter();
+  });
+
+  window.reapplySearchFilter = applyFilter;
+})();
+    
     function setStatus(element, text, isError = false) {
       function modelKey(provider, model) {
       return `${provider}|${model}`;
@@ -1133,6 +1185,7 @@ if (conversation.id === conversationId) {
         conversationList.textContent =
           `Ошибка загрузки диалогов: ${error.message}`;
       }
+      window.reapplySearchFilter?.();
     }
 
     
@@ -1386,25 +1439,7 @@ refreshConversationsButton.addEventListener(
       "click",
       loadConversations
     );
-scrollUpButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: -Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
 
-    scrollDownButton.addEventListener("click", () => {
-      messagesElement.scrollBy({
-        top: Math.max(
-          400,
-          messagesElement.clientHeight * 0.8
-        ),
-        behavior: "smooth"
-      });
-    });
 function updateSidebarState(isHidden) {
       chatShell.classList.toggle(
         "sidebar-hidden",
@@ -1434,6 +1469,22 @@ function updateSidebarState(isHidden) {
     );
 
     initializeChat();
+    document.addEventListener('DOMContentLoaded', () => {
+  const box = document.getElementById('messages');
+  const upBtn = document.getElementById('scrollUpBtn');
+  const downBtn = document.getElementById('scrollDownBtn');
+
+  if (!box || !upBtn || !downBtn) {
+    console.warn('Не найдено:', { box, upBtn, downBtn });
+    return;
+  }
+
+  upBtn.addEventListener('click', () => box.scrollTo({ top: 0, behavior: 'smooth' }));
+  downBtn.addEventListener('click', () => box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }));
+
+  window.scrollChatToBottom = () =>
+    requestAnimationFrame(() => { box.scrollTop = box.scrollHeight; });
+});
   </script>
 </body>
 </html>
