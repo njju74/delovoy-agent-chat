@@ -41,7 +41,14 @@
       font-size: 14px;
     }
     
- 
+ .app {
+      max-width: 1100px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px 22px;
+    }
     
 .chat-shell.sidebar-hidden .sidebar {
       width: 0;
@@ -310,16 +317,7 @@
       .conversation-item {
         min-width: 220px;
       }
-    }
-
-    .app {
-      max-width: 1100px;
-      min-height: 100vh;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      padding: 18px 24px 22px;
-    }
+    
 
     header {
       display: flex;
@@ -629,15 +627,13 @@
 </aside>
 
   <div id="messages" class="messages">
-<button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
-<button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
     <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
-
+  <button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
+  <button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
   </div>
-<button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
-<button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
+
 </section>
    <section class="composer">
       <textarea
