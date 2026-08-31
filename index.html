@@ -41,16 +41,7 @@
       font-size: 14px;
     }
     
-    .scroll-btn {
-  position: fixed; right: 24px;
-  width: 40px; height: 40px;
-  border-radius: 50%; border: 1px solid #ddd;
-  background: #fff; cursor: pointer;
-  z-index: 50;                /* выше панели ввода */
-  box-shadow: 0 2px 8px rgba(0,0,0,.15);
-}
-.scroll-btn.up   { bottom: 150px; }
-.scroll-btn.down { bottom: 100px; }
+ 
     
 .chat-shell.sidebar-hidden .sidebar {
       width: 0;
@@ -439,6 +430,17 @@
     justify-content: flex-end;
     }
 
+  .scroll-btn {
+  position: fixed; right: 24px;
+  width: 40px; height: 40px;
+  border-radius: 50%; border: 1px solid #ddd;
+  background: #fff; cursor: pointer;
+  z-index: 50;                /* выше панели ввода */
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.scroll-btn.up   { bottom: 150px; }
+.scroll-btn.down { bottom: 100px; }
+    
  .messages {
     flex: 1;
     width: 70%;
@@ -627,10 +629,12 @@
 </aside>
 
   <div id="messages" class="messages">
+<button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
+<button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
     <div class="empty-state">
       Создаём личный рабочий диалог...
     </div>
- 
+
   </div>
 <button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
 <button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
