@@ -157,19 +157,19 @@
     }
 
      .conversation-delete:hover {
-      
-      border: 2px solid #ff9aa6;
+      border-radius: 20px;
+      border: 2px solid var(--danger);
     }
 
     .conversation-delete {
-    border-radius: 20px;
+    border: 0;
     margin-top: -50px;
     margin-left: 5px;
     padding: 2px 2px;
     height: 30px;
     width: 30px;
     background: transparent;
-    color: #ff9aa6;
+    color: var(--danger);
     cursor: pointer;
     }
 
@@ -623,7 +623,7 @@
   </div>
  <div class="search-box">
     <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
-    <button type="button" id="searchClear" title="Очистить">×</button>
+    <button type="button" id="searchClear" title="Очистить"></button>
     <div id="searchCount" class="search-count"></div>
   </div>
 
