@@ -176,8 +176,10 @@
     }
 
 .sidebar {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    padding: 3px;
   overflow: hidden;          /* было overflow-y: auto */
 }
 
@@ -367,13 +369,13 @@
     }
 
     button {
- /*    border: 0;
-      border-radius: 8px;
-      padding: 5px 10px;
-      background: var(--accent2);
-      color: #0f1620;
-      font-weight: 500;
-      cursor: pointer; */
+    border-radius: 8px;
+    padding: 5px 10px;
+    background: var(--accent);
+    color: #0f1620;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
     }
 
     button:disabled {
@@ -382,9 +384,11 @@
     }
 
     .button-secondary {
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--text);
+     border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px;
     }
 
     .model-status {
@@ -428,15 +432,20 @@
     }
 
   .scroll-btn {
-  position: fixed; right: 24px;
-  width: 40px; height: 40px;
-  border-radius: 50%; border: 1px solid #ddd;
-  background: #fff; cursor: pointer;
-  z-index: 50;                /* выше панели ввода */
-  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    position: fixed;
+    right: 24px;
+    margin-right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #b3c9e1;
+    background: #c8ced8;
+    cursor: pointer;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
 }
-.scroll-btn.up   { bottom: 150px; }
-.scroll-btn.down { bottom: 100px; }
+.scroll-btn.up   { bottom: 200px; }
+.scroll-btn.down { bottom: 150px; }
     
  .messages {
     flex: 1;
