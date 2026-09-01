@@ -21,6 +21,7 @@
         --muted: #b3c9e1;
         --accent: #8dc1b3;
         --accent2: #9aabbd;
+        --accent3: #868721
         --line: #495c73;
         --danger: #ff9aa6;
         --user: #2d4340;
@@ -93,18 +94,15 @@
   gap: 5px; 
   align-items: center; 
  padding: 4px 8px; 
- border: 1px solid #c8ced8; 
-  border-radius: 6px; 
- background: var(--muted); 
-  color: #344054; 
+  border: 0;
   cursor: pointer;  
   background:var(--bg);
     color: var(--muted);
 }
 
 .copy-code-button:hover {
-  background: var(--bg);
-   color: var(--muted);
+  background:var(--bg);
+    color: var(--accent3);
 }
 
 .code-block pre {
@@ -473,7 +471,7 @@
       margin: 0 0 14px;
       padding: 12px 14px;
       font-size: 12px;
-      border: 1px solid #aeaf5f;
+      border: 1px solid var:(--accent3);
       border-radius: 12px;
       white-space: pre-wrap;
       line-height: 1.55;
