@@ -221,16 +221,16 @@
   font-size: 13px;
 }
 
- #searchClear {
+/* #searchClear {
   position: absolute;
   top: 17px; right: 20px;
   display: none;
   border: 0;
   background: none;
   color: var(--accent);
-  font-size: 16px;
-  cursor: pointer;
-}
+  -----> font-size: 0px;
+  cursor: pointer; 
+}*/
 
 .search-count {
   margin-top: 5px;
@@ -625,7 +625,7 @@
 
   <div class="search-box">
     <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
-<!-----------------  <button type="button" id="searchClear" title="Очистить">×</button> -------------->
+    <button type="button" id="searchClear" title="Очистить">×</button>
     <div id="searchCount" class="search-count"></div> 
   </div>
    
