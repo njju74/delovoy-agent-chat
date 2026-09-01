@@ -634,11 +634,13 @@
     <h2>Диалоги</h2>
     <button id="refresh-conversations" class="button-secondary" type="button">↻</button>
   </div>
- <div class="search-box">
+
+  <div class="search-box">
     <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
-    <button type="button" id="searchClear" title="Очистить">x</button>
-    <div id="searchCount" class="search-count"></div>
+ <!--   <button type="button" id="searchClear" title="Очистить">×</button>
+    <div id="searchCount" class="search-count"></div> -->
   </div>
+   
 
   <div id="conversation-list" class="conversation-list">
     Загружаем диалоги...
@@ -1187,8 +1189,8 @@ if (conversation.id === conversationId) {
               true
             );
 
-          /*  deleteButton.disabled = false;
-            deleteButton.textContent = "×";   */
+          deleteButton.disabled = false;
+            deleteButton.textContent = "×";  
             
           }
         });
