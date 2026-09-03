@@ -139,6 +139,8 @@
     background: transparent;
     font-weight: 400;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
     }
 
     .conversation-open:hover {
@@ -268,18 +270,19 @@
        /* задаём фиксированную ширину */
       overflow: hidden; /* скрываем текст за пределами ячейки */
       text-overflow: ellipsis; /* многоточие */
-      /* white-space: nowrap; */ /* запрещаем перенос строки */
+      white-space: nowrap;  /* запрещаем перенос строки */
     }
 
     .conversation-preview {
       display: -webkit-box;
-      overflow: hidden;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4;
+    overflow: hidden;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    white-space: break-spaces;
     }
 
     .conversation-meta {
