@@ -859,25 +859,36 @@ function modelKey(provider, model) {
       }
     }
 
-    async function fetchJson(url, options = {}) {
+async function fetchJson(url, options = {}) {
       const response = await fetch(url, options);
 
-      let result = {};
+      const responseText = await response.text();
+
+      let result;
 
       try {
-        result = await response.json();
+        result = JSON.parse(responseText);
       } catch {
-        throw new Error("Сервер вернул некорректный JSON.");
+        throw new Error(
+          `HTTP ${response.status}. Сервер вернул не JSON.`
+        );
       }
 
       if (!response.ok || !result.ok) {
-        throw new Error(
+        const error = new Error(
           result.message || "Сервер вернул ошибку."
         );
+
+        error.code = result.error_code || "api_error";
+        error.provider = result.provider || "";
+        error.model = result.model || "";
+
+        throw error;
       }
 
       return result;
     }
+
 
     function formatDate(value) {
       if (!value) return "";
@@ -1317,13 +1328,56 @@ await loadConversations();
 
 
         
-      } catch (error) {
+  /*   } catch (error) {
         setStatus(
           chatStatus,
           `Ошибка ответа: ${error.message}`,
           true
         );
-      } finally {
+      }               */
+
+
+        
+
+  } catch (error) {
+        if (
+          error.code === "model_unavailable" ||
+          error.code === "model_rate_limited"
+        ) {
+          setStatus(
+            chatStatus,
+            `⚠️ ${error.message}`,
+            true
+          );
+
+          return;
+        }
+
+        try {
+          setStatus(
+            chatStatus,
+            "Проверяем, был ли ответ сохранён в истории..."
+          );
+
+          await new Promise((resolve) => {
+            setTimeout(resolve, 1200);
+          });
+
+          await loadHistory();
+
+          setStatus(
+            chatStatus,
+            "История обновлена."
+          );
+        } catch {
+          setStatus(
+            chatStatus,
+            `Ошибка ответа: ${error.message}`,
+            true
+          );
+        }
+
+      finally {
         messageInput.disabled = false;
         sendButton.disabled = false;
         messageInput.focus();
