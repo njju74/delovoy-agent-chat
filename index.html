@@ -202,7 +202,7 @@
 
     .conversation-list {
   flex: 1 1 auto;
-  padding: 15px;
+  padding: 8px;
   overflow-y: auto;          /* скролл теперь здесь */
 }
 
@@ -264,13 +264,16 @@
     }
 
     .conversation-title {
-      font-size: 14px;
-      /* text-autospace: normal; */
-      font-weight: 500;
-       /* задаём фиксированную ширину */
-      overflow: hidden; /* скрываем текст за пределами ячейки */
-      text-overflow: ellipsis; /* многоточие */
-      white-space: nowrap;  /* запрещаем перенос строки */
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    margin-top: 5px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: break-spaces;
     }
 
     .conversation-preview {
