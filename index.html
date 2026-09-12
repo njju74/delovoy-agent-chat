@@ -124,8 +124,10 @@
     gap: 5px;
     border-radius: 8px;
     align-content: start;
+    font-size: 14px;
     align-items: center;
     height: 150px;
+    margin: 7px;
     }
 
     .conversation-open {
@@ -140,7 +142,7 @@
     font-weight: 400;
     cursor: pointer;
     overflow: hidden;
-    white-space: nowrap;
+    /*  white-space: nowrap;  */
     }
 
     .conversation-open:hover {
@@ -164,15 +166,13 @@
     }
 
     .conversation-delete {
-    border: 0;
-    margin-top: -50px;
-    margin-left: 5px;
-    padding: 2px 2px;
-    height: 30px;
-    width: 30px;
-    background: transparent;
-    color: var(--danger);
-    cursor: pointer;
+   font-size: 14px;
+    text-autospace: normal;
+    font-weight: 500;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     }
 
 .sidebar {
