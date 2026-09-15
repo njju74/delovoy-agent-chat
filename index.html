@@ -579,89 +579,47 @@
     <header>
       <div>
         <h1>Деловой агент — личный ассистент</h1>
-
-        <p class="sub">
-          Рабочий чат с памятью проектов, PostgreSQL и pgvector.
-        </p>
-
-        <a class="memory-link" href="/memory.html">
-          📚 Память и документы
-        </a>
+        <p class="sub">Рабочий чат с памятью проектов, PostgreSQL и pgvector.</p>
+        <a class="memory-link" href="/memory.html">  📚 Память и документы </a>
       </div>
-
       <div class="controls">
-<button
-  id="toggle-sidebar"
-  class="button-secondary"
-  type="button"
->
-  ☰ Диалоги
-
-
-        <button
-          id="new-chat-button"
-          class="button-secondary"
-          type="button">
-          ＋ Новый диалог
-        </button>
-
+        <button id="toggle-sidebar" class="button-secondary"  type="button"> ☰ Диалоги </button>
+        <button id="new-chat-button" class="button-secondary" type="button"> ＋ Новый диалог </button>
+        <label for="memoryModeSelect">Память:</label>
+        <select id="memoryModeSelect">
+          <option value="all">Вся память</option>
+          <option value="none">Без истории чатов</option>
+          <option value="selected">Только выбранные документы</option>
+        </select>
         <label for="model-select">Модель:</label>
-
-       <select id="model-select" disabled>
-  <option value="">
-    Загружаем модели...
-  </option>
-</select>
-
-
-        <p id="model-status" class="model-status">
-          Загружаем модель...
-        </p>
+        <select id="model-select" disabled> <option value=""> Загружаем модели...</option></select>
+        <p id="model-status" class="model-status">Загружаем модель...</p>
       </div>
     </header>
-
     <section class="chat-shell">
- <aside class="sidebar">
-  <div class="sidebar-head">
-    <h2>Диалоги</h2>
-    <button id="refresh-conversations" class="button-secondary" type="button">↻</button>
-  </div>
-
-  <div class="search-box">
-    <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
-    <button type="button" id="searchClear" title="Очистить">×</button>
-    <div id="searchCount" class="search-count"></div> 
-  </div>
-   
-
-  <div id="conversation-list" class="conversation-list">
-    Загружаем диалоги...
-  </div>
-</aside>
-
-  <div id="messages" class="messages">
-    <div class="empty-state">
-      Создаём личный рабочий диалог...
-    </div>
-
-  </div>
-  <button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
-  <button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
-</section>
-   <section class="composer">
-      <textarea
-        id="message-input"
-        placeholder="Напишите задачу или вопрос..."
-      ></textarea>
- 
+     <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Диалоги</h2>
+        <button id="refresh-conversations" class="button-secondary" type="button">↻</button>
+      </div>
+      <div class="search-box">
+        <input type="search" id="searchInput" placeholder="Поиск по диалогам…" autocomplete="off" />
+        <button type="button" id="searchClear" title="Очистить">×</button>
+        <div id="searchCount" class="search-count"></div> 
+      </div>
+      <div id="conversation-list" class="conversation-list">Загружаем диалоги...</div>
+    </aside>
+      <div id="messages" class="messages">
+        <div class="empty-state">Создаём личный рабочий диалог...</div>
+      </div>
+      <button type="button" id="scrollUpBtn"   class="scroll-btn up">↑</button>
+      <button type="button" id="scrollDownBtn" class="scroll-btn down">↓</button>
+  </section>
+  <section class="composer">
+      <textarea id="message-input" placeholder="Напишите задачу или вопрос..."></textarea>
       <div class="composer-bottom">
-        <p id="chat-status" class="chat-status">
-          Готовим чат...
-        </p>
-
-        <button id="send-button" type="button">
-          Отправить
-        </button>
+        <p id="chat-status" class="chat-status">Готовим чат...</p>
+        <button id="send-button" type="button">Отправить</button>
       </div>
     </section>
   </div>
@@ -673,30 +631,18 @@
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
     const newChatButton = document.getElementById("new-chat-button");
-
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
     const chatStatus = document.getElementById("chat-status");
-
-    const chatShell =
-      document.querySelector(".chat-shell");
-
-    const toggleSidebarButton =
-      document.getElementById("toggle-sidebar");
-
-    const SIDEBAR_STORAGE_KEY =
-      "delovoy_agent_sidebar_hidden";
-
-    const conversationList =
-      document.getElementById("conversation-list");
-
-    const refreshConversationsButton =
-      document.getElementById("refresh-conversations");
+    const chatShell = document.querySelector(".chat-shell");
+    const toggleSidebarButton = document.getElementById("toggle-sidebar");
+    const SIDEBAR_STORAGE_KEY = "delovoy_agent_sidebar_hidden";
+    const conversationList = document.getElementById("conversation-list");
+    const refreshConversationsButton = document.getElementById("refresh-conversations");
 
     let models = {};
     let conversationId = null;
-
-
+    
 (function initSearch() {
   const input = document.getElementById('searchInput');
   const clearBtn = document.getElementById('searchClear');
