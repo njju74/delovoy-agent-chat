@@ -1012,7 +1012,16 @@ function setModel(provider, model) {
         `Сейчас отвечает: ${getModelLabel(provider, model)}`
       );
     }
+    
+const memoryModeSelect = window.document.getElementById("memoryModeSelect");
 
+// внутри loadHistory, сразу после setModel(result.provider, result.model)
+
+console.log("memory_mode из ответа:", result.memory_mode);
+if (result.memory_mode) {
+  memoryModeSelect.value = result.memory_mode;
+}
+    
 function renderConversations(conversations) {
       conversationList.innerHTML = "";
 
@@ -1203,15 +1212,6 @@ if (conversation.id === conversationId) {
 
       setStatus(chatStatus, "Диалог загружен.");
     }
-
-const memoryModeSelect = window.document.getElementById("memoryModeSelect");
-
-// внутри loadHistory, сразу после setModel(result.provider, result.model)
-
-console.log("memory_mode из ответа:", result.memory_mode);
-if (result.memory_mode) {
-  memoryModeSelect.value = result.memory_mode;
-}
     
     async function sendMessage() {
       const message = messageInput.value.trim();
