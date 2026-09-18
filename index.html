@@ -1252,13 +1252,77 @@ if (result.memory_mode) {
 
       setStatus(chatStatus, "Диалог загружен.");
     }
-    
-    async function sendMessage() {
+    async function uploadSelectedScreenshot() {
+  if (!selectedScreenshot) {
+    return null;
+  }
+
+  const formData = new FormData();
+
+  // Имя поля совпадает с Field Name for Binary Data в n8n
+  formData.append("file", selectedScreenshot);
+
+  const response = await fetch(
+    "https://n8n.agent3d.ru/webhook/agent-knowledge-upload-v1",
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Не удалось загрузить скриншот: HTTP ${response.status}`
+    );
+  }
+
+  return selectedScreenshot.name;
+}
+ /*   async function sendMessage() {
       const message = messageInput.value.trim();
 
       if (!message) {
         return;
-      }
+      } -----------------ниже ЗАМЕНА ЭТОГО БЛОКА для отправки скриншотов в чате ---------------*/
+async function sendMessage() {
+  const message = messageInput.value.trim();
+
+  if (!message && !selectedScreenshot) {
+    return;
+  }
+
+  if (selectedScreenshot) {
+    sendButton.disabled = true;
+    attachScreenshotButton.disabled = true;
+
+    try {
+      setStatus(chatStatus, "Загружаем скриншот...");
+
+      const uploadedFileName = await uploadSelectedScreenshot();
+
+      selectedScreenshot = null;
+      screenshotInput.value = "";
+      selectedScreenshotName.textContent = "";
+
+      setStatus(
+        chatStatus,
+        `Скриншот «${uploadedFileName}» отправлен.`
+      );
+    } catch (error) {
+      setStatus(chatStatus, error.message, true);
+      sendButton.disabled = false;
+      attachScreenshotButton.disabled = false;
+      return;
+    }
+
+    attachScreenshotButton.disabled = false;
+
+    // Если был прикреплён только файл — не вызываем текстовый чат.
+    if (!message) {
+      sendButton.disabled = false;
+      return;
+    }
+  }
 
       if (!conversationId) {
         await createNewConversation();
@@ -1269,7 +1333,7 @@ if (result.memory_mode) {
         content: message,
         created_at: new Date().toISOString()
       };
-
+/*------------------------------------------- тут конец блока замены -------------------*/
       if (
         messagesElement.querySelector(".empty-state")
       ) {
