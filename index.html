@@ -1262,14 +1262,18 @@ if (result.memory_mode) {
   // Имя поля совпадает с Field Name for Binary Data в n8n
   formData.append("file", selectedScreenshot);
 
-  const response = await fetch(
+/*  const response = await fetch(
     "https://n8n.agent3d.ru/webhook/agent-knowledge-upload-v1",
     {
       method: "POST",
       body: formData
     }
-  );
-
+  ); ------------------ниже замена этого блока для исправления ошибки 403 при отправки скриншота в чат-------------*/
+const response = await fetch("/api/upload", {
+  method: "POST",
+  body: formData
+});
+/*-------------------------------------Конец БЛОКА ЗАМЕНЫ -----------------------------------------------*/      
   if (!response.ok) {
     throw new Error(
       `Не удалось загрузить скриншот: HTTP ${response.status}`
