@@ -617,19 +617,51 @@
   </section>
   <section class="composer">
       <textarea id="message-input" placeholder="Напишите задачу или вопрос..."></textarea>
-      <div class="composer-bottom">
+      
+    <!--<div class="composer-bottom">
         <p id="chat-status" class="chat-status">Готовим чат...</p>
         <button id="send-button" type="button">Отправить</button>
-      </div>
-    </section>
+      </div>  ---------------------ниже ЗАМЕНА ЭТОГО БЛОКА ДЛЯ ДОБАВЛЕНИЯ КНОПКИ ОТПРАВИТЬ СКРИНШОТ В ЧАТЕ-->
+    
+<div class="composer-bottom">
+  <p id="chat-status" class="chat-status">Готовим чат...</p>
+  <div class="attachment-controls">
+    <input id="screenshot-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+    <button id="attach-screenshot-button" class="button-secondary" type="button" title="Выбрать скриншот">📎 Скриншот</button>
+    <span id="selected-screenshot-name"></span>
   </div>
+  <button id="send-button" type="button">Отправить</button>
+</div>
 
+    </section>
+  </div> 
   <script>
     const STORAGE_KEY = "delovoy_agent_conversation_id";
 
     const messagesElement = document.getElementById("messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
+    const screenshotInput = document.getElementById("screenshot-input");
+const attachScreenshotButton = document.getElementById(
+  "attach-screenshot-button"
+);
+const selectedScreenshotName = document.getElementById(
+  "selected-screenshot-name"
+);
+
+let selectedScreenshot = null;
+
+attachScreenshotButton.addEventListener("click", () => {
+  screenshotInput.click();
+});
+
+screenshotInput.addEventListener("change", () => {
+  selectedScreenshot = screenshotInput.files?.[0] || null;
+
+  selectedScreenshotName.textContent = selectedScreenshot
+    ? selectedScreenshot.name
+    : "";
+});
     const newChatButton = document.getElementById("new-chat-button");
     const modelSelect = document.getElementById("model-select");
     const modelStatus = document.getElementById("model-status");
