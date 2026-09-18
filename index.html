@@ -1252,11 +1252,35 @@ if (result.memory_mode) {
 
       setStatus(chatStatus, "Диалог загружен.");
     }
-    async function uploadSelectedScreenshot() {
+ async function uploadSelectedScreenshotChat() {
   if (!selectedScreenshot) {
     return null;
   }
 
+  const formData = new FormData();
+
+  // Имя поля совпадает с Field Name for Binary Data в n8n
+   /*------------------ниже  блока для исправления ошибки 403 при отправки скриншота в чат-----------*/ 
+  formData.append("knowledge_file", selectedScreenshot);
+      const response = await fetch("/api/upload", {
+  method: "POST",
+  body: formData
+});
+/*-------------------------------------Конец БЛОКА ЗАМЕНЫ -----------------------------------------------*/      
+  if (!response.ok) {
+    throw new Error(
+      `Не удалось загрузить скриншот: HTTP ${response.status}`
+    );
+  }
+
+  return selectedScreenshot.name;
+}
+
+
+    async function uploadSelectedScreenshot() {
+  if (!selectedScreenshot) {
+    return null;
+  }
   const formData = new FormData();
 
   // Имя поля совпадает с Field Name for Binary Data в n8n
@@ -1265,14 +1289,7 @@ if (result.memory_mode) {
     "https://n8n.agent3d.ru/webhook/agent-knowledge-upload-v1", {
       method: "POST",
       body: formData
-    }); 
-  /*------------------ниже  блока для исправления ошибки 403 при отправки скриншота в чат-----------*/ 
-  formData.append("knowledge_file", selectedScreenshot);
-      const response = await fetch("/api/upload", {
-  method: "POST",
-  body: formData
-});
-/*-------------------------------------Конец БЛОКА ЗАМЕНЫ -----------------------------------------------*/      
+    });     
   if (!response.ok) {
     throw new Error(
       `Не удалось загрузить скриншот: HTTP ${response.status}`
@@ -1301,7 +1318,7 @@ async function sendMessage() {
     try {
       setStatus(chatStatus, "Загружаем скриншот...");
 
-      const uploadedFileName = await uploadSelectedScreenshot();
+      const uploadedFileName = await uploadSelectedScreenshotChat();
 
       selectedScreenshot = null;
       screenshotInput.value = "";
