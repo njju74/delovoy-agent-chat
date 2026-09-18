@@ -1260,16 +1260,16 @@ if (result.memory_mode) {
   const formData = new FormData();
 
   // Имя поля совпадает с Field Name for Binary Data в n8n
-  formData.append("file", selectedScreenshot);
-
-/*  const response = await fetch(
+ /* formData.append("file", selectedScreenshot); 
+  const response = await fetch(
     "https://n8n.agent3d.ru/webhook/agent-knowledge-upload-v1",
     {
       method: "POST",
       body: formData
     }
   ); ------------------ниже замена этого блока для исправления ошибки 403 при отправки скриншота в чат-------------*/
-const response = await fetch("/api/upload", {
+  formData.append("knowledge_file", selectedScreenshot);
+      const response = await fetch("/api/upload", {
   method: "POST",
   body: formData
 });
